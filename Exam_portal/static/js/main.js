@@ -135,7 +135,8 @@ $(document).ready(function (event) {
             $('#category_list').attr("disabled",true);
             entry = 0;
            }
-        else{
+        else
+        if(entry == 1){
             $('.category').append("<input type='text' name='new_category' placeholder='Name of new category' required/>");
             entry = 0;
         }

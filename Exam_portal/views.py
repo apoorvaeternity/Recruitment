@@ -270,7 +270,7 @@ def update_question(question_data):
 
     print(negative_marks)
     try:
-        category = CatadminLogin/egory.objects.get(category=question_data['category'])
+        category = Category.objects.get(category=question_data['category'])
     except ObjectDoesNotExist:
         category = Category.objects.create(category=question_data['category'])
 
@@ -303,6 +303,9 @@ def edit_question(request):
 
     category1 = Category.objects.all().order_by('id')
     question = Question.objects.all().order_by('id')
+    if len(question) < 1:
+        messages.success(request, "first add a Question to be added kiddo :P !!!")
+        return HttpResponseRedirect(reverse('Exam_portal:adminchoice'))
     choice = question[0].questionchoice_set.all().order_by('id')
 
     question_key = []
@@ -357,7 +360,7 @@ def edit_question(request):
 
             }
 
-            if edit_again(data):
+            if edit_again(request,data):
                 messages.success(request, "Question have been updated!")
 
     else:
@@ -376,9 +379,10 @@ def edit_question(request):
     return render(request, "Exam_portal/update.html", query_set)
 
 
-def edit_again(data):
+def edit_again(request,data):
     print(data)
     question = Question.objects.get(pk=data['current_question'])
+
 
     question.question_text = data['form_data']['question']
 

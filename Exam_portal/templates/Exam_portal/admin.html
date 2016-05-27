@@ -45,23 +45,18 @@
 {% block endadmin %}{% endblock %}
 
 <div class="container">
+<div class="container-fluid">
     {% if messages %}
-        {% if not error %}
-            <div class="alert alert-danger">
+
+            <div class="alert alert-info">
                 <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
                 {% for message in messages %}
-                    <span><Strong>Error! </Strong> {{ message }}</span>
+                    <span> Note : {{ message }}</span>
                 {% endfor %}
             </div>
-        {% else %}
-            <div class="alert alert-success">
-                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                {% for message in messages %}
-                    <span> {{ message }}</span>
-                {% endfor %}
-            </div>
-        {% endif %}
+
     {% endif %}
+</div>
 </div>
 
 </body>
