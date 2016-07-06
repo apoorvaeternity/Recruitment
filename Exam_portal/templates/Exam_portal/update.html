@@ -16,14 +16,17 @@
 
     <div class="container-fluid" style="width: 60% ;margin-bottom: 2%;font-size: larger;">
         On this page you can add Question to the SI Recruitment. You can add a category or add to the existing category
-        you have to add 4 choices and net to each choice you can correct which chocie is correct
+        you have to add 4 choices and net to each choice you can correct which choice is correct
 
         {% if display %}
             <a class="btn btn-primary" href="../admin">Add Question</a>
         {% else %}
             <a class="btn btn-primary" href="../edit">Edit question</a>
         {% endif %}
+
+
     </div>
+
     {% if display %}
         <input type="radio" id="admin_page_request" style="display: none;" name="timeStarter" checked="checked"
                value="true">
@@ -89,7 +92,8 @@
 
                     <div id="question">
                         <input type="text" name="current" style="display: none" value="{{ question.id }}"/>
-                        <label>{{ form.question.label }} </label><p> {{ form.question }}</p>
+                        <label>{{ form.question.label }} </label>
+                        <p> {{ form.question }}</p>
                     </div>
                     <div id="choice_section" class="container">
                     <span><input type="text" name='choice1' id="choice1" placeHolder="Option1" required><input

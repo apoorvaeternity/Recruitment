@@ -37,6 +37,9 @@ def adminchoice(request):
 
 
 def end(request):
+    if request.session.get('student_id') is None:
+        messages.error(request, "First, Register for the examination here..")
+        return redirect(reverse('Exam_portal:register'))
     markCalculate(request)
     print(request.session['student_id'])
     del request.session['student_id']
@@ -46,7 +49,16 @@ def end(request):
 
 
 def show(request):
+
+    if request.session.get('student_id') is None:
+        messages.error(request, "First Register for the examination here..")
+        return redirect(reverse('Exam_portal:register'))
+
     category1 = Category.objects.all()
+    if category1 is None:
+        messages.error(request,"Oops look like the exam is not created yet. Try after some time")
+        return redirect(reverse('Exam_portal:register'))
+
     question = category1[0].question_set.all().order_by('id')
     # print(question[0])
     # question_object_list = list(question)
@@ -166,12 +178,13 @@ def register(request):
                 hosteler = True
             else:
                 hosteler = False
-            skills = form.cleaned_data['Designer']
+            skills = form.cleaned_data['Skills']
+            designer = form.cleaned_data['Designer']
 
             data = Student.objects.create(name=name, student_no=studentno,
                                           branch=branch, contact=contact,
                                           skills=skills, email=email,
-                                          hosteler=hosteler)
+                                          hosteler=hosteler,designer=designer)
             if data:
                 request.session['name'] = name
                 request.session['student_id'] = data.id

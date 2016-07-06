@@ -14,7 +14,7 @@ class Student(models.Model):
     hosteler = models.BooleanField()  # Stage2 of registration
     designer = models.CharField(
         "Mention any software you worked on(photoshop etc)",
-        max_length=10)  # Stage3 of registration
+        max_length=225)  # Stage3 of registration
 
     def __str__(self):
         return "<Name = %s>"%self.name
@@ -30,7 +30,7 @@ class Category(models.Model):
 
 
 class Question(models.Model):
-    question_text = models.CharField(max_length=225)
+    question_text = models.CharField(max_length=1000)
     negative = models.BooleanField()
     negative_marks = models.IntegerField(null=True)
     marks = models.IntegerField()
@@ -70,9 +70,6 @@ class StudentAnswer(models.Model):
 class MarksOfStudent(models.Model):
     student = models.ForeignKey(Student,on_delete=models.CASCADE)
     marks = models.IntegerField()
-
-    def __str__(self):
-        return "Marks of student : %s"%self.student.name
 
 
 class Test(models.Model):

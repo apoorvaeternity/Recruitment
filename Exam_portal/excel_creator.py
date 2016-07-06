@@ -1,9 +1,19 @@
 import xlsxwriter
-from django.contrib import messages
-import os
+
+from .views import *
 from .models import *
 
 
+def total_marks():
+    marks = 0
+    try:
+        question = Question.objects.all()
+        for q in question:
+            marks += q.marks
+    except Exception as e:
+        print(e)
+
+    return marks
 
 label_personal = [
     'Sno.',
@@ -18,7 +28,7 @@ label_exam = [
     'Sno.',
     'Student Number',
     'name',
-    'Total Marks',
+    'Marks Obtained (Out of = '+str(total_marks())+')',
     'Algorithm analysis',
     'Grand Total',
 ]
@@ -58,7 +68,7 @@ class StudentInformation:
             student.designer)
             info.append(data)
             print(info)
-            return info
+        return info
 
     def exam_data(self):
 
@@ -136,7 +146,7 @@ def create_excel():
         if hostler is True:
             h = "Yes"
         else:
-            h = "False"
+            h = "No"
         if designer == '':
             d = "None"
         else:

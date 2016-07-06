@@ -108,6 +108,10 @@ $(document).ready(function (event) {
     function question_update(data){
 
         $('#id_question').attr("value",data['question']);
+        // $('#id_question').append(data['question']);
+        $('#id_question').val('');
+        $('#id_question').val($('#id_question').val()+data['question']);
+
         for(i=0;i<data['choice'].length;i++) {
             choice_id = "#choice" + (i + 1).toString();
             $(choice_id).attr("value", data['choice'][i][0]);

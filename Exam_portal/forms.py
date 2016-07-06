@@ -25,13 +25,13 @@ YES_OR_NO = (('y', 'yes'),
 
 
 class AdminLoginForm(forms.Form):
-
     username = forms.CharField(max_length=30)
     password = forms.CharField(widget=forms.PasswordInput())
 
 
 class AdminForm(forms.Form):
-    question = forms.CharField(label='Question Text', max_length=500, required=True , widget = forms.Textarea)
+    question = forms.CharField(label='Question Text', max_length=500, required=True,
+                               widget=forms.Textarea(attrs={'cols': 90}))
     marks = forms.IntegerField(label='marks', required=True)
     negative = forms.BooleanField(label='have negative marking', required=False)
     negative_marks = forms.IntegerField(label="negative marks", required=False)
