@@ -16,6 +16,19 @@ $(document).ready(function (event) {
 
 
 
+    $('#excel').click(function(e){
+        e.preventDefault();
+        console.log("sending");
+        $.ajax({
+            type:"GET",
+            url:"../studentexcel/",
+            success:function(status){
+
+            }
+        })
+    });
+
+
 
     $('#delete').click(function(e){
         e.preventDefault();

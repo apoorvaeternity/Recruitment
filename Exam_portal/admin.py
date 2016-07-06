@@ -39,9 +39,9 @@ class QuestionAdmin(admin.ModelAdmin):
 
 
 class StudentAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name', 'branch')
+    list_display = ('student_no', 'name', 'branch')
     search_fields = ['name']
-    ordering = ('id',)
+    ordering = ('student_no',)
 
     class Meta:
         model = Student

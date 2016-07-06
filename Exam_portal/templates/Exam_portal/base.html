@@ -19,9 +19,11 @@
     {% include 'material/includes/material_js.html' %}
 
     <style>
-        #id_Branch_container > div > span{
-            display:none;
+        #id_Branch_container > div > span {
+            display: none;
         }
+
+
     </style>
 
 </head>
@@ -29,32 +31,38 @@
 
 {% block body %}
     <nav>
-    <div class="nav-wrapper">
-      <a href="#" class="brand-logo" style="padding-left: 3%;">SI Recruitment</a>
-      <ul id="nav-mobile" class="right hide-on-med-and-down">
+        <div class="nav-wrapper">
 
 
-      </ul>
-    </div>
+            <div class="brand-logo" style="padding-left: 2%;">
+                <img src="{% static 'img/logo.png' %}" style="position: relative;height: 50px;"/>
+                Software Incubator Recruitment
+            </div>
+            <ul id="nav-mobile" class="right hide-on-med-and-down">
+
+
+            </ul>
+        </div>
     </nav>
 
 {% endblock body %}
 
 
 {% block content %}{% endblock content %}
-{% block ajax %}{% endblock ajax%}
-{% block admin%}{% endblock %}
+{% block ajax %}{% endblock ajax %}
+{% block admin %}{% endblock %}
 
 <div class="container">
-{% if messages %}
-    <div class="alert">
-        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-      {% for message in messages %}
-      <span><Strong>Done!</Strong> {{ message }}</span>
-      {% endfor %}
-    </div>
-{% endif %}
+    {% if messages %}
+        <div class="alert">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            {% for message in messages %}
+                <span><Strong>Done!</Strong> {{ message }}</span>
+            {% endfor %}
+        </div>
+    {% endif %}
 </div>
+
 
 
 </body>

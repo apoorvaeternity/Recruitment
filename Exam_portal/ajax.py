@@ -1,7 +1,8 @@
-import json
-
+import json , os
+from django.contrib import messages
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponse
+from .excel_creator import create_excel
 
 from .models import Student, QuestionChoice, Question, StudentAnswer, CorrectChoice, MarksOfStudent
 
@@ -289,3 +290,10 @@ def postajax(request):
         print (data)
         return HttpResponse(json.dumps("['rupanshu']"),
                             content_type="application/json")
+
+
+def ajax_excel(request):
+
+    create_excel()
+
+    return HttpResponse(json.dumps("['rupanshu']"), content_type="application/json")

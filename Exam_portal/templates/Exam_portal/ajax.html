@@ -3,76 +3,101 @@
 
 {% block ajax %}
     <form style="font-size: larger;">
-    {% csrf_token %}
-    <div class="container" style="padding: 3%;">
-    <div class="container" style="display: none;color: red;font-size: larger;" id="error_message">
-            Your exam is about to end
-    </div>
-
-
-    <input type="radio" id="timeStarter" style="display: none;" name="timeStarter" checked="checked" value="true">
-    <div class="chip " style="float: right;" id="chip">
-            Time left :<label id="time" style="font-size: larger;"></label>
-
-    </div>
-
-    <div class="container" style="width: 100%;padding-top: 5%;">
-
-    <div>
-        <div class="container-fluid col-sm-3" id="grid" style="background-color:whitesmoke;border-radius: 5%;float: right;width: 32%; padding:1%; " >
-                    <div  style="padding:3px;float:left;">
-                        <ul >
-                        {% for key in keys %}
-                            <li  class="btn-floating btn-large" style="background-color: #D5E7EA;color: #000;margin:2%;" id="{{ key }}">{{ forloop.counter }}</li>
-                        {% endfor %}
-                        </ul>
-                     </div>
+        {% csrf_token %}
+        <div class="container">
+        <div class="container-fluid alert" style="margin-bottom: 0px;">Duration of exam is <b>{{ time }}</b> Min
+            <p>You will get an alert in the last 10 min of exam.</p>
         </div>
-        <div class="col-sm-8" style="float:left;">
-        <div class="container"  style="width: 100%;" id="category">
-                <ul>
-                    {% for category_question_id,category in instance.category %}
-                        <li style="display: inline;padding: 2%;" id="{{ category_question_id }}">{{ category }}</li>
-                    {% endfor %}
-                </ul>
-        </div>
-        <ul class="collection">
-            <li class="collection-item" id="question" style="font-size:large;"><span id ="question_no">{{ instance.question_no }}. </span>{{ instance.question }}<strong><label id="negative" style="color: red;padding-left:2%;margin: 0px; ">{% if instance.negative %}&times;{% endif %}</label></strong></li>
-            <div class="container-fluid" id="choices" style="padding:2%;">
-            {% for choice,id in instance.choice_data %}
-                <li class="collection=item" id="{{ id }}">
-                <input name="choice" type="radio" id="test{{ forloop.counter }}" value="{{ id }}" class="choices" />
-                <label style="color:black;font-style: normal;" for="test{{ forloop.counter }}" id="q{{ forloop.counter }}">{{ choice }}</label>
-                </li>
-            {% endfor %}
-            <!-- {{ instance.choice_data }} -->
-            <!-- {% for q in instance.choice %}
-                <li class="collection=item">
-                <input name="choice" type="radio" id="test{{ forloop.counter }}" value="{{ q }}"/>{{ instance.choice_id. }}
-                <label style="color:black;font-style: normal;" for="test{{ forloop.counter }}" id="q{{ forloop.counter }}">{{ q }}</label></li>
-            {% endfor %} -->
+            <div class="container alert alert-danger" style="display: none;color: red;font-size: larger;" id="error_message">
+                Your exam is about to end
             </div>
-        </ul>
 
-        <div class="container-fluid" style="padding: 0px;">
-        <button  class="btn {{ request.session.current }}" type="submit"  id="next" style="float:right;margin: 4px;">Submit and Next</button>
-        <button  class="btn" type="submit" id="previous" style="float:left;margin: 4px;">Previous</button>
-        <button  class="btn" type="submit" id="mark" style="float:left;background:#EE6E73;float:right;margin: 4px;">Mark for Review</button>
-        </div>
-        <div class="container" style="margin-top:5%;margin-right:0px;padding-right: 0px;text-align:right;">
 
-                <label style="padding: 2%; ">If you are Done you can Finish your Exam</label><button class="btn " id="endExam"  style="background-color: #A73232;" >End Exam</button>
+            <input type="radio" id="timeStarter" style="display: none;" name="timeStarter" checked="checked"
+                   value="true">
+            <div class="chip " style="float: right; margin-right: 12%;" id="chip">
+                Time left :<label id="time" style="font-size: larger;"></label>
 
-        </div>
+            </div>
 
-        </div>
+            <div class="container" style="width: 100%;padding-top: 5%;">
+
+
+                <div>
+                    <div class="container-fluid col-sm-3" id="grid"
+                         style="border-radius: 5%;float: right;width: 32%; padding:1%; ">
+                        <div style="margin-bottom: 1%">
+                            Question Number are give below
+                        </div>
+                        <div style="padding:3px;float:left;">
+                            <ul>
+                                {% for key in keys %}
+                                    <li class="btn-floating btn-large"
+                                        style="background-color: #D5E7EA;color: #000;margin:2.5%;"
+                                        id="{{ key }}">{{ forloop.counter }}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-sm-8" style="float:left;">
+
+                        <div class="container" style="width: 100%;" id="category">
+                            <ul>
+                                {% for category_question_id,category in instance.category %}
+                                    <li style="display: inline;padding: 2%;"
+                                        id="{{ category_question_id }}">{{ category }}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        <ul class="collection">
+                            <li class="collection-item" id="question" style="font-size:large;"><span
+                                    id="question_no">{{ instance.question_no }}. </span>{{ instance.question }}<strong><label
+                                    id="negative" style="color: red;padding-left:2%;margin: 0px; ">
+                                {% if instance.negative %}&times;{% endif %}</label></strong></li>
+                            <div class="container-fluid" id="choices" style="padding:2%;">
+                                {% for choice,id in instance.choice_data %}
+                                    <li class="collection=item" id="{{ id }}">
+                                        <input name="choice" type="radio" id="test{{ forloop.counter }}"
+                                               value="{{ id }}" class="choices"/>
+                                        <label style="color:black;font-style: normal;" for="test{{ forloop.counter }}"
+                                               id="q{{ forloop.counter }}">{{ choice }}</label>
+                                    </li>
+                                {% endfor %}
+                                <!-- {{ instance.choice_data }} -->
+                                <!-- {% for q in instance.choice %}
+                <li class="collection=item">
+                <input name="choice" type="radio" id="test{{ forloop.counter }}" value="{{ q }}"/>
+                                    {{ instance.choice_id. }}
+                <label style="color:black;font-style: normal;" for="test{{ forloop.counter }}" id="q
+                                    {{ forloop.counter }}">{{ q }}</label></li>
+            {% endfor %} -->
+                            </div>
+                        </ul>
+
+                        <div class="container-fluid" style="padding: 0px;">
+                            <button class="btn {{ request.session.current }}" type="submit" id="next"
+                                    style="float:right;margin: 4px;">Submit and Next
+                            </button>
+                            <button class="btn" type="submit" id="previous" style="float:left;margin: 4px;">Previous
+                            </button>
+                            <button class="btn" type="submit" id="mark"
+                                    style="float:left;background:#EE6E73;float:right;margin: 4px;">Mark for Review
+                            </button>
+                        </div>
+                        <div class="container"
+                             style="margin-top:5%;margin-right:0px;padding-right: 0px;text-align:right;">
+
+                            <label style="padding: 2%; ">If you are Done you can Finish your Exam</label>
+                            <button class="btn " id="endExam" style="background-color: #A73232;">End Exam</button>
+
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
 
     </div>
-    </div>
-
-
-
-
-</form>
+    </form>
 
 {% endblock ajax %}

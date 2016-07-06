@@ -1,10 +1,10 @@
 {% extends 'Exam_portal/base.html' %}
 {% csrf_token %}
 {% block content %}
-    <div class="container-fluid">
+    <div class="container">
         <div class="collection">
 
-            <div href="#!" class="collection-item">Name<span
+            <div href="#!" class="collection-item"><h5>{{ request.session.name }}</h5><span
                     class="badge">  </span></div>
 
         </div>

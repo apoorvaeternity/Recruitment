@@ -2,6 +2,9 @@ from django.db import models
 
 
 class Student(models.Model):
+
+    # create a  another model with student id and instantiate it with the help of this class constructor
+
     name = models.CharField(max_length=100)  # Stage1 of registration
     student_no = models.IntegerField()  # Stage2 of registration
     branch = models.CharField(max_length=5)  # Stage2 of registration
@@ -15,10 +18,6 @@ class Student(models.Model):
 
     def __str__(self):
         return "<Name = %s>"%self.name
-
-
-
-
 
 class Category(models.Model):
     category = models.CharField(max_length=225)
@@ -69,7 +68,7 @@ class StudentAnswer(models.Model):
 
 
 class MarksOfStudent(models.Model):
-    student =  models.ForeignKey(Student,on_delete=models.CASCADE)
+    student = models.ForeignKey(Student,on_delete=models.CASCADE)
     marks = models.IntegerField()
 
     def __str__(self):

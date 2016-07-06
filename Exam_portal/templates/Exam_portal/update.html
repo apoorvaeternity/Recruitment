@@ -89,7 +89,7 @@
 
                     <div id="question">
                         <input type="text" name="current" style="display: none" value="{{ question.id }}"/>
-                        <label>Q1. </label> {{ form.question.label }} {{ form.question }}
+                        <label>{{ form.question.label }} </label><p> {{ form.question }}</p>
                     </div>
                     <div id="choice_section" class="container">
                     <span><input type="text" name='choice1' id="choice1" placeHolder="Option1" required><input

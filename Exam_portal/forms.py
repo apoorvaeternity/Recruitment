@@ -1,5 +1,5 @@
 from django import forms
-from django.contrib.auth.models import User
+# from django.contrib.auth.models import User
 from material import Layout, Row, Fieldset, Column, Span5
 
 # form django.utils.translation import ugettext_lazy as _
@@ -30,11 +30,8 @@ class AdminLoginForm(forms.Form):
     password = forms.CharField(widget=forms.PasswordInput())
 
 
-
-
-
 class AdminForm(forms.Form):
-    question = forms.CharField(label='Question Text', max_length=225, required=True)
+    question = forms.CharField(label='Question Text', max_length=500, required=True , widget = forms.Textarea)
     marks = forms.IntegerField(label='marks', required=True)
     negative = forms.BooleanField(label='have negative marking', required=False)
     negative_marks = forms.IntegerField(label="negative marks", required=False)

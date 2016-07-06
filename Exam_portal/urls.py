@@ -23,5 +23,8 @@ urlpatterns = [
     url(r'^edittime/$' , views.edittime ,name="edittime"),
     url(r'^student_section/$' , views.student_section, name="student"),
     url(r'^adminLogin/$' , views.admin_auth , name="admin_auth"),
-    url(r'^adminLogout/$' , views.logout_admin, name="logout_admin")
+    url(r'^adminLogout/$' , views.logout_admin, name="logout_admin"),
+    url(r'^studentexcel/$' , ajax.ajax_excel, name="ajax_excel")
+
+
 ]
