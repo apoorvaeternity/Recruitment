@@ -14,6 +14,11 @@ $(document).ready(function (event) {
 
 
 
+    $('#excel').hover(function e() {
+        $(this).tooltip();
+    });
+
+
 
 
     $('#excel').click(function(e){

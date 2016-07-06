@@ -6,7 +6,7 @@ $(document).ready(function(e){
     $('input[type="text"][name="StudentNo"]').on("blur",function (e){
         console.log("Blur");
         var StudentNo = $(this).val();
-        if(StudentNo.length > 7 && StudentNo.length < 5){
+        if(StudentNo.length > 7 || StudentNo.length < 5){
             $(this).addClass("invalid");
             alert("invalid length of Stundent Number");
             $(this).focus();

@@ -2,11 +2,12 @@ from django.shortcuts import render
 
 # Create your views here.
 from django.contrib import messages
+from django.conf import settings
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404, redirect, Http404
 from django.core.urlresolvers import reverse
 from django.contrib import auth
-import json
+import json,os
 from django.core.exceptions import ObjectDoesNotExist
 # from django.template import loader, Context
 from .forms import RegistrationForm, AdminForm, AdminLoginForm
@@ -30,8 +31,9 @@ def adminchoice(request):
     if not request.user.is_authenticated():
         messages.error(request, "Opps You're not an admin ")
         return HttpResponseRedirect(reverse("Exam_portal:admin_auth"))
+    path = os.path.join(os.path.dirname(settings.BASE_DIR))
 
-    return render(request, 'Exam_portal/admin_interface.html', {})
+    return render(request, 'Exam_portal/admin_interface.html', {"path": path})
 
 
 def end(request):

@@ -4,25 +4,34 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Title</title>
+
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
+
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
     {#     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/css/materialize.min.css">#}
     {#    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/js/materialize.min.js"></script>#}
     <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
     <script src="{% static 'js/main.js' %}"></script>
     <link rel="stylesheet" href="{% static 'css/admin.css' %}">
+        <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 
-    <script src="{% static 'material/js/jquery-2.2.0.js' %}">
-
-    </script>
+    <script src="{% static 'material/js/jquery-2.2.0.js' %}"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 </head>
 <body>
 
 <nav class="navbar navbar-inverse">
+
+
+
     <div class="container-fluid">
         <div class="navbar-header">
-            <a class="navbar-brand" href="#">SI recruitment - Admin panel</a>
+            {% comment %}<img src="{% static 'img/logo.png' %}" style="position: relative;float:left;height: 50px;"/>{% endcomment %}<a class="navbar-brand" href="#">SI recruitment - Admin panel</a>
         </div>
 
     </div>
@@ -30,9 +39,9 @@
 {% csrf_token %}
 
 {% if user.is_authenticated %}
-<div class="container">
-    <a class="btn btn-link" href="../adminLogout" style="float:right">logout</a>
-</div>
+    <div class="container">
+        <a class="btn btn-link" href="../adminLogout" style="float:right">logout</a>
+    </div>
 {% endif %}
 
 
@@ -45,8 +54,8 @@
 {% block endadmin %}{% endblock %}
 
 <div class="container">
-<div class="container-fluid">
-    {% if messages %}
+    <div class="container-fluid">
+        {% if messages %}
 
             <div class="alert alert-info">
                 <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
@@ -55,16 +64,9 @@
                 {% endfor %}
             </div>
 
-    {% endif %}
-</div>
-</div>
-<div class="container" >
-<footer class="footer" style="bottom: 0px;    position: absolute;">
-      <div class="container">
-        <p class="text-muted" style="font-size: large;">Powered By Software Incubator | www.silive.in</p>
-      </div>
-</footer>
+        {% endif %}
     </div>
+</div>
 
 </body>
 <html>
