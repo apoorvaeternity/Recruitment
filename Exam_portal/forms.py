@@ -74,13 +74,13 @@ class RegistrationForm(forms.Form):
     Skills = forms.CharField(widget=forms.TextInput(
         attrs={'type': 'text', 'id': 'icon_prefix', 'class': 'validate',
                'name': 'skills'}),
-        label='Mention your skills'
+        label='Mention your Technical skills e.g HTML, CSS, PHP, etc'
     )
 
     Designer = forms.CharField(widget=forms.Textarea(
         attrs={'type': 'textarea', 'id': 'icon_prefix', 'class': 'validate',
                'name': 'skills'}),
-        label='Mention any designer softwares you have worked on',
+        label='Any Designing Software used',
         required=False,
     )
 

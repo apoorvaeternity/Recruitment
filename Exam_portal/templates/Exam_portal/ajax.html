@@ -6,7 +6,7 @@
         {% csrf_token %}
         <div class="container">
         <div class="container-fluid alert" style="margin-bottom: 0px;">Duration of exam is <b>{{ time }}</b> Min
-            <p>You will get an alert in the last 10 min of exam.</p>
+            <p>You will get an alert in the last <b>{{ warn }}</b> min of exam.</p>
         </div>
             <div class="container alert alert-danger" style="display: none;color: red;font-size: larger;" id="error_message">
                 Your exam is about to end
@@ -52,8 +52,8 @@
                         <ul class="collection">
                             <li class="collection-item" id="question" style="font-size:large;"><span
                                     id="question_no">{{ instance.question_no }}. </span>{{ instance.question }}<strong><label
-                                    id="negative" style="color: red;padding-left:2%;margin: 0px; ">
-                                {% if instance.negative %}&times;{% endif %}</label></strong></li>
+                                    id="negative" style="color: black;margin: 0px; ">
+                                {% if instance.negative %}*{% endif %}</label></strong></li>
                             <div class="container-fluid" id="choices" style="padding:2%;">
                                 {% for choice,id in instance.choice_data %}
                                     <li class="collection=item" id="{{ id }}">

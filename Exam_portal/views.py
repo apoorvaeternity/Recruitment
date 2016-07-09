@@ -7,7 +7,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404, redirect, Http404
 from django.core.urlresolvers import reverse
 from django.contrib import auth
-import json,os
+import json, os
 from django.core.exceptions import ObjectDoesNotExist
 # from django.template import loader, Context
 from .forms import RegistrationForm, AdminForm, AdminLoginForm
@@ -22,7 +22,10 @@ def timer(request):
     minutes = time[0].time.minute
     seconds = time[0].time.second
 
-    data = {'time': [hours, minutes, seconds]}
+    warn = time[0].warn_time
+
+    data = {'time': [hours, minutes, seconds],
+            'warn': warn}
 
     return HttpResponse(json.dumps(data), content_type='application/json')
 
@@ -37,6 +40,8 @@ def adminchoice(request):
 
 
 def end(request):
+
+    print (request.session.get('student_id'))
     if request.session.get('student_id') is None:
         messages.error(request, "First, Register for the examination here..")
         return redirect(reverse('Exam_portal:register'))
@@ -49,14 +54,16 @@ def end(request):
 
 
 def show(request):
-
     if request.session.get('student_id') is None:
         messages.error(request, "First Register for the examination here..")
         return redirect(reverse('Exam_portal:register'))
 
+    # category1 = get_object_or_404(Category)
     category1 = Category.objects.all()
-    if category1 is None:
-        messages.error(request,"Oops look like the exam is not created yet. Try after some time")
+
+    print category1
+    if len(category1) == 0:
+        messages.error(request, "Oops look like the exam is not created yet. Try after some time")
         return redirect(reverse('Exam_portal:register'))
 
     question = category1[0].question_set.all().order_by('id')
@@ -70,6 +77,10 @@ def show(request):
     print(len(category1))
 
     time = Test.objects.all()
+
+    if len(time) == 0:
+        messages.error(request, "Oops Time of exam is not specified yet Try after some time")
+        return redirect(reverse('Exam_portal:register'))
 
     for i in range(0, len(category1)):
         print(i)
@@ -140,6 +151,7 @@ def show(request):
         "Number": range(1, len(question) + 1),
         "instance": query_set,
         "time": time_string,
+        "warn":time.warn_time,
 
     }
 
@@ -184,10 +196,10 @@ def register(request):
             data = Student.objects.create(name=name, student_no=studentno,
                                           branch=branch, contact=contact,
                                           skills=skills, email=email,
-                                          hosteler=hosteler,designer=designer)
+                                          hosteler=hosteler, designer=designer)
             if data:
                 request.session['name'] = name
-                request.session['student_id'] = data.id
+                request.session['student_id'] = data.student_no
                 # same data can be used to get the corresponding did associate with the students
 
                 return HttpResponseRedirect(reverse('Exam_portal:instruction'))
@@ -468,6 +480,7 @@ def edittime(request):
     if request.method == "POST":
 
         time = int(request.POST.get("minutes"))
+        warn = int(request.POST.get("warn"))
         if time != 0:
             hour = int(time / 60)
             min = time % 60
@@ -478,6 +491,7 @@ def edittime(request):
             else:
                 time_test.time = time_str
                 time_test.name = request.POST.get('name')
+                time_test.warn_time = warn
                 time_test.save()
             messages.success(request, "Time have been changed ! ")
             return HttpResponseRedirect(reverse('Exam_portal:edittime'))

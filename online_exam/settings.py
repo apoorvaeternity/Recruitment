@@ -30,7 +30,7 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'material',
-    'material.frontend',
+    # 'material.frontend',
     # 'material.admin',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -80,12 +80,15 @@ DATABASES = {
         # 'ENGINE': 'django.db.backends.sqlite3',
         'ENGINE': 'django.db.backends.postgresql',
         # 'NAME': 'newdb',
-        'NAME': os.environ['NAME'],
+        # 'NAME': os.environ['NAME'],
+        'NAME': 'newdb',
         # 'NAME': ,
-        'USER': os.environ['USER'],
-        'PASSWORD': os.environ['PASSWORD'],
-        'HOST': os.environ['HOST'],
-        'PORT': os.environ['PORT'],
+        # 'USER': os.environ['USER'],
+        'USER': 'rupanshu',
+        # 'PASSWORD': os.environ['PASSWORD'],
+        'PASSWORD': 'verma@1234',
+        'HOST': 'localhost',
+        'PORT': '',
     }
 }
 
