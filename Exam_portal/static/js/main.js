@@ -38,7 +38,7 @@ $(document).ready(function (event) {
                 type: "GET",
                 datatype: 'json',
                 data: {'id': deleting_id},
-                url: "http://127.0.0.1:8000/exam/delete/",
+                url: "../delete/",
                 success: function (status) {
                     console.log(status);
                     window.location.href = "../edit";
@@ -64,7 +64,8 @@ $(document).ready(function (event) {
             type: "GET",
             datatype: 'json',
             data: {'id': id_first},
-            url: "http://127.0.0.1:8000/exam/update_question/",
+            // url: "http://127.0.0.1:8000/exam/update_question/",
+            url: "../update_question/",
             success: function (data) {
                 // console.log("successful request");
                 // console.log(data);
@@ -148,7 +149,7 @@ $(document).ready(function (event) {
             type: "GET",
             datatype: "JSON",
             data: {'id': category_id},
-            url: "http://127.0.0.1:8000/exam/grid/",
+            url: "../grid/",
             success: function (data) {
                 loaddata(data);
                 checkmarked(data['radio_checked_key']);
@@ -207,7 +208,7 @@ $(document).ready(function (event) {
         $.ajax({
             type: "GET",
             datatype: 'json',
-            url: 'http://127.0.0.1:8000/exam/timer',
+            url: '../timer',
 
             success: function (data) {
                 var h = data['time'][0];
@@ -269,7 +270,7 @@ $(document).ready(function (event) {
         }
         $.ajax({
             type: "POST",
-            url: "http://127.0.0.1:8000/exam/next/",
+            url: "../next/",
             datatype: 'json',
             data: {'answer': selectedVal},
             success: function (data) {
@@ -301,7 +302,7 @@ $(document).ready(function (event) {
             type: "GET",
             datatype: 'json',
             data: {'id': id},
-            url: "http://127.0.0.1:8000/exam/grid/",
+            url: "../grid/",
             success: function (data) {
                 console.log("successful request");
                 loaddata(data);
@@ -322,7 +323,7 @@ $(document).ready(function (event) {
             type: "GET",
             datatype: 'json',
             data: {'id': id},
-            url: "http://127.0.0.1:8000/exam/update_question/",
+            url: "../update_question/",
             success: function (data) {
                 // console.log("successful request");
                 // console.log(data);
@@ -359,7 +360,7 @@ $(document).ready(function (event) {
             type: "GET",
             //datatype:'json',
             //data:{'answer':selectedVal},
-            url: "http://127.0.0.1:8000/exam/previous/",
+            url: "../previous/",
             success: function (data) {
 
                 console.log("Ajax on previous have been called");
@@ -389,7 +390,7 @@ $(document).ready(function (event) {
         }
         $.ajax({
             type: "POST",
-            url: "http://127.0.0.1:8000/exam/next/",
+            url: "../next/",
             datatype: 'json',
             data: {'answer': selectedVal},
             success: function (data) {

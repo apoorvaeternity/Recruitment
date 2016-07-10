@@ -128,7 +128,7 @@ def markCalculate(request):
     print("marks")
     print(marks)
 
-    marks_of_student, flag = MarksOfStudent.objects.get_or_create(student=Student.objects.get(pk=int(student)),
+    marks_of_student, flag = MarksOfStudent.objects.get_or_create(student=Student.objects.get(pk=student),
                                                                   defaults={'marks': 0})
     marks_of_student.marks = marks
     marks_of_student.save()
@@ -179,7 +179,7 @@ def getData(pk, request):
     choice_data = []
     color_key = request.session.get('current')
 
-    student = Student.objects.get(pk=int(request.session.get('student_id')))
+    student = Student.objects.get(pk=request.session.get('student_id'))
 
     try:
         radio_checked = StudentAnswer.objects.get(student=student, question=question)
