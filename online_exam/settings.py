@@ -77,15 +77,15 @@ WSGI_APPLICATION = 'online_exam.wsgi.application'
 
 DATABASES = {
     'default': {
-        # 'ENGINE': 'django.db.backends.sqlite3',
-        'ENGINE': 'django.db.backends.postgresql',
-        # 'NAME': 'newdb',
-        'NAME': os.environ['NAME'],
-        # 'NAME': ,
-        'USER': os.environ['USER'],
-        'PASSWORD': os.environ['PASSWORD'],
-        'HOST': os.environ['HOST'],
-        'PORT': os.environ['PORT'],
+        'ENGINE': 'django.db.backends.sqlite3',
+        # 'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'newdb',
+        # 'NAME': os.environ['NAME'],
+        # # 'NAME': ,
+        # 'USER': os.environ['USER'],
+        # 'PASSWORD': os.environ['PASSWORD'],
+        # 'HOST': os.environ['HOST'],
+        # 'PORT': os.environ['PORT'],
     }
 }
 
