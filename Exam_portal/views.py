@@ -225,6 +225,11 @@ def instruction(request):
 
 
 def admin(request):
+
+    if not request.user.is_authenticated():
+        messages.error(request, "Opps You're not an admin ")
+        return HttpResponseRedirect(reverse("Exam_portal:admin_auth"))
+
     category = Category.objects.all().order_by('id')
     # time = Test.objects.all()[0]
     # test = Test.objects.all()
@@ -513,6 +518,7 @@ def student_section(request):
 
 
 def admin_auth(request):
+    error = False
     if request.method == "POST":
         form = AdminLoginForm(request.POST or None)
 

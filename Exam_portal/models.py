@@ -76,7 +76,7 @@ class Test(models.Model):
     # question = models.ForeignKey(Question, on_delete=models.CASCADE)
     name = models.CharField(max_length=225)
     time = models.TimeField(null=True)
-    warn_time = models.IntegerField(default=10)
+    warn_time = models.IntegerField(default=1)
 
     def __str__(self):
         return "<Test name = %s>"%self.name

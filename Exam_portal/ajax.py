@@ -1,10 +1,28 @@
 import json, os
+import StringIO
 from django.contrib import messages
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponse
 from .excel_creator import create_excel
 
 from .models import Student, QuestionChoice, Question, StudentAnswer, CorrectChoice, MarksOfStudent
+
+
+def excel(request):
+    base = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    create_excel()
+
+    excel_path = os.path.dirname(base)
+
+    excel = open("%s/Student_Info.xlsx"%excel_path, "r")
+    output = StringIO.StringIO(excel.read())
+    out_content = output.getvalue()
+    output.close()
+    response = HttpResponse(out_content,
+                            content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+    response['Content-Disposition'] = 'attachment; filename=Students_Info.xlsx'
+    return response
+
 
 
 def delete(request):

@@ -1,21 +1,28 @@
 {% extends 'Exam_portal/admin.html' %}
+{% load crispy_forms_tags %}
 
 {% block content %}
     <div class="container">
-        <div class="jumbotron">
-            <div>
-                <h2>Login as Admin</h2>
-        <form method="POST">
-            <div style="padding: 2%;">{% csrf_token %}
-            <table>
-                {{ form.as_table }}
-            </table>
-                </div>
-            <button type="submit" class="btn btn_primary">Submit</button>
+        <div class="jumbotron" style="background-color: transparent;">
+               <h2>Login as Admin</h2>
+            <div class="row">
+                <div style="padding: 2%;">
 
-        </form>
-                </div>
+                    <div class="col-sm-4">
+                        <form method="POST">
+                            {% csrf_token %}
+                            <table>
+                                {{ form|crispy }}
+                            </table>
 
+                            <button type="submit" class="btn btn_primary">Submit</button>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
         </div>
+
+    </div>
     </div>
 {% endblock %}

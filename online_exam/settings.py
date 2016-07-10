@@ -27,17 +27,22 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 # Application definition
-
 INSTALLED_APPS = [
-    'material',
-    # 'material.frontend',
-    # 'material.admin',
+
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    # Third party app
+    'material',
+    # 'material.admin',
+    # 'material.frontend',
+    'crispy_forms',
+
+    # my apps
     'Exam_portal',
 ]
 
@@ -77,15 +82,15 @@ WSGI_APPLICATION = 'online_exam.wsgi.application'
 
 DATABASES = {
     'default': {
-        #'ENGINE': 'django.db.backends.sqlite3',
-         'ENGINE': 'django.db.backends.postgresql',
-        #'NAME': 'newdb',
-         'NAME': os.environ['NAME'],
+        # 'ENGINE': 'django.db.backends.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        # 'NAME': 'newdb',
+        'NAME': os.environ['NAME'],
         # # 'NAME': ,
-         'USER': os.environ['USER'],
-         'PASSWORD': os.environ['PASSWORD'],
-         'HOST': os.environ['HOST'],
-         'PORT': os.environ['PORT'],
+        'USER': os.environ['USER'],
+        'PASSWORD': os.environ['PASSWORD'],
+        'HOST': os.environ['HOST'],
+        'PORT': os.environ['PORT'],
     }
 }
 
@@ -109,6 +114,8 @@ AUTH_PASSWORD_VALIDATORS = [
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.9/topics/i18n/
+
+CRISPY_TEMPLATE_PACK = 'bootstrap3'
 
 LANGUAGE_CODE = 'en-us'
 

@@ -5,11 +5,14 @@
     <form style="font-size: larger;">
         {% csrf_token %}
         <div class="container">
-        <div class="container-fluid alert" style="margin-bottom: 0px;">Duration of exam is <b>{{ time }}</b> Min
-            <p>You will get an alert in the last <b>{{ warn }}</b> min of exam.</p>
-        </div>
-            <div class="container alert alert-danger" style="display: none;color: red;font-size: larger;" id="error_message">
+            <div class="container-fluid alert" style="margin-bottom: 10px;">Duration of exam is <b>{{ time }}</b> Min
+                <p>You will get an alert in the last <b>{{ warn }}</b> min of exam.</p>
+            </div>
+
+            <div class="alert alert-warning" style="margin-bottom: 0px;display: none;" id="error_message">
                 Your exam is about to end
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+
             </div>
 
 
@@ -76,19 +79,20 @@
 
                         <div class="container-fluid" style="padding: 0px;">
                             <button class="btn {{ request.session.current }}" type="submit" id="next"
-                                    style="float:right;margin: 4px;">Submit and Next
+                                    style="float:right;margin: 4px;background-color: #3f51b5">Submit and Next
                             </button>
-                            <button class="btn" type="submit" id="previous" style="float:left;margin: 4px;">Previous
+                            <button class="btn" type="submit" id="previous"
+                                    style="float:left;margin: 4px;background-color: #3f51b5">Previous
                             </button>
                             <button class="btn" type="submit" id="mark"
-                                    style="float:left;background:#EE6E73;float:right;margin: 4px;">Mark for Review
+                                    style="float:left;background:#f44336;float:right;margin: 4px;">Mark for Review
                             </button>
                         </div>
                         <div class="container"
                              style="margin-top:5%;margin-right:0px;padding-right: 0px;text-align:right;">
 
                             <label style="padding: 2%; ">If you are Done you can Finish your Exam</label>
-                            <button class="btn " id="endExam" style="background-color: #A73232;">End Exam</button>
+                            <button class="btn " id="endExam" style="background-color: #f44336;">End Exam</button>
 
                         </div>
 
@@ -97,7 +101,7 @@
                 </div>
             </div>
 
-    </div>
+        </div>
     </form>
 
 {% endblock ajax %}

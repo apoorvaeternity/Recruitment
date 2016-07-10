@@ -8,7 +8,7 @@ $(document).ready(function (e) {
         var StudentNo = $(this).val();
         var number = StudentNo.slice(0, 6);
 
-        if ((StudentNo.length > 7 || StudentNo.length < 5 ) || isNaN(number)) {
+        if ((StudentNo.length > 8 || StudentNo.length < 7) || isNaN(number)) {
 
             // if(isNaN(number)){
             //     console.log('sdsdcdscd');
@@ -17,6 +17,8 @@ $(document).ready(function (e) {
             $(this).addClass("invalid");
 
             alert("Invalid format Student Number");
+
+
             $(this).focus();
             // $(this).focus();
 
@@ -36,11 +38,16 @@ $(document).ready(function (e) {
 
                     alert(data['message']);
 
+
                     $('input[type="text"][name="StudentNo"]').focus();
+
+                            // $(this).focus();
+
                 }
 
             }
         })
+
 
     });
 
