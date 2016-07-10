@@ -248,7 +248,7 @@ $(document).ready(function (event) {
                     var current = new Date();
                     var diff = Math.floor((Date.parse(current) - Date.parse(today)) / 1000);
                     console.log(diff);
-                    var before_alert = 10;
+                    var before_alert =parseInt(data['warn']);
                     if (diff == test_duration - before_alert) {
                         // alert("about to end");
 
@@ -260,7 +260,7 @@ $(document).ready(function (event) {
                     if (diff == test_duration) {
                         clearInterval(stop);
 
-                        window.location.replace("http://127.0.0.1:8000/exam/end");
+                        // window.location.replace("http://127.0.0.1:8000/exam/end");
 
                     }
                     var seconds = diff % 60;

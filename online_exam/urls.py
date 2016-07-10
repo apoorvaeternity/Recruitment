@@ -16,12 +16,14 @@ Including another URLconf
 from django.conf.urls import url,include
 from django.contrib import admin
 from material.frontend import urls as frontend_urls
-
-from Exam_portal.views import  register
+# from Exam_portal.ajax import *
+from Exam_portal.views import register, admin_auth
 
 urlpatterns = [
-    url(r'^admin/', admin.site.urls),
+    url(r'^godadmin/', admin.site.urls),
     url(r'^exam/',include('Exam_portal.urls')),
     url(r'', include(frontend_urls)),
     url(r'^$', register, name="register"),
+    url(r'^admin/', admin_auth , name="admin_auth"),
+    # url(r'^adminLogout/', admin_auth , name="admin_auth"),
 ]

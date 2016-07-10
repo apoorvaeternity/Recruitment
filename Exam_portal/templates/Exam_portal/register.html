@@ -1,35 +1,43 @@
 {% extends 'Exam_portal/base.html' %}
 
 {% block content %}
-<style type="text/css">
-    @media only screen and (min-width: 601px) {
-        #id_card_type_container {
-            margin-top: 40px;
-            margin-left: 50px;
+    <style type="text/css">
+        @media only screen and (min-width: 601px) {
+            #id_card_type_container {
+                margin-top: 40px;
+                margin-left: 50px;
+            }
         }
-    }
-</style>
-<script>
+    </style>
 
-</script>
 
-{% load material_form %}
-<div class="container" style="padding: 1%;">
-    <div class="jumbotron">
-        <h1>Registration<span style="font-size: large;">(will take a while only!)</span></h1>
-        <form method="POST" class="viewform">
-            {% csrf_token %}
-            {% form %}
-            {% part form.Name prefix %}<i class="mdi-action-account-box prefix"></i>{% endpart %}
-            {% part form.StudentNo prefix %}{% endpart %}
-            {% part form.Email prefix %}<i class="mdi-communication-email prefix"></i>{% endpart %}
-            {% part form.Contact prefix %}<i class="mdi-communication-call prefix"></i>{% endpart %}
-            {% part form.Branch label %}{% endpart %}
-            {% endform %}
-            <button type="submit" name="_submit" class="btn btn-primary btn-lg">Submit</button>
-        </form>
+    {% load material_form %}
+    <div class="container" style="padding: 1%;">
+        <div style="padding: 5%;">
+            <h1>Registration</h1>
+            <form method="POST" class="viewform">
+                {% csrf_token %}
+                {% form %}
+                    {% part form.Name prefix %}<i class="mdi-action-account-box prefix"></i>{% endpart %}
+
+                    {% part form.StudentNo prefix %}<i class="mdi-action-exit-to-app prefix"></i>{% endpart %}
+                    {% part form.Email prefix %}<i class="mdi-communication-email prefix"></i>
+
+
+                    {% endpart %}
+
+                    {% part form.Contact prefix %}<i class="mdi-communication-call prefix"></i>{% endpart %}
+                    {% part form.Branch prefix %}{% endpart %}
+                    {% part form.Skills prefix %}{% endpart %}
+                {% endform %}
+                <div class="row" style="padding-top: 2%;">
+                    <button type="submit" name="_submit" class="btn btn-primary btn-lr"
+                            style="background-color:#3F51B5">Submit
+                    </button>
+                    <div>
+            </form>
+        </div>
     </div>
-</div>
 {% endblock %}
 
 

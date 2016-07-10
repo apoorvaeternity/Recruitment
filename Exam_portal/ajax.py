@@ -1,4 +1,4 @@
-import json , os
+import json, os
 from django.contrib import messages
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponse
@@ -274,7 +274,7 @@ def ajaxprevious(request):
 
         print(request.session.get('current'))
 
-        if (request.session.get(current) != key_list[0]):
+        if request.session.get(current) != key_list[0]:
             request.session['current'] = key_list[previous]
 
         return HttpResponse(json.dumps(query_set),
@@ -293,7 +293,27 @@ def postajax(request):
 
 
 def ajax_excel(request):
-
     create_excel()
-
     return HttpResponse(json.dumps("['rupanshu']"), content_type="application/json")
+
+
+def checkstudent(request):
+    student = None
+    try:
+        student_no = request.POST.get('student_no')
+        student = Student.objects.get(student_no=student_no)
+        print student
+    except Exception as e:
+        print(str(e))
+
+    if student is not None:
+        status = True
+    else:
+        status = False
+
+    query_set = {
+        'status': status,
+        'message': "Student Number already exist in the DataBase",
+    }
+
+    return HttpResponse(json.dumps(query_set), content_type="application/json")

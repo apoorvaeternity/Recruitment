@@ -30,7 +30,7 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'material',
-    'material.frontend',
+    # 'material.frontend',
     # 'material.admin',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -77,15 +77,15 @@ WSGI_APPLICATION = 'online_exam.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        # 'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'newdb',
-        # 'NAME': os.environ['NAME'],
+        #'ENGINE': 'django.db.backends.sqlite3',
+         'ENGINE': 'django.db.backends.postgresql',
+        #'NAME': 'newdb',
+         'NAME': os.environ['NAME'],
         # # 'NAME': ,
-        # 'USER': os.environ['USER'],
-        # 'PASSWORD': os.environ['PASSWORD'],
-        # 'HOST': os.environ['HOST'],
-        # 'PORT': os.environ['PORT'],
+         'USER': os.environ['USER'],
+         'PASSWORD': os.environ['PASSWORD'],
+         'HOST': os.environ['HOST'],
+         'PORT': os.environ['PORT'],
     }
 }
 

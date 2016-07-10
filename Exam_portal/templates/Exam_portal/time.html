@@ -1,16 +1,37 @@
 {% extends 'Exam_portal/admin.html' %}
 
 {% block time %}
-    <div class="container"  id="time" style="padding: .3%;">
+    <div class="container" id="time" style="padding: .3%;">
         <div class="jumbotron">
             <h1 style="margin: 0px;">You can update the test time and name here.</h1>
         </div>
-        <label style="padding:2%; margin-left:-10px;; "> Current time is <h3 style="display: inline;">{{ time.time.hour }}:{{ time.time.minute }}:00</h3></label>
+        <div>
+            <label style="padding:2%; margin-left:-10px;; "> Current time is <h3
+                    style="display: inline;">{{ time.time.hour }}:{{ time.time.minute }}:00</h3></label>
+            <label> Prompt time <h3 style="display: inline;">{{ time.warn_time }} min </h3></label>
+        </div>
         <form method="POST">
             {% csrf_token %}
-            <span class="fields" for="name" style="font-size: larger;">Name of Exam <input type="text" name="name" value="{{ time.name }}" placeholder="Name of Examinations" required></span>
+            <span class="fields" for="name" style="font-size: larger;">Name of Exam <input type="text" name="name"
+                                                                                           value="{{ time.name }}"
+                                                                                           placeholder="Name of Examinations"
+                                                                                           required></span>
             <label class="fields">Enter new time for the Exam</label>
-            <label class="fields" for="name">Minutes <input type="text" name="minutes" placeholder="Minutes" required></label>
+
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-2">
+                        <label class="fields" for="name">Minutes </label>
+                        <label class="fields" for="name">Warning Prompt Time</label>
+
+                    </div>
+                    <div class="col-sm-4">
+                        <label><input type="text" col='30' name="minutes" placeholder="Minutes" required></label>
+                        <label><input type="text" col='30' name="warn" placeholder="Prompt time" required></label>
+
+                    </div>
+                </div>
+            </div>
 
             <button class="btn btn-primary">Update the time</button>
             <a class="btn btn-primary" href="../adminchoice">Admin Panel</a>
