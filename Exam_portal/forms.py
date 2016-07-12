@@ -31,7 +31,7 @@ class AdminLoginForm(forms.Form):
 
 class AdminForm(forms.Form):
     question = forms.CharField(label='Question Text', max_length=500, required=True,
-                               widget=forms.Textarea(attrs={'cols': 90}))
+                               widget=forms.Textarea(attrs={'class': 'col-sm-6'}))
     marks = forms.IntegerField(label='marks', required=True)
     negative = forms.BooleanField(label='have negative marking', required=False)
     negative_marks = forms.IntegerField(label="negative marks", required=False)

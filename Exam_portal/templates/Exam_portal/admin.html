@@ -3,7 +3,7 @@
     {% load staticfiles %}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Title</title>
+    <title>Software Incubator</title>
 
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
@@ -18,40 +18,30 @@
     <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
     <script src="{% static 'js/main.js' %}"></script>
     <link rel="stylesheet" href="{% static 'css/admin.css' %}">
-        <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 
     <script src="{% static 'material/js/jquery-2.2.0.js' %}"></script>
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 </head>
 <body>
 
+{% csrf_token %}
 <nav class="navbar navbar-inverse">
-
 
 
     <div class="container-fluid">
         <div class="navbar-header">
-            {% comment %}<img src="{% static 'img/logo.png' %}" style="position: relative;float:left;height: 50px;"/>{% endcomment %}<a class="navbar-brand" href="#">SI recruitment - Admin panel</a>
+            <a class="navbar-brand">SI recruitment - Admin panel</a>
         </div>
 
+        {% if user.is_authenticated %}
+            <div style="padding: inherit;">
+                <a class="btn btn-link" href="../adminLogout" style="float:right;padding: 15px 15px;font-size:inherit;">logout</a>
+            </div>
+        {% endif %}
     </div>
 </nav>
-{% csrf_token %}
 
-{% if user.is_authenticated %}
-    <div class="container">
-        <a class="btn btn-link" href="../adminLogout" style="float:right">logout</a>
-    </div>
-{% endif %}
-
-
-{% block content %}{% endblock %}
-{% block question %}{% endblock %}
-{% block interface %}{% endblock %}
-{% block time %}{% endblock %}
-{% block student %}{% endblock %}
-{% block admin %} {% endblock %}
-{% block endadmin %}{% endblock %}
 
 <div class="container">
     <div class="container-fluid">
@@ -67,6 +57,14 @@
         {% endif %}
     </div>
 </div>
+{% block content %}{% endblock %}
+{% block question %}{% endblock %}
+{% block interface %}{% endblock %}
+{% block time %}{% endblock %}
+{% block student %}{% endblock %}
+{% block admin %} {% endblock %}
+{% block endadmin %}{% endblock %}
+
 
 </body>
 <html>

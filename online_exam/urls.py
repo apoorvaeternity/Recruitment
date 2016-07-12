@@ -25,5 +25,5 @@ urlpatterns = [
     url(r'', include(frontend_urls)),
     url(r'^$', register, name="register"),
     url(r'^admin/', admin_auth , name="admin_auth"),
-    # url(r'^adminLogout/', admin_auth , name="admin_auth"),
+
 ]

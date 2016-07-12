@@ -2,11 +2,23 @@
 
 
 {% block admin %}
-    <
 
 
 
 
+    <style>
+        input {
+            background-color: white;
+            border-image-source: initial;
+{#            border-image-slice: initial;#}
+{#            border-image-width: initial;#}
+{#            border-image-outset: initial;#}
+            border-image-repeat: initial;
+            border-width: 1px;
+
+            border-color: #A9A9A7;
+        }
+    </style>
 
 
 
@@ -42,7 +54,7 @@
                     <span><li style="list-style: none;">Question =></li></span>
                     {% for number,key in Number %}
                         <span class="badge"><li class="btn-floating btn-large" value="{{ number }}"
-                                                style="font-size:x-large;padding: 4%;margin: 2px;list-style:none;s"
+                                                style="font-size:x-large;padding: 4%;margin: 2px;list-style:none;"
                                                 id="{{ key }}">{{ number }}</li></span>
                     {% endfor %}
                 </ul>
@@ -87,10 +99,10 @@
                 {% endif %}
                 <div class="question_section">
 
-                    <div id="question">
+                    <div class="row" id="question">
                         <input type="text" name="current" style="display: none" value="{{ question.id }}"/>
                         <label>{{ form.question.label }} </label>
-                        <p> {{ form.question }}</p>
+                        <p > {{ form.question }}</p>
                     </div>
                     <div id="choice_section" class="container">
                     <span><input type="text" name='choice1' id="choice1" placeHolder="Option1" required><input

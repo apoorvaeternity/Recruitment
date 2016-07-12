@@ -518,6 +518,9 @@ def student_section(request):
 
 
 def admin_auth(request):
+    if request.user.is_authenticated():
+        return HttpResponseRedirect(reverse("Exam_portal:adminchoice"))
+
     error = False
     if request.method == "POST":
         form = AdminLoginForm(request.POST or None)
