@@ -1,4 +1,6 @@
 from django import forms
+from django .http import request
+import re
 # from django.contrib.auth.models import User
 from material import Layout, Row, Fieldset, Column, Span5
 from .models import Student
@@ -81,7 +83,7 @@ class RegistrationForm(forms.Form):
     Designer = forms.CharField(widget=forms.Textarea(
         attrs={'type': 'textarea', 'id': 'icon_prefix', 'class': 'validate',
                'name': 'skills'}),
-        label='Any Designing Software used',
+        label='Any Designing Software used like Photostop,etc',
         required=False,
     )
 
@@ -102,9 +104,19 @@ class RegistrationForm(forms.Form):
         return contact
 
     def clean_StudentNo(self):
+
+
+        # print("printing request in form")
+        # print(request.session.get('post_data'))
+
         std = self.cleaned_data.get('StudentNo')
+        pattern = '^\d{7}[Dd]{0,1}$'
+        prog = re.compile(pattern)
+        result = prog.match(std)
 
         if Student.objects.all().filter(student_no=std).exists():
             raise forms.ValidationError("Roll Number already exist in data base")
 
+        if not bool(result):
+            raise forms.ValidationError("Invalid format of Roll number ")
         return std

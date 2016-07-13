@@ -1,9 +1,7 @@
-from django.conf.urls import url , handler404
-
+from django.conf.urls import url, handler404
 
 from . import views
 from . import ajax
-
 
 # app_name = 'Exam_portal'
 
@@ -28,6 +26,9 @@ urlpatterns = [
     url(r'^adminLogout/$', views.logout_admin, name="logout_admin"),
     # url(r'^studentexcel/$', ajax.ajax_excel, name="ajax_excel"),
     url(r'^checkstudent/$', ajax.checkstudent, name="checkstudent"),
-    url(r'^download/$', ajax.excel,name="excel"),
+    url(r'^download/$', ajax.excel, name="excel"),
+    url(r'^review/$', views.review, name="review"),
+    url(r'^switch/$', views.exam_starter_switch, name="switch"),
+    url(r'^notstarted/$', views.not_started, name="notstarted"),
 
 ]

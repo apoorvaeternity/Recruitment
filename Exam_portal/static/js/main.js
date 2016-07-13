@@ -1,33 +1,19 @@
-// e.preventDefault();
-// var id = $('body > div.container > form > div:nth-child(2)').val();
-// console.log(id);
-// $.ajax({
-//     type: "GET",
-//     datatype: 'json',
-//     data: {'id': id},
-//     url: "http://127.0.0.1:8000/exam/update_question/",
-// });
-
-
 $(document).ready(function (event) {
 
 
-    $('#excel').hover(function e() {
-        $(this).tooltip();
-    });
+    ajax_loader = $('#ajax-loader');
 
+    // ajax_loader.css("display","Block");
 
-    // $('#excel').click(function(e){
-    //     e.preventDefault();
-    //     console.log("sending");
-    //     $.ajax({
-    //         type:"GET",
-    //         url:"../studentexcel/",
-    //         success:function(status){
-    //
-    //         }
-    //     })
-    // });
+    function show_loader() {
+        ajax_loader.css("display", "block");
+        ajax_loader.delay(800);
+    }
+
+    function hide_loader() {
+        ajax_loader.css("display", "none");
+        ajax_loader.delay(800);
+    }
 
 
     $('#delete').click(function (e) {
@@ -42,13 +28,11 @@ $(document).ready(function (event) {
                 success: function (status) {
                     console.log(status);
                     window.location.href = "../edit";
-
                 }
             });
         } else {
             console.log("stupid admin");
         }
-
     });
 
 
@@ -60,6 +44,7 @@ $(document).ready(function (event) {
     if (entry_flag) {
 
         console.log(id_first);
+        show_loader();
         $.ajax({
             type: "GET",
             datatype: 'json',
@@ -86,6 +71,7 @@ $(document).ready(function (event) {
 
 
         entry_flag = false;
+        hide_loader();
     }
 
 
@@ -164,32 +150,6 @@ $(document).ready(function (event) {
 
     //Above Code is for admin panel
 
-
-    //code for preventing right-click refresh so that the jquery timer wont be refereshed
-    // $(document).mousedown(function (e) {
-    //     if (e.button == 2) {
-    //         e.preventDefault();
-    //         return false;
-    //     } else {
-    //         return true;
-    //     }
-    // });
-    // // $(this).bind("contextmenu", function (e) {
-    // //     return false;
-    // // });
-    // document.onmousedown = disableclick;
-    // status = "Right Click Disabled";
-    // function disableclick(event) {
-    //     if (event.button == 2) {
-    //         event.preventDefault();
-    //         // alert(status);
-    //
-    //         return false;
-    //     }
-    // }
-
-
-    //-----------------------------------------------------------------------------------
 
     function disableF5(e) {
         if ((e.which || e.keyCode) == 116) e.preventDefault();
@@ -299,6 +259,7 @@ $(document).ready(function (event) {
         console.log("changing question via grid");
         id = event.target.id;
         console.log(id);
+
         $.ajax({
             type: "GET",
             datatype: 'json',
@@ -320,6 +281,8 @@ $(document).ready(function (event) {
         var replace = $('#' + id.toString()).val();
         $('#question > label').text("Q" + replace.toString() + ".");
 
+        show_loader();
+        console.log("after show");
         $.ajax({
             type: "GET",
             datatype: 'json',
@@ -341,6 +304,9 @@ $(document).ready(function (event) {
                 // checkmarked(data['radio_checked_key']);
             }
         });
+        hide_loader();
+
+        console.log("after hide");
     });
 
 

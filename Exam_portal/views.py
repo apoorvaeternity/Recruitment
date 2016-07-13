@@ -12,8 +12,12 @@ import json, os
 from django.core.exceptions import ObjectDoesNotExist
 # from django.template import loader, Context
 from .forms import RegistrationForm, AdminForm, AdminLoginForm
-from .models import Student, Question, Category, Test, CorrectChoice, MarksOfStudent
+from .models import Student, Question, Category, Test, CorrectChoice, MarksOfStudent, ExamStarter
 from .ajax import markCalculate
+
+
+def not_started(request):
+    return render(request, "Exam_portal/notstarted.html", {})
 
 
 def timer(request):
@@ -32,6 +36,18 @@ def timer(request):
 
 
 def end(request):
+    try:
+        obj = ExamStarter.objects.first()
+    except Exception:
+        pass
+
+    if obj.flag is True:
+        print("exam is started")
+
+    else:
+        messages.success(request, " Opps, Looks like the exam is not started yet. Come back later")
+        return redirect(reverse("Exam_portal:notstarted"))
+
     print (request.session.get('student_id'))
     if request.session.get('student_id') is None:
         messages.error(request, "First, Register for the examination here..")
@@ -39,12 +55,64 @@ def end(request):
     markCalculate(request)
     print(request.session['student_id'])
     del request.session['student_id']
+    print(request.session['post_data'])
     request.session.modified = True
 
     return render(request, 'Exam_portal/end.html', {})
 
 
+def review(request):
+    form = RegistrationForm(request.session.get('post_data') or None)
+    print(request.session.get('post_data'))
+    context = {
+        "title": "Review Exam",
+        "form": form,
+    }
+    return render(request, 'Exam_portal/register.html', context)
+
+
+def exam_starter_switch(request):
+    context = exam_starter()
+
+    return render(request, "Exam_portal/admin_interface.html", context)
+
+
+def exam_starter():
+    try:
+        obj = ExamStarter.objects.get(pk=1)
+    except ObjectDoesNotExist:
+        ExamStarter.objects.create(flag=False)
+        obj = ExamStarter.objects.first()
+
+    if obj.flag is True:
+        context = {
+            "button": "Exam is Stopped"
+        }
+        obj.flag = False
+        obj.save()
+    else:
+        context = {
+            "button": "Exam is Started"
+        }
+        obj.flag = True
+        obj.save()
+
+    return context
+
+
 def show(request):
+    try:
+        obj = ExamStarter.objects.first()
+    except Exception:
+        pass
+
+    if obj.flag is True:
+        print("exam is started")
+
+    else:
+        messages.success(request, " Opps, Looks like the exam is not started yet. Come back later")
+        return redirect(reverse("Exam_portal:notstarted"))
+
     if request.session.get('student_id') is None:
         messages.error(request, "First Register for the examination here..")
         return redirect(reverse('Exam_portal:register'))
@@ -157,6 +225,18 @@ def show(request):
 
 
 def register(request):
+    try:
+        obj = ExamStarter.objects.first()
+    except Exception:
+        pass
+
+    if obj.flag is True:
+        print("exam is started")
+
+    else:
+        messages.success(request, " Opps, Looks like the exam is not started yet. Come back later")
+        return redirect(reverse("Exam_portal:notstarted"))
+
     form = RegistrationForm()
 
     if request.session.get('student_id'):
@@ -164,6 +244,9 @@ def register(request):
 
     if request.method == "POST":
         form = RegistrationForm(request.POST or None)
+
+        print(" Printing post ")
+        print (request.POST)
         # print("hello")
         if request.method != "POST":
             raise Http404("Only POST methods are allowed")
@@ -191,6 +274,7 @@ def register(request):
             if data:
                 request.session['name'] = name
                 request.session['student_id'] = data.student_no
+                request.session['post_data'] = request.POST
                 # same data can be used to get the corresponding did associate with the students
 
                 return HttpResponseRedirect(reverse('Exam_portal:instruction'))
@@ -208,8 +292,23 @@ def register(request):
 
 def instruction(request):
     # nothing to do here
+
+    try:
+        obj = ExamStarter.objects.first()
+    except Exception:
+        pass
+
+    if obj.flag is True:
+        print("exam is started")
+
+
+    else:
+        messages.success(request, " Opps, Looks like the exam is not started yet. Come back later")
+        return redirect(reverse("Exam_portal:notstarted"))
+
     print(request)
     if request.session.get('student_id') is None:
+        messages.success(request, "First Register For the exam here")
         return redirect(reverse('Exam_portal:register'))
 
     return render(request, "Exam_portal/instruction.html", context={})
@@ -551,11 +650,24 @@ def logout_admin(request):
 
 def adminchoice(request):
     print("adminchoice")
+
+    try:
+        obj = ExamStarter.objects.first()
+    except Exception as e:
+        print(e)
+    if obj.flag is True:
+        context = {
+            "button": "Exam is Started",
+        }
+    else:
+        context = {
+            "button": "Exam is Stopped",
+        }
+
     if not request.user.is_authenticated():
         messages.error(request, "Opps You're not an admin ")
         return HttpResponseRedirect(reverse("Exam_portal:admin_auth"))
-    path = os.path.join(os.path.dirname(settings.BASE_DIR))
 
-    return render(request, 'Exam_portal/admin_interface.html', {"path": path})
+    return render(request, 'Exam_portal/admin_interface.html', context)
 
 # def admin_register(request):

@@ -81,6 +81,13 @@ class Test(models.Model):
     def __str__(self):
         return "<Test name = %s>"%self.name
 
+class ExamStarter(models.Model):
+
+    flag = models.BooleanField(default=False)
+
+    def __str__(self):
+        return "Exam starter object"
+
 
 '''
 class Instructions(models.Model):
