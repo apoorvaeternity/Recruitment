@@ -102,7 +102,7 @@ def exam_starter():
 
 def show(request):
     try:
-        obj = ExamStarter.objects.first()
+        obj = ExamStarter.objects.get(pk=1)
     except ObjectDoesNotExist:
         obj = ExamStarter.objects.create(flag=False)
 
@@ -226,7 +226,7 @@ def show(request):
 
 def register(request):
     try:
-        obj = ExamStarter.objects.first()
+        obj = ExamStarter.objects.get(pk=1)
     except ObjectDoesNotExist:
         obj = ExamStarter.objects.create(flag=False)
 
@@ -294,7 +294,7 @@ def instruction(request):
     # nothing to do here
 
     try:
-        obj = ExamStarter.objects.first()
+        obj = ExamStarter.objects.get(pk=1)
     except ObjectDoesNotExist:
         obj = ExamStarter.objects.create(flag=False)
 
@@ -652,9 +652,10 @@ def adminchoice(request):
     print("adminchoice")
 
     try:
-        obj = ExamStarter.objects.first()
-    except Exception as e:
-        print(e)
+        obj = ExamStarter.objects.get(pk=1)
+    except ObjectDoesNotExist:
+	obj = ExamStarter.objects.create(flag=False)
+
     if obj.flag is True:
         context = {
             "button": "Exam is Started",
