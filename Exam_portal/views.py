@@ -37,9 +37,9 @@ def timer(request):
 
 def end(request):
     try:
-        obj = ExamStarter.objects.first()
-    except Exception:
-        pass
+        obj = ExamStarter.objects.get(pk=1)
+    except ObjectDoesNotExist:
+        obj = ExamStarter.objects.create(flag=False)
 
     if obj.flag is True:
         print("exam is started")
@@ -103,8 +103,8 @@ def exam_starter():
 def show(request):
     try:
         obj = ExamStarter.objects.first()
-    except Exception:
-        pass
+    except ObjectDoesNotExist:
+        obj = ExamStarter.objects.create(flag=False)
 
     if obj.flag is True:
         print("exam is started")
@@ -227,8 +227,8 @@ def show(request):
 def register(request):
     try:
         obj = ExamStarter.objects.first()
-    except Exception:
-        pass
+    except ObjectDoesNotExist:
+        obj = ExamStarter.objects.create(flag=False)
 
     if obj.flag is True:
         print("exam is started")
@@ -295,8 +295,8 @@ def instruction(request):
 
     try:
         obj = ExamStarter.objects.first()
-    except Exception:
-        pass
+    except ObjectDoesNotExist:
+        obj = ExamStarter.objects.create(flag=False)
 
     if obj.flag is True:
         print("exam is started")
