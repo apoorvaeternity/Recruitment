@@ -10,30 +10,40 @@
             <h1>Welcome to the admin panel</h1>
         </div>
         <div class="container">
-            <div class="row" >
-                <div class="col-sm-10" style="padding-left: 0px;">
 
-                    <a class="btn btn-primary col-sm-3" href="../admin" style="margin: 5px 5px 5px 0px;"> Add
+            <div class="row">
+                <div class="col-sm-3">
+                    <a class="btn btn-primary col-sm-10 " href="../admin"> Add
                         Question</a>
-                    <a class="btn btn-primary col-sm-3" href="../edit" style="margin: 5px 5px 5px 0px;"> Edit
-                        Question</a>
-                    <a class="btn btn-primary col-sm-3" href="../edittime" style="margin: 5px 5px 5px 0px;"> Change the
-                        Exam Time</a>
-                    <a class="btn btn-primary col-sm-3" href="../student_section" style="margin: 5px 5px 5px 0px;">Student
-                        Sections</a>
                 </div>
-                <div class="col-sm-2">
-
-                        <a id='excel' class="btn btn-default col-sm-12" href='../download/'
-                           style="margin: 5px 15px 5px 5px;float: right;">Download Excel</a>
-
+                <div class="col-sm-3">
+                    <a class="btn btn-primary col-sm-10" href="../edit"> Edit
+                        Question</a>
+                </div>
+                <div class="col-sm-3">
+                    <a class="btn btn-primary col-sm-10 " href="../edittime"> Change the
+                        Exam Time</a>
+                </div>
+                <div class="col-sm-3">
+                    <a class="btn btn-primary col-sm-10" href="../student_section">Student
+                        Sections</a>
                 </div>
 
 
             </div>
 
+        </div>
+
+        <div class="row" style="margin-top: 10px; ">
+            <div class="col-sm-offset-5">
+
+                <a id='excel' class="btn btn-default " href='../download/'>Download Excel</a>
+
+            </div>
 
         </div>
+
+    </div>
 
     </div>
 {% endblock %}

@@ -17,6 +17,8 @@
     {#    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/js/materialize.min.js"></script>#}
     <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
     <script src="{% static 'js/main.js' %}"></script>
+    <script src="{% static 'js/admin_section.js' %}"></script>
+
     <link rel="stylesheet" href="{% static 'css/admin.css' %}">
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 
@@ -39,6 +41,9 @@
                 <a class="btn btn-link" href="../adminLogout" style="float:right;padding: 15px 15px;font-size:inherit;">logout</a>
             </div>
         {% endif %}
+        <div style="padding: inherit;">
+            <a class="btn btn-link" href="{{ request.META.HTTP_REFERER }}" style="float:right;padding: 15px 15px;font-size:inherit;">back</a>
+        </div>
     </div>
 </nav>
 

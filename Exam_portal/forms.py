@@ -1,6 +1,7 @@
 from django import forms
 # from django.contrib.auth.models import User
 from material import Layout, Row, Fieldset, Column, Span5
+from .models import Student
 
 # form django.utils.translation import ugettext_lazy as _
 
@@ -45,7 +46,7 @@ class RegistrationForm(forms.Form):
                            )
 
     Contact = forms.IntegerField(widget=forms.NumberInput(
-        attrs={'type': 'tel', 'id': 'icon_telephone', 'class': 'validate',
+        attrs={'type': 'number', 'id': 'icon_telephone', 'class': 'validate',
                'name': 'contact'}), label='Contact No.'
     )
     Email = forms.EmailField(widget=forms.TextInput(
@@ -93,3 +94,17 @@ class RegistrationForm(forms.Form):
             Column('Designer')
             )
     )
+
+    def clean_Contact(self):
+        contact = self.cleaned_data.get('Contact')
+        if len(str(contact)) != 10:
+            raise forms.ValidationError("Invalid length of mobile number")
+        return contact
+
+    def clean_StudentNo(self):
+        std = self.cleaned_data.get('StudentNo')
+
+        if Student.objects.all().filter(student_no=std).exists():
+            raise forms.ValidationError("Roll Number already exist in data base")
+
+        return std

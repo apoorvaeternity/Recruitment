@@ -137,10 +137,13 @@
                 </div>
                 {#        <div>If wanna change the time of the exam {{ time.name }}. Fill the following field <label style="background-color:lightgray;">Current time :{{ test.time }}</label></div>#}
                 {#        <label for="time">New time :<input type="text" name="time" placeholder="format = hh:mm:ss"/></label>#}
+                <div class="error row" style="display: none">
+                </div>
+
                 <div class="button_group" style="margin: 2%;">
-                    <button type="submit" class="btn btn-primary">{% if display %}Update{% else %}Add
+                    <button type="submit" class="btn btn-primary" id="check">{% if display %}Update{% else %}Add
                         Another{% endif %}</button>
-                    <a class="btn btn-primary" href='../adminchoice'> Finish</a>
+                    <a class="btn btn-primary" href='../adminchoice' style="font-size: medium;"> Finish</a>
                     {% if display %}
 
                         <button class="btn btn-danger" id="delete" style="float: right; background-color: lightcoral;">

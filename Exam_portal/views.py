@@ -4,8 +4,9 @@ from django.shortcuts import render
 from django.contrib import messages
 from django.conf import settings
 from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render, get_object_or_404, redirect, Http404
+from django.shortcuts import render, get_object_or_404, redirect, Http404, render_to_response
 from django.core.urlresolvers import reverse
+from django.template import RequestContext
 from django.contrib import auth
 import json, os
 from django.core.exceptions import ObjectDoesNotExist
@@ -40,7 +41,6 @@ def adminchoice(request):
 
 
 def end(request):
-
     print (request.session.get('student_id'))
     if request.session.get('student_id') is None:
         messages.error(request, "First, Register for the examination here..")
@@ -151,7 +151,7 @@ def show(request):
         "Number": range(1, len(question) + 1),
         "instance": query_set,
         "time": time_string,
-        "warn":time.warn_time,
+        "warn": time.warn_time,
 
     }
 
@@ -225,7 +225,6 @@ def instruction(request):
 
 
 def admin(request):
-
     if not request.user.is_authenticated():
         messages.error(request, "Opps You're not an admin ")
         return HttpResponseRedirect(reverse("Exam_portal:admin_auth"))
@@ -553,5 +552,8 @@ def admin_auth(request):
 def logout_admin(request):
     auth.logout(request)
     return HttpResponseRedirect(reverse("Exam_portal:admin_auth"))
+
+
+
 
 # def admin_register(request):

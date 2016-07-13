@@ -1,7 +1,9 @@
-from django.conf.urls import url
+from django.conf.urls import url , handler404
+
 
 from . import views
 from . import ajax
+
 
 app_name = 'Exam_portal'
 
