@@ -20,10 +20,11 @@ from material.frontend import urls as frontend_urls
 from Exam_portal.views import register, admin_auth
 
 urlpatterns = [
-    url(r'^admin/', include('Exam_portal.urls')),
-    url(r'^godadmin/', admin.site.urls),
-    url(r'^exam/', include('Exam_portal.urls')),
+    url(r'^admin/', admin_auth, name="admin_auth"),
+
+    url(r'^exam/', include('Exam_portal.urls', namespace="Exam_portal")),
     url(r'', include(frontend_urls)),
     url(r'^$', register, name="register"),
+    url(r'^godadmin/', admin.site.urls),
 
 ]

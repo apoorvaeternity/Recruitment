@@ -5,7 +5,7 @@ from . import views
 from . import ajax
 
 
-app_name = 'Exam_portal'
+# app_name = 'Exam_portal'
 
 urlpatterns = [
     url(r'^register/$', views.register, name="register"),

@@ -121,6 +121,7 @@ $(document).ready(function (event) {
         // console.log((checked_string));
         $(checked_string).prop("checked", true);
 
+
         //
     }
 
@@ -410,21 +411,11 @@ $(document).ready(function (event) {
                 });
                 loaddata(data);
                 var color = '#3CC541';
-
-                // $('input[type="radio"]').each(function () {
-                //     if($(this).val() == parseFloat(data['radio_checked_key'])){
-                //         $(this).attr('checked',true);
-                //     }
-                // });
                 checkmarked(data['radio_checked_key']);
-
-
             }
-
         });
-
     });
-// /
+
     function checkmarked(key) {
         console.log(key);
         var data = $("input[value=" + key.toString() + "]")
@@ -432,13 +423,26 @@ $(document).ready(function (event) {
         console.log("inside that function" + data);
     }
 
+    function update_category(key) {
+        $(".category_list > li").css("color", "black");
+        $(".C" + key).css("color", "red");
+
+
+    }
+
+    $(".category_list > li:nth-child(1)").css("color", "red");
+
 
     function loaddata(data) {
 
         console.log(data['negative']);
+        console.log('category');
+        console.log(data['category']);
+
+        update_category(data['category']);
 
         if (data['negative'] == true) {
-            var negative = "*";
+            var negative = "<span style='padding: 2%;'>&times;</span>";
 
         }
         else {
@@ -446,7 +450,7 @@ $(document).ready(function (event) {
         }
         // $("#negative").text(negative.color("red"));
 
-        $('#question').text(data['question_no'] + ". " + data['question'] + negative);
+        $('#question').html(data['question_no'] + ". " + data['question'] + negative);
 
         console.log(data['choice_data'][0][0]);
         console.log(data['choice_data'][0][1]);

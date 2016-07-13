@@ -31,15 +31,6 @@ def timer(request):
     return HttpResponse(json.dumps(data), content_type='application/json')
 
 
-def adminchoice(request):
-    if not request.user.is_authenticated():
-        messages.error(request, "Opps You're not an admin ")
-        return HttpResponseRedirect(reverse("Exam_portal:admin_auth"))
-    path = os.path.join(os.path.dirname(settings.BASE_DIR))
-
-    return render(request, 'Exam_portal/admin_interface.html', {"path": path})
-
-
 def end(request):
     print (request.session.get('student_id'))
     if request.session.get('student_id') is None:
@@ -88,7 +79,7 @@ def show(request):
 
         qs = category1[i].question_set.all().order_by('id')
         try:
-            data = (qs[0].id, category1[i].category)
+            data = (qs[0].id, category1[i].category, category1[i].id)
             category_first_data.append(data)
         except IndexError:
             print("skipping")
@@ -517,8 +508,10 @@ def student_section(request):
 
 
 def admin_auth(request):
+    print ("1")
     if request.user.is_authenticated():
         return HttpResponseRedirect(reverse("Exam_portal:adminchoice"))
+        # return HttpResponseRedirect("/admin/adminchoice")
 
     error = False
     if request.method == "POST":
@@ -550,10 +543,19 @@ def admin_auth(request):
 
 
 def logout_admin(request):
+    print("logout")
     auth.logout(request)
     return HttpResponseRedirect(reverse("Exam_portal:admin_auth"))
+    # return HttpResponseRedirect("/admin/")
 
 
+def adminchoice(request):
+    print("adminchoice")
+    if not request.user.is_authenticated():
+        messages.error(request, "Opps You're not an admin ")
+        return HttpResponseRedirect(reverse("Exam_portal:admin_auth"))
+    path = os.path.join(os.path.dirname(settings.BASE_DIR))
 
+    return render(request, 'Exam_portal/admin_interface.html', {"path": path})
 
 # def admin_register(request):

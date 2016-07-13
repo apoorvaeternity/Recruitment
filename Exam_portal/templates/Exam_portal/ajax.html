@@ -44,19 +44,22 @@
                     </div>
                     <div class="col-sm-8" style="float:left;">
 
+{#                        -------------Category section ------------------------------------#}
                         <div class="container" style="width: 100%;" id="category">
-                            <ul>
-                                {% for category_question_id,category in instance.category %}
-                                    <li style="display: inline;padding: 2%;"
-                                        id="{{ category_question_id }}">{{ category }}</li>
+                            <ul class="category_list">
+                                {% for category_question_id,category,id in instance.category %}
+                                    <li style="display: inline;padding: 2%;color: black;"
+                                        id="{{ category_question_id }}" class="C{{ id }}">{{ category }}</li>
                                 {% endfor %}
                             </ul>
                         </div>
+{#                    ------------------- Category End --------------------------------------#}
+
                         <ul class="collection">
                             <li class="collection-item" id="question" style="font-size:large;"><span
                                     id="question_no">{{ instance.question_no }}. </span>{{ instance.question }}<strong><label
                                     id="negative" style="color: black;margin: 0px; ">
-                                {% if instance.negative %}*{% endif %}</label></strong></li>
+                                </label></strong>{% if instance.negative %}<span style="padding: 2%;">&times;</span>{% endif %}</li>
                             <div class="container-fluid" id="choices" style="padding:2%;">
                                 {% for choice,id in instance.choice_data %}
                                     <li class="collection=item" id="{{ id }}">
@@ -94,6 +97,9 @@
                             <label style="padding: 2%; ">If you are Done you can Finish your Exam</label>
                             <button class="btn " id="endExam" style="background-color: #f44336;">End Exam</button>
 
+                        </div>
+                        <div class="container-fluid" style="padding-top:3%; ">
+                            <label> This <span style="padding: 2%;">" &times; "</span> label after a question mean the question have negative marking</label>
                         </div>
 
                     </div>

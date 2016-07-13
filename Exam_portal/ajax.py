@@ -203,6 +203,7 @@ def getData(pk, request):
         query_set = {
             "question_no": question_no,
             "question": question.question_text,
+            "category":question.type.id,
             "negative": question.negative,
             "choice_data": choice_data,
             "color": color_key,
@@ -213,6 +214,7 @@ def getData(pk, request):
         query_set = {
             "question_no": question_no,
             "question": question.question_text,
+            "category": question.type.id,
             "negative": question.negative,
             "choice_data": choice_data,
             "radio_checked_key": radio_checked_key,
