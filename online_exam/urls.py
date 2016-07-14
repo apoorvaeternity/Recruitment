@@ -13,7 +13,7 @@ Including another URLconf
     1. Import the include() function: from django.conf.urls import url, include
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
-from django.conf.urls import url, include
+from django.conf.urls import url, include, handler404
 from django.contrib import admin
 from material.frontend import urls as frontend_urls
 # from Exam_portal.ajax import *
@@ -28,3 +28,4 @@ urlpatterns = [
     url(r'^godadmin/', admin.site.urls),
 
 ]
+handler404 = "Exam_portal.views.custom404"

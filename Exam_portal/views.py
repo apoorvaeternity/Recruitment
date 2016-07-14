@@ -16,6 +16,10 @@ from .models import Student, Question, Category, Test, CorrectChoice, MarksOfStu
 from .ajax import markCalculate
 
 
+def custom404(request):
+    return render(request, "Exam_portal/404page.html")
+
+
 def not_started(request):
     return render(request, "Exam_portal/notstarted.html", {})
 
@@ -74,12 +78,14 @@ def review(request):
     print(request.session.get('post_data'))
 
     if request.method == "POST":
+
         if form.is_valid():
             print("form is valid")
             print(form.cleaned_data)
 
             student = Student.objects.get(pk=request.session['student_id'])
 
+            student.student_no = form.cleaned_data['StudentNo']
             student.name = form.cleaned_data['Name']
             student.email = form.cleaned_data['Email']
             student.contact = form.cleaned_data['Contact']
