@@ -1,5 +1,22 @@
 $(document).ready(function (event) {
 
+    console.log(window.location.pathname);
+
+    if (window.location.pathname == '/exam/review/') {
+
+        $("input[type='text'][name='StudentNo']").attr("disabled", true);
+        $("input[type='text'][name='Name']").attr("disabled", true);
+        $("input[type='text'][name='Skills']").attr("disabled", true);
+        $("input[type='textarea'][name='Designer']").attr("disabled", true);
+        $("#id_Designer_container > textarea").attr("disabled", true);
+
+
+    } else {
+        console.log("execeuting else");
+
+
+    }
+
 
     ajax_loader = $('#ajax-loader');
 
@@ -200,7 +217,7 @@ $(document).ready(function (event) {
                     if (diff == test_duration) {
                         clearInterval(stop);
 
-                        window.location.href ="../end"
+                        window.location.href = "../end"
 
                     }
                     var seconds = diff % 60;
@@ -252,7 +269,7 @@ $(document).ready(function (event) {
 
 
     });
-    
+
 
     $('#grid').find('li').click(function (event) {
         event.preventDefault();

@@ -85,17 +85,14 @@ def review(request):
 
             student = Student.objects.get(pk=request.session['student_id'])
 
-            student.student_no = form.cleaned_data['StudentNo']
-            student.name = form.cleaned_data['Name']
-            student.email = form.cleaned_data['Email']
-            student.contact = form.cleaned_data['Contact']
+            student.email = request.POST.get('Email')
+            student.contact = request.POST.get('Contact')
             student.branch = form.cleaned_data['Branch']
-            if form.cleaned_data['Hosteler'] == 'y':
+            if request.POST.get('Hosteler') == 'y':
                 hosteler = True
             else:
                 hosteler = False
-            student.skills = form.cleaned_data['Skills']
-            student.designer = form.cleaned_data['Designer']
+
             student.hosteler = hosteler
             student.save()
 
