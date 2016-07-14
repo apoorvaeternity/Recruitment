@@ -1,6 +1,15 @@
 from django.db import models
 
 
+
+
+class ReviewFlag(models.Model):
+
+    flag = models.BooleanField();
+
+    def __str__(self):
+        return "Review Flag"
+
 class Student(models.Model):
 
     # create a  another model with student id and instantiate it with the help of this class constructor

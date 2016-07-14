@@ -200,7 +200,7 @@ $(document).ready(function (event) {
                     if (diff == test_duration) {
                         clearInterval(stop);
 
-                        window.location.replace("http://127.0.0.1:8000/exam/end");
+                        window.location.href ="../end"
 
                     }
                     var seconds = diff % 60;
@@ -252,14 +252,14 @@ $(document).ready(function (event) {
 
 
     });
-
+    
 
     $('#grid').find('li').click(function (event) {
         event.preventDefault();
         console.log("changing question via grid");
         id = event.target.id;
         console.log(id);
-
+        show_loader();
         $.ajax({
             type: "GET",
             datatype: 'json',
@@ -271,6 +271,16 @@ $(document).ready(function (event) {
                 checkmarked(data['radio_checked_key']);
             }
         });
+
+        if ($('input[name="negative"]').prop("checked")) {
+            console.log("its checked");
+        }
+        else {
+            console.log("its checked error");
+        }
+
+
+        hide_loader();
     });
 
     $('body > div.container > div > ul').find('li').click(function (event) {
@@ -391,12 +401,12 @@ $(document).ready(function (event) {
 
     function update_category(key) {
         $(".category_list > li").css("color", "black");
-        $(".C" + key).css("color", "red");
+        $(".C" + key).css("color", "green");
 
 
     }
 
-    $(".category_list > li:nth-child(1)").css("color", "red");
+    $(".category_list > li:nth-child(1)").css("color", "green");
 
 
     function loaddata(data) {

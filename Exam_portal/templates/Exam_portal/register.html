@@ -14,7 +14,7 @@
     {% load material_form %}
     <div class="container" style="padding: 1%;">
         <div style="padding: 5%;">
-            <h1>Registration</h1>
+            <h1>{{ heading }}</h1>
             <form method="POST" class="viewform">
                 {% csrf_token %}
                 {% form %}
@@ -32,8 +32,14 @@
                 {% endform %}
                 <div class="row" style="padding-top: 2%;">
                     <button type="submit" name="_submit" class="btn btn-primary btn-lr"
-                            style="background-color:#3F51B5">Submit
+                            style="background-color:#3F51B5">{% if display %}Update your Info{% else %}Submit{% endif %}
                     </button>
+
+                    {% if display %}
+
+                        <a class="btn btn-primary btn-lr" href="../end/" style="float: right;background-color:#3F51B5; ">No Update is required</a>
+
+                    {% endif %}
                 </div>
             </form>
         </div>

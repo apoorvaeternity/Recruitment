@@ -1,9 +1,9 @@
 from django import forms
-from django .http import request
+from django.http import request
 import re
 # from django.contrib.auth.models import User
 from material import Layout, Row, Fieldset, Column, Span5
-from .models import Student
+from .models import Student , ReviewFlag
 
 # form django.utils.translation import ugettext_lazy as _
 
@@ -37,7 +37,11 @@ class AdminForm(forms.Form):
                                widget=forms.Textarea(attrs={'class': 'col-sm-6'}))
     marks = forms.IntegerField(label='marks', required=True)
     negative = forms.BooleanField(label='have negative marking', required=False)
-    negative_marks = forms.IntegerField(label="negative marks", required=False)
+    negative_marks = forms.IntegerField(label="negative marks", required=False,
+                                        widget=forms.NumberInput(attrs={'disabled': 'true'}))
+
+
+
 
 
 class RegistrationForm(forms.Form):
@@ -52,7 +56,7 @@ class RegistrationForm(forms.Form):
                'name': 'contact'}), label='Contact No.'
     )
     Email = forms.EmailField(widget=forms.TextInput(
-        attrs={'type': 'email', 'id': 'email', 'class': 'validate'}),
+        attrs={'type': 'text', 'id': 'email', 'class': 'validate'}),
         label="Email"
     )
 
@@ -103,19 +107,31 @@ class RegistrationForm(forms.Form):
             raise forms.ValidationError("Invalid length of mobile number")
         return contact
 
+    def clean_Email(self):
+        email = self.cleaned_data.get("Email")
+
+        pattern = "(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)"
+        prog = re.compile(pattern)
+        result = prog.match(email)
+
+        if not bool(result):
+            raise forms.ValidationError("Invalid Email address. Use a valid email address.")
+
+        return email
+
     def clean_StudentNo(self):
 
+        review_flag = ReviewFlag.objects.get(pk=1)
 
-        # print("printing request in form")
-        # print(request.session.get('post_data'))
 
         std = self.cleaned_data.get('StudentNo')
         pattern = '^\d{7}[Dd]{0,1}$'
         prog = re.compile(pattern)
         result = prog.match(std)
 
-        if Student.objects.all().filter(student_no=std).exists():
-            raise forms.ValidationError("Roll Number already exist in data base")
+        if review_flag.flag:
+            if Student.objects.all().filter(student_no=std).exists():
+                raise forms.ValidationError("Roll Number already exist in data base")
 
         if not bool(result):
             raise forms.ValidationError("Invalid format of Roll number ")

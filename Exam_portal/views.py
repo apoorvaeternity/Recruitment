@@ -12,7 +12,7 @@ import json, os
 from django.core.exceptions import ObjectDoesNotExist
 # from django.template import loader, Context
 from .forms import RegistrationForm, AdminForm, AdminLoginForm
-from .models import Student, Question, Category, Test, CorrectChoice, MarksOfStudent, ExamStarter
+from .models import Student, Question, Category, Test, CorrectChoice, MarksOfStudent, ExamStarter, ReviewFlag
 from .ajax import markCalculate
 
 
@@ -53,20 +53,53 @@ def end(request):
         messages.error(request, "First, Register for the examination here..")
         return redirect(reverse('Exam_portal:register'))
     markCalculate(request)
-    print(request.session['student_id'])
-    del request.session['student_id']
     print(request.session['post_data'])
+    print(request.session['student_id'])
+
+    del request.session['student_id']
+    del request.session['post_data']
+    del request.session['name']
+
     request.session.modified = True
 
     return render(request, 'Exam_portal/end.html', {})
 
 
 def review(request):
+    if request.session.get('student_id') is None:
+        messages.error(request, "First Register for the examination here..")
+        return redirect(reverse('Exam_portal:register'))
+
     form = RegistrationForm(request.session.get('post_data') or None)
     print(request.session.get('post_data'))
+
+    if request.method == "POST":
+        if form.is_valid():
+            print("form is valid")
+            print(form.cleaned_data)
+
+            student = Student.objects.get(pk=request.session['student_id'])
+
+            student.name = form.cleaned_data['Name']
+            student.email = form.cleaned_data['Email']
+            student.contact = form.cleaned_data['Contact']
+            student.branch = form.cleaned_data['Branch']
+            if form.cleaned_data['Hosteler'] == 'y':
+                hosteler = True
+            else:
+                hosteler = False
+            student.skills = form.cleaned_data['Skills']
+            student.designer = form.cleaned_data['Designer']
+            student.hosteler = hosteler
+            student.save()
+
+            return HttpResponseRedirect(reverse("Exam_portal:end"))
+
     context = {
         "title": "Review Exam",
+        "heading": "Review your registration details.",
         "form": form,
+        "display": True,
     }
     return render(request, 'Exam_portal/register.html', context)
 
@@ -120,7 +153,7 @@ def show(request):
     # category1 = get_object_or_404(Category)
     category1 = Category.objects.all()
 
-    print category1
+    print (category1)
     if len(category1) == 0:
         messages.error(request, "Oops look like the exam is not created yet. Try after some time")
         return redirect(reverse('Exam_portal:register'))
@@ -230,6 +263,10 @@ def register(request):
     except ObjectDoesNotExist:
         obj = ExamStarter.objects.create(flag=False)
 
+    review_flag, created = ReviewFlag.objects.get_or_create(pk=1, defaults={"flag": True})
+    review_flag.flag = True
+    review_flag.save()
+
     if obj.flag is True:
         print("exam is started")
 
@@ -256,9 +293,9 @@ def register(request):
             email = form.cleaned_data['Email']
             contact = form.cleaned_data['Contact']
             studentno = form.cleaned_data['StudentNo']
-            if len(str(studentno)) > 10:
-                messages.error(request, "Enter a valid mobile number")
-                return HttpResponseRedirect(reverse("Exam_portal:register"))
+            # if len(str(studentno)) > 10:
+            #     messages.error(request, "Enter a valid mobile number")
+            #     return HttpResponseRedirect(reverse("Exam_portal:register"))
             branch = form.cleaned_data['Branch']
             if form.cleaned_data['Hosteler'] == 'y':
                 hosteler = True
@@ -276,6 +313,8 @@ def register(request):
                 request.session['student_id'] = data.student_no
                 request.session['post_data'] = request.POST
                 # same data can be used to get the corresponding did associate with the students
+                review_flag.flag = False
+                review_flag.save()
 
                 return HttpResponseRedirect(reverse('Exam_portal:instruction'))
 
@@ -284,6 +323,7 @@ def register(request):
         # print (form.errors)
     context = {
         'title': 'SI recruitment',
+        "heading": "Registration",
         'form': form,
     }
 
@@ -493,7 +533,7 @@ def edit_question(request):
 
             print(correct_choice)
             print (form.cleaned_data)
-            #
+
             data = {
                 "choice": choice,
                 "current_question": current_question,
@@ -654,7 +694,7 @@ def adminchoice(request):
     try:
         obj = ExamStarter.objects.get(pk=1)
     except ObjectDoesNotExist:
-	obj = ExamStarter.objects.create(flag=False)
+        obj = ExamStarter.objects.create(flag=False)
 
     if obj.flag is True:
         context = {
