@@ -37,8 +37,8 @@ class AdminForm(forms.Form):
                                widget=forms.Textarea(attrs={'class': 'col-sm-6'}))
     marks = forms.IntegerField(label='marks', required=True)
     negative = forms.BooleanField(label='have negative marking', required=False)
-    negative_marks = forms.IntegerField(label="negative marks", required=False,
-                                        widget=forms.NumberInput(attrs={'disabled': 'true'}))
+    negative_marks = forms.IntegerField(label="negative marks", required=False)
+
 
 
 

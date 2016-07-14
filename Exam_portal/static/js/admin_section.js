@@ -10,7 +10,6 @@ var negative_select = 'input[name="negative"]';
 var negative_marks = 'input[name="negative_marks"]';
 var marks;
 var negative_value;
-var path_name = window.location.pathname
 
 
 //------------------ disable refresh on f5;
@@ -23,19 +22,11 @@ var path_name = window.location.pathname
 //
 // //--------------------
 
+
+
 $(document).ready(function (e) {
 
-
-    if(path_name == '/exam/edit/'){
-        $(negative_marks).removeAttr('disabled');
-    }
-
-    if($(negative_select).prop("checked")){
-        console.log("its checked");
-    }
     
-
-
 
     $('form').on('keyup keypress', function (e) {
         var keyCode = e.keyCode || e.which;
@@ -78,12 +69,21 @@ $(document).ready(function (e) {
             $('.error').css("display",'none');
         }
 
-        if (this.checked == true) {
-            $('#check').removeAttr("disabled");
+
+        console.log($(negative_marks).prop("val"));
+
+        if (this.checked) {
+            $(negative_marks).removeAttr("disabled")
+            $(negative_marks).prop("required",true);
+        }
+
+        if (!this.checked) {
+            $(negative_marks).attr("disabled",!this.checked);
         }
 
 
-        $(negative_marks).attr("disabled", !this.checked);
+        // $(negative_marks).prop("disabled", !this.checked);
+
         $(negative_marks).val(null);
 
 
