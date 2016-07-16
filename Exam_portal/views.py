@@ -77,6 +77,10 @@ def review(request):
     form = RegistrationForm(request.session.get('post_data') or None)
     print(request.session.get('post_data'))
 
+    obj = ReviewFlag.objects.first()
+    obj.flag = False
+    obj.save()
+
     if request.method == "POST":
         mutable = request.POST._mutable
         request.POST._mutable = True
@@ -94,6 +98,9 @@ def review(request):
 
             student = Student.objects.get(pk=request.session['student_id'])
 
+            student.name = request.POST.get('Name')
+            student.skills = request.POST.get('Skills')
+            student.designer = request.POST.get('Designer')
             student.email = request.POST.get('Email')
             student.contact = request.POST.get('Contact')
             student.branch = form.cleaned_data['Branch']

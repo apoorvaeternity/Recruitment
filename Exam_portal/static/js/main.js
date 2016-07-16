@@ -1,5 +1,5 @@
 $(document).ready(function (event) {
-
+    disbale_field();
     console.log(window.location.pathname);
 
     if (window.location.pathname == '/exam/review/') {
