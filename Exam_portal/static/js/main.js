@@ -5,10 +5,10 @@ $(document).ready(function (event) {
     if (window.location.pathname == '/exam/review/') {
 
         $("input[type='text'][name='StudentNo']").attr("disabled", true);
-        $("input[type='text'][name='Name']").attr("disabled", true);
-        $("input[type='text'][name='Skills']").attr("disabled", true);
-        $("input[type='textarea'][name='Designer']").attr("disabled", true);
-        $("#id_Designer_container > textarea").attr("disabled", true);
+        // $("input[type='text'][name='Name']").attr("disabled", true);
+        // $("input[type='text'][name='Skills']").attr("disabled", true);
+        // $("input[type='textarea'][name='Designer']").attr("disabled", true);
+        // $("#id_Designer_container > textarea").attr("disabled", true);
 
 
     } else {
@@ -79,6 +79,7 @@ $(document).ready(function (event) {
                 // console.log(data['category']);
 
                 question_update(data);
+                disbale_field();
                 // $('#id_question').attr("value","Rupanshu");
 
 
@@ -326,7 +327,7 @@ $(document).ready(function (event) {
                 // console.log(data['category']);
 
                 question_update(data);
-
+                disbale_field();
 
                 // checkmarked(data['radio_checked_key']);
             }
@@ -335,6 +336,20 @@ $(document).ready(function (event) {
 
         console.log("after hide");
     });
+
+    // -----
+
+    function disbale_field(){
+
+       if( $("input[type='checkbox'][name='negative']").prop("checked") ){
+           $("input[type='number'][name='negative_marks']").removeAttr("disabled");
+           console.log("it is checked");
+       }
+        else {
+           $("input[type='number'][name='negative_marks']").attr("disabled", true);
+       }
+    }
+    // -----
 
 
     $('#previous').click(function (event) {

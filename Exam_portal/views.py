@@ -78,10 +78,19 @@ def review(request):
     print(request.session.get('post_data'))
 
     if request.method == "POST":
+        mutable = request.POST._mutable
+        request.POST._mutable = True
+        request.POST['StudentNo'] = request.session['student_id']
+        form = RegistrationForm(request.POST or None)
+        request.POST._mutable = mutable
 
         if form.is_valid():
             print("form is valid")
-            print(form.cleaned_data)
+            print(request.POST)
+            # print(form.cleaned_data)
+            # This is the data send by the session so validation will be corresponding to the previous entry in during
+            # reggistration of the exam
+
 
             student = Student.objects.get(pk=request.session['student_id'])
 
