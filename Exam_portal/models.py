@@ -1,24 +1,15 @@
 from django.db import models
 
 
-
-
-class ReviewFlag(models.Model):
-
-    flag = models.BooleanField();
-
-    def __str__(self):
-        return "Review Flag"
-
 class Student(models.Model):
 
-    # create a  another model with student id and instantiate it with the help of this class constructor
+    # create a model with student id and instantiate it with the help of this class constructor
 
     name = models.CharField(max_length=100)  # Stage1 of registration
     student_no = models.CharField(primary_key=True, max_length=225)  # Stage2 of registration
     branch = models.CharField(max_length=5)  # Stage2 of registration
     contact = models.BigIntegerField()  # Stage1 of registration
-    skills = models.CharField(max_length=225)  # Stage3 of registration
+    skills = models.CharField(max_length=2255)  # Stage3 of registration
     email = models.EmailField()  # Stage1 of registration
     hosteler = models.BooleanField()  # Stage2 of registration
     designer = models.CharField(
@@ -26,7 +17,8 @@ class Student(models.Model):
         max_length=225)  # Stage3 of registration
 
     def __str__(self):
-        return "<Name = %s>"%self.name
+        return "<Name = %s>" % self.name
+
 
 class Category(models.Model):
     category = models.CharField(max_length=225)
@@ -35,7 +27,7 @@ class Category(models.Model):
         verbose_name_plural = "Categories"
 
     def __str__(self):
-        return "Category = %s"%self.category
+        return "Category = %s" % self.category
 
 
 class Question(models.Model):
@@ -46,7 +38,7 @@ class Question(models.Model):
     type = models.ForeignKey(Category, on_delete=models.CASCADE)
 
     def __str__(self):
-        return "<Question = %s>"%self.question_text
+        return "<Question: %s>" % self.question_text
 
 
 class QuestionChoice(models.Model):
@@ -54,7 +46,7 @@ class QuestionChoice(models.Model):
     choice = models.CharField(max_length=225)
 
     def __str__(self):
-        return "<Choice = %s>"%self.choice
+        return "<Choice = %s>" % self.choice
 
 
 class CorrectChoice(models.Model):
@@ -73,7 +65,7 @@ class StudentAnswer(models.Model):
     student = models.ForeignKey(Student, on_delete=models.CASCADE)
 
     def __str__(self):
-        return "<Answer = %s>"%self.answer
+        return "<Answer = %s>" % self.answer
 
 
 class MarksOfStudent(models.Model):
@@ -89,6 +81,7 @@ class Test(models.Model):
 
     def __str__(self):
         return "<Test name = %s>"%self.name
+
 
 class ExamStarter(models.Model):
 

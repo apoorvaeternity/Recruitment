@@ -1,6 +1,4 @@
 import xlsxwriter
-
-from .views import *
 from .models import *
 
 

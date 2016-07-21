@@ -27,82 +27,94 @@
 
 
                 <div>
-                    <div class="container-fluid col-sm-3" id="grid"
-                         style="border-radius: 5%;float: right;width: 32%; padding:1%; ">
-                        <div style="margin-bottom: 1%">
-                            Question Number are give below
-                        </div>
-                        <div style="padding:3px;float:left;">
-                            <ul>
-                                {% for key in keys %}
-                                    <li class="btn-floating btn-large"
-                                        style="background-color: #D5E7EA;color: #000;margin:2.5%;"
-                                        id="{{ key }}">{{ forloop.counter }}</li>
-                                {% endfor %}
+
+                    {#                        -------------Category section ------------------------------------#}
+                    <div class="row">
+                        <div class="col-sm-8" style="float:left;">
+
+                            <div class="container" style="width: 100%;" id="category">
+                                <ul class="category_list">
+                                    {% for category_question_id,category,id in instance.category %}
+                                        <li style="display: inline;padding: 2%;color: black;"
+                                            id="{{ category_question_id }}" class="C{{ id }}">{{ category }}</li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                            {#                    ------------------- Category End --------------------------------------#}
+
+                            <ul class="collection">
+                                <li class="collection-item" id="question" style="font-size:large;"><span
+                                        id="question_no">{{ instance.question_no }}. </span>{{ instance.question }}<strong><label
+                                        id="negative" style="color: black;margin: 0px; ">
+                                </label></strong>{% if instance.negative %}
+                                    <span style="padding: 2%;">&times;</span>{% endif %}</li>
+
+                                <div class="container-fluid" id="choices" style="padding:2%;">
+                                    {% for choice,id in instance.choice_data %}
+                                        <li class="collection=item" id="{{ id }}">
+                                            <input name="choice" type="radio" id="test{{ forloop.counter }}"
+                                                   value="{{ id }}" class="choices"/>
+                                            <label style="color:black;font-style: normal;"
+                                                   for="test{{ forloop.counter }}"
+                                                   id="q{{ forloop.counter }}">{{ choice }}</label>
+                                        </li>
+                                    {% endfor %}
+
+                                </div>
                             </ul>
+
+                            <div class="container-fluid row" style="padding: 0px;margin: 0px;">
+                                <button class="btn btn-sm col-sm-3" type="submit" id="previous"
+                                        style="color:white;background-color: #3f51b5">Previous
+                                </button>
+                                <div class="col-sm-1"></div>
+                                <button class="btn btn-sm col-sm-4" type="submit" id="mark"
+                                        style="color:white;background:#f44336;">Mark for Review
+                                </button>
+                                <div class="col-sm-1"></div>
+                                <button class="btn col-sm-3 btn-sm {{ request.session.current }}" type="submit"
+                                        id="next"
+                                        style="background-color: #3f51b5;color:white;">Submit and Next
+                                </button>
+                            </div>
+                        </div>
+                        {#                    ---------------------- question grid-------------------------#}
+                        <div class="container-fluid col-sm-4" id="grid"
+                             style="border-radius: 5%;float: right;width: 32%; padding:1%; ">
+                            <div style="margin-bottom: 1%">
+                                Question Number are give below
+                            </div>
+                            <div style="padding:2px;float:left;">
+                                <ul>
+                                    {% for key in keys %}
+                                        <li class="btn-floating btn-flat "
+                                            style="padding-bottom:1%;background-color: #D5E7EA;text-align:center;color: #000;margin:1.5%;height: 20vm;"
+                                            id="{{ key }}">{{ forloop.counter }}</li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
                         </div>
                     </div>
-                    <div class="col-sm-8" style="float:left;">
 
-{#                        -------------Category section ------------------------------------#}
-                        <div class="container" style="width: 100%;" id="category">
-                            <ul class="category_list">
-                                {% for category_question_id,category,id in instance.category %}
-                                    <li style="display: inline;padding: 2%;color: black;"
-                                        id="{{ category_question_id }}" class="C{{ id }}">{{ category }}</li>
-                                {% endfor %}
-                            </ul>
+                    {#                    ------------------------quesiton grid ends --------------------#}
+
+
+                    {#                   ----------------------------button section ----------------------------#}
+
+                    <div class="container-fluid row"
+                         style="margin-top:5%;margin-right:0px;padding-right: 0px;text-align:right;">
+
+                        <div class="col-sm-6">
+                            <label> This <span style="padding: 2%;">" &times; "</span> label after a question mean the
+                                question have negative marking</label>
                         </div>
-{#                    ------------------- Category End --------------------------------------#}
-
-                        <ul class="collection">
-                            <li class="collection-item" id="question" style="font-size:large;"><span
-                                    id="question_no">{{ instance.question_no }}. </span>{{ instance.question }}<strong><label
-                                    id="negative" style="color: black;margin: 0px; ">
-                                </label></strong>{% if instance.negative %}<span style="padding: 2%;">&times;</span>{% endif %}</li>
-                            <div class="container-fluid" id="choices" style="padding:2%;">
-                                {% for choice,id in instance.choice_data %}
-                                    <li class="collection=item" id="{{ id }}">
-                                        <input name="choice" type="radio" id="test{{ forloop.counter }}"
-                                               value="{{ id }}" class="choices"/>
-                                        <label style="color:black;font-style: normal;" for="test{{ forloop.counter }}"
-                                               id="q{{ forloop.counter }}">{{ choice }}</label>
-                                    </li>
-                                {% endfor %}
-                                <!-- {{ instance.choice_data }} -->
-                                <!-- {% for q in instance.choice %}
-                <li class="collection=item">
-                <input name="choice" type="radio" id="test{{ forloop.counter }}" value="{{ q }}"/>
-                                    {{ instance.choice_id. }}
-                <label style="color:black;font-style: normal;" for="test{{ forloop.counter }}" id="q
-                                    {{ forloop.counter }}">{{ q }}</label></li>
-            {% endfor %} -->
-                            </div>
-                        </ul>
-
-                        <div class="container-fluid" style="padding: 0px;">
-                            <button class="btn {{ request.session.current }}" type="submit" id="next"
-                                    style="float:right;margin: 4px;background-color: #3f51b5">Submit and Next
-                            </button>
-                            <button class="btn" type="submit" id="previous"
-                                    style="float:left;margin: 4px;background-color: #3f51b5">Previous
-                            </button>
-                            <button class="btn" type="submit" id="mark"
-                                    style="float:left;background:#f44336;float:right;margin: 4px;">Mark for Review
-                            </button>
-                        </div>
-                        <div class="container"
-                             style="margin-top:5%;margin-right:0px;padding-right: 0px;text-align:right;">
-
+                        <div class="col-sm-6">
                             <label style="padding: 2%; ">If you are Done you can Finish your Exam</label>
                             <button class="btn " id="endExam" style="background-color: #f44336;">End Exam</button>
-
-                        </div>
-                        <div class="container-fluid" style="padding-top:3%; ">
-                            <label> This <span style="padding: 2%;">" &times; "</span> label after a question mean the question have negative marking</label>
                         </div>
 
                     </div>
+
 
                 </div>
             </div>

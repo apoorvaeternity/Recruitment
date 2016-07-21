@@ -1,9 +1,7 @@
 from django import forms
-from django.http import request
 import re
-# from django.contrib.auth.models import User
-from material import Layout, Row, Fieldset, Column, Span5
-from .models import Student , ReviewFlag
+from material import Layout, Row,  Column
+from .models import Student
 
 # form django.utils.translation import ugettext_lazy as _
 
@@ -18,15 +16,6 @@ BRANCH_CHOICES = (('cse', 'CSE'),
 YES_OR_NO = (('y', 'yes'),
              ('n', 'no'))
 
-
-# class AdminRegister(forms.Form):
-#     username = forms.CharField(label="Username", max_length=20, required=True)
-#     password1 = forms.CharField(label="Password", max_length=20,
-#                                 widget=forms.PasswordInput(attrs={"name": "password1", "type": "password"}))
-#     password2 = forms.CharField(label="Password Again", max_length=20,
-#                                 widget=forms.PasswordInput(attrs={"name": "password1", "type": "password"}))
-
-
 class AdminLoginForm(forms.Form):
     username = forms.CharField(max_length=30)
     password = forms.CharField(widget=forms.PasswordInput())
@@ -36,12 +25,8 @@ class AdminForm(forms.Form):
     question = forms.CharField(label='Question Text', max_length=500, required=True,
                                widget=forms.Textarea(attrs={'class': 'col-sm-6'}))
     marks = forms.IntegerField(label='marks', required=True)
-    negative = forms.BooleanField(label='have negative marking', required=False)
+    negative = forms.BooleanField(label='has negative marking', required=False)
     negative_marks = forms.IntegerField(label="negative marks", required=False)
-
-
-
-
 
 
 class RegistrationForm(forms.Form):
@@ -79,13 +64,13 @@ class RegistrationForm(forms.Form):
     )
 
     Skills = forms.CharField(widget=forms.TextInput(
-        attrs={'type': 'text', 'id': 'icon_prefix', 'class': 'validate',
+        attrs={'type': 'text', 'id': 'skills_area', 'class': 'validate',
                'name': 'skills'}),
         label='Mention your Technical skills e.g HTML, CSS, PHP, etc'
     )
 
     Designer = forms.CharField(widget=forms.Textarea(
-        attrs={'type': 'textarea', 'id': 'icon_prefix', 'class': 'validate',
+        attrs={'type': 'textarea', 'id': 'designer_area', 'class': 'validate',
                'name': 'skills'}),
         label='Any Designing Software used like Photostop,etc',
         required=False,
@@ -121,18 +106,19 @@ class RegistrationForm(forms.Form):
 
     def clean_StudentNo(self):
 
-        review_flag = ReviewFlag.objects.get(pk=1)
-
-
         std = self.cleaned_data.get('StudentNo')
         pattern = '^\d{7}[Dd]{0,1}$'
         prog = re.compile(pattern)
         result = prog.match(std)
 
-        if review_flag.flag:
-            if Student.objects.all().filter(student_no=std).exists():
-                raise forms.ValidationError("Roll Number already exist in data base")
+        if Student.objects.all().filter(student_no=std).exists():
+            raise forms.ValidationError("Roll Number already exist in data base")
 
         if not bool(result):
             raise forms.ValidationError("Invalid format of Roll number ")
         return std
+
+
+class ReviewForm(RegistrationForm):
+    def clean_StudentNo(self):
+        return self.cleaned_data.get('StudentNo')

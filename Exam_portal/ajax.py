@@ -1,10 +1,8 @@
 import json, os
 import StringIO
-from django.contrib import messages
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponse
 from .excel_creator import create_excel
-
 from .models import Student, QuestionChoice, Question, StudentAnswer, CorrectChoice, MarksOfStudent
 
 
@@ -22,7 +20,6 @@ def excel(request):
                             content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
     response['Content-Disposition'] = 'attachment; filename=Students_Info.xlsx'
     return response
-
 
 
 def delete(request):
@@ -49,6 +46,7 @@ def question_update(request):
 
 
 def getUpdate(request, id):
+
     question = Question.objects.get(pk=id)
     print("fetching data")
 
@@ -85,7 +83,6 @@ def getUpdate(request, id):
 def grid(request):
     if request.is_ajax() or request.method == "POST":
         id = int(request.GET.get('id'))
-        print(id)
 
         choice, query_set = getData(id, request)
 
@@ -98,7 +95,6 @@ def grid(request):
 
 def markCalculate(request):
     student = request.session.get('student_id')
-    # question_keys = request.session.get('key_list')
 
     student_instance = Student.objects.get(pk=student)
 
@@ -108,25 +104,19 @@ def markCalculate(request):
     for i in student_answer_all:
         answered_question_key.append(i.question.id)
 
-    print(answered_question_key)
     marks = 0
 
     for i in answered_question_key:
-        print(i)
         question = Question.objects.get(pk=i)
         correct_choice = CorrectChoice.objects.get(question_id=i)
 
         student_answer = student_answer_all.get(student=student, question=question)
-
-        # student_answer = StudentAnswer.objects.all(student=student)
 
         if student_answer.answer == correct_choice.correct_choice:
             marks = marks + question.marks
         elif question.negative is True and student_answer.answer != correct_choice.correct_choice and question.negative_marks is not None:
             if question.marks is not None:
                 marks = marks - question.negative_marks
-    print("marks")
-    print(marks)
 
     marks_of_student, flag = MarksOfStudent.objects.get_or_create(student=Student.objects.get(pk=student),
                                                                   defaults={'marks': 0})
@@ -136,18 +126,8 @@ def markCalculate(request):
     return None
 
 
-#  next ajax request will also submit the question answer
-#  previous will only traverse the question on the page via ajax request
-#  viewing a question again will show that it is unmarked but the grid color will indicate whether you have answered the question or not
-#  again submitting the answer will update the previuos answer
-
-
 def submitAnswer(request):
-    # print ("-----")
-    # print (request.session.get('current'))
-    # print (request.POST.get('answer'))
-    # print (request.session.get('student_id'))
-    # print ('-----')
+
     current = request.session.get('current')
     answer = request.POST.get('answer')
     student_id = request.session.get('student_id')
@@ -165,7 +145,6 @@ def submitAnswer(request):
             data.save()
     except ObjectDoesNotExist:
         print("Object does not found")
-        print("creating new instance")
 
         StudentAnswer.objects.create(answer=choice, question=question, student=student)
 
@@ -184,14 +163,10 @@ def getData(pk, request):
     try:
         radio_checked = StudentAnswer.objects.get(student=student, question=question)
         radio_checked_key = radio_checked.answer.id
-        print("Request for selecting the radio button")
-        print(radio_checked_key)
+
     except ObjectDoesNotExist:
-        pass
         radio_checked_key = None
 
-    # print("question_no {}".format(request.session.get('key_list').index(color_key)+1))
-    # print("Question :{}".format())
     question_no = request.session.get('key_list').index(pk) + 1
 
     for i in range(0, len(choice)):
@@ -199,7 +174,6 @@ def getData(pk, request):
         choice_data.append(data)
 
     if request.method == "POST" and request.POST.get('answer') != '':
-        print("True")
         query_set = {
             "question_no": question_no,
             "question": question.question_text,
@@ -210,7 +184,6 @@ def getData(pk, request):
             "radio_checked_key": radio_checked_key,
         }
     else:
-        print("Method not POST or answer not submitted")
         query_set = {
             "question_no": question_no,
             "question": question.question_text,
@@ -219,12 +192,6 @@ def getData(pk, request):
             "choice_data": choice_data,
             "radio_checked_key": radio_checked_key,
         }
-
-    # query_set = {
-    # "question": question.question_text,
-    # "choices": choices,
-    # }
-
 
     return choice, query_set
 
@@ -241,7 +208,7 @@ def ajaxnext(request):
 
     if request.is_ajax() or request.method == 'POST':
 
-        if (request.POST.get('answer') != ''):
+        if request.POST.get('answer') != '':
             submitAnswer(request)
 
         print(request.POST.get('answer'))
@@ -249,25 +216,15 @@ def ajaxnext(request):
         current = request.session.get('current')
         key_list = request.session.get('key_list')
 
-        print(key_list.index(current))
-        print("before if " + str(current))
-        # if (key_list.index(current) != key_list[-2]):
-        if (key_list.index(current) != len(key_list) - 1):
+        if key_list.index(current) != len(key_list) - 1:
 
-            print(current)
-            print("if is true")
             next = key_list.index(current) + 1
         else:
             next = key_list.index(current)
 
-        print("current"),
-        print(request.session.get('current'))
-        print("index " + str(next))
-        print(key_list[next])
-
         choice, query_set = getData(key_list[next], request)
 
-        if (request.session.get('current') != key_list[-1]):
+        if request.session.get('current') != key_list[-1]:
             request.session['current'] = key_list[next]
 
         return HttpResponse(json.dumps(query_set),
@@ -276,7 +233,6 @@ def ajaxnext(request):
 
 def ajaxprevious(request):
     """
-
     :param request:
     :return:
     """
@@ -284,17 +240,15 @@ def ajaxprevious(request):
         current = request.session.get('current')
         key_list = request.session.get('key_list')
 
-        if (key_list.index(current) >= 1):
-            print(current)
+        if key_list.index(current) >= 1:
+
             previous = key_list.index(current) - 1
         else:
             previous = key_list.index(current)
 
         choice, query_set = getData(key_list[previous], request)
 
-        print(request.session.get('current'))
-
-        if request.session.get(current) != key_list[0]:
+        if request.session.get(current)!= key_list[0]:
             request.session['current'] = key_list[previous]
 
         return HttpResponse(json.dumps(query_set),
@@ -310,30 +264,3 @@ def postajax(request):
         print (data)
         return HttpResponse(json.dumps("['rupanshu']"),
                             content_type="application/json")
-
-
-def ajax_excel(request):
-    create_excel()
-    return HttpResponse(json.dumps("['rupanshu']"), content_type="application/json")
-
-
-def checkstudent(request):
-    student = None
-    try:
-        student_no = request.POST.get('student_no')
-        student = Student.objects.get(student_no=student_no)
-        print student
-    except Exception as e:
-        print(str(e))
-
-    if student is not None:
-        status = True
-    else:
-        status = False
-
-    query_set = {
-        'status': status,
-        'message': "Student Number already exist in the DataBase",
-    }
-
-    return HttpResponse(json.dumps(query_set), content_type="application/json")

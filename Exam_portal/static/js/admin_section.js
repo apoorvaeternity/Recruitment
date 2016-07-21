@@ -2,9 +2,6 @@
  * Created by rupanshu on 13/7/16.
  */
 
-
-//submit without marks
-//negative more than original marks
 var marks_select = 'input[name="marks"]';
 var negative_select = 'input[name="negative"]';
 var negative_marks = 'input[name="negative_marks"]';
@@ -15,19 +12,18 @@ var negative_value;
 //------------------ disable refresh on f5;
 
 
-// function disableButtonsDown(e) {
-//     if ((e.which || e.keyCode) == 116) e.preventDefault();
-// };
-// $(document).on("keydown", disableButtonsDown);
-//
-// //--------------------
+function disableButtonsDown(e) {
+    if ((e.which || e.keyCode) == 116) e.preventDefault();
+}
+$(document).on("keydown", disableButtonsDown);
+
+//--------------------
 
 
 
 $(document).ready(function (e) {
 
     
-
     $('form').on('keyup keypress', function (e) {
         var keyCode = e.keyCode || e.which;
         if (keyCode === 13) {
@@ -80,9 +76,6 @@ $(document).ready(function (e) {
         if (!this.checked) {
             $(negative_marks).attr("disabled",!this.checked);
         }
-
-
-        // $(negative_marks).prop("disabled", !this.checked);
 
         $(negative_marks).val(null);
 

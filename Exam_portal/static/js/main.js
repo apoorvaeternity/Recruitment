@@ -1,15 +1,24 @@
+function disableButtonsDown(e) {
+    if ((e.which || e.keyCode) == 116) e.preventDefault();
+}
+$(document).on("keydown", disableButtonsDown);
 $(document).ready(function (event) {
-    disbale_field();
-    console.log(window.location.pathname);
 
+    $('#endExam').click(function (e) {
+        e.preventDefault();
+        if (window.confirm("You really want to end the Exam")) {
+            window.location.href = "../review/";
+        }
+        else {
+            console.log("Studip Person. :/");
+        }
+    });
+
+    
+    disbale_field();
     if (window.location.pathname == '/exam/review/') {
 
         $("input[type='text'][name='StudentNo']").attr("disabled", true);
-        // $("input[type='text'][name='Name']").attr("disabled", true);
-        // $("input[type='text'][name='Skills']").attr("disabled", true);
-        // $("input[type='textarea'][name='Designer']").attr("disabled", true);
-        // $("#id_Designer_container > textarea").attr("disabled", true);
-
 
     } else {
         console.log("execeuting else");
@@ -19,8 +28,6 @@ $(document).ready(function (event) {
 
 
     ajax_loader = $('#ajax-loader');
-
-    // ajax_loader.css("display","Block");
 
     function show_loader() {
         ajax_loader.css("display", "block");
@@ -43,15 +50,11 @@ $(document).ready(function (event) {
                 data: {'id': deleting_id},
                 url: "../delete/",
                 success: function (status) {
-                    console.log(status);
                     window.location.href = "../edit";
                 }
             });
-        } else {
-            console.log("stupid admin");
         }
     });
-
 
     id_first = $('body > div.container > div > ul > span:nth-child(2) > li').attr('id');
     // console.log(id_first);
@@ -66,27 +69,13 @@ $(document).ready(function (event) {
             type: "GET",
             datatype: 'json',
             data: {'id': id_first},
-            // url: "http://127.0.0.1:8000/exam/update_question/",
             url: "../update_question/",
             success: function (data) {
-                // console.log("successful request");
-                // console.log(data);
-                // console.log(data['question']);
-                // console.log(data['question_id']);
-                // console.log(data['choice']);
-                // console.log(data['negative']);
-                // console.log(data['negative_marks']);
-                // console.log(data['category']);
 
                 question_update(data);
                 disbale_field();
-                // $('#id_question').attr("value","Rupanshu");
-
-
-                // checkmarked(data['radio_checked_key']);
             }
         });
-
 
         entry_flag = false;
         hide_loader();
@@ -109,16 +98,15 @@ $(document).ready(function (event) {
 
             $('input[type="checkbox"][name="negative"]').prop("checked", "checked");
             $('input[type="number"][name="negative_marks"]').attr("value", data['negative_marks']);
-            console.log("executing true");
+            
         }
         else {
             console.log(data['negative_marks']);
             $('input[type="number"][name="negative_marks"]').attr("value", "");
             $('input[type="checkbox"][name="negative"]').removeAttr("checked");
-            console.log("executing false");
 
         }
-        console.log(data['correct_checked']);
+  
 
         $('#question > input[type="text"]:nth-child(1)').attr("value", data['question_id']);
         var checked_string = "input[type='radio'][value=" + data['correct_checked'] + "]";
@@ -126,15 +114,13 @@ $(document).ready(function (event) {
         $(checked_string).prop("checked", true);
 
 
-        //
     }
 
 
-    console.log(true);
+    // console.log(true);
     var entry = 1;
     $('#new_category').click(function (event) {
         event.preventDefault();
-        console.log("Hello inside category");
 
         if ($('#category_list').val() == '' && entry == 1) {
             $('.category').append("<input type='text' name='new_category' placeholder='Name of new category' required/>");
@@ -177,13 +163,14 @@ $(document).ready(function (event) {
     if (flag.length > 0) {
         flagVal = flag.val();
     }
-
+    
 
     if (flagVal == 'true') {
         disableF5(event);
         $(this).bind("contextmenu", function (e) {
             return false;
         });
+
         $.ajax({
             type: "GET",
             datatype: 'json',
@@ -194,16 +181,15 @@ $(document).ready(function (event) {
                 var m = data['time'][1];
                 var s = data['time'][2];
                 var now = new Date();
-                console.log(now.toString());
                 var test_time = new Date(now.getFullYear(), now.getMonth(), now.getDate(), h, m, s);
                 var epoch = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0);
                 var test_duration = Math.floor((Date.parse(test_time) - Date.parse(epoch)) / 1000);
-                console.log(test_duration);
                 var today = new Date();
                 var stop = setInterval(function () {
                     var current = new Date();
                     var diff = Math.floor((Date.parse(current) - Date.parse(today)) / 1000);
-                    console.log(diff);
+                    
+
                     var before_alert = parseInt(data['warn']) * 60;
                     console.log(before_alert);
                     if (diff == test_duration - before_alert) {
@@ -247,30 +233,35 @@ $(document).ready(function (event) {
             selectedVal = selected.val();
             console.log(selectedVal);
         }
-        $.ajax({
-            type: "POST",
-            url: "../next/",
-            datatype: 'json',
-            data: {'answer': selectedVal},
-            success: function (data) {
-                console.log("success");
-                $('input[type="radio"]').each(function () {
-                    $(this).checked = false;
-                });
-                if (data['color']) {
-                    $('#' + data['color'].toString()).css("background-color", '#EC2424');
+        if (selectedVal) {
+            $.ajax({
+                type: "POST",
+                url: "../next/",
+                datatype: 'json',
+                data: {'answer': selectedVal},
+                success: function (data) {
+                    console.log("success");
+                    $('input[type="radio"]').each(function () {
+                        $(this).checked = false;
+                    });
+                    if (data['color']) {
+                        $('#grid').find("#" + data['color'].toString()).css("background-color", '#ae65e4');
+                        // $('#' + data['color'].toString()).css("background-color", '#ae65e4');
+                    }
+                    else {
+                        $('#grid').find("#" + data['color'].toString()).css("background-color", '#ae65e4');
+                        // $('#' + data['color'].toString()).css("background-color", '#ae65e4');
+                    }
+                    loaddata(data);
+                    checkmarked(data['radio_checked_key']);
                 }
-                else {
-                    $('#' + data['color'].toString()).css("background-color", '#EC7724');
-                }
-                loaddata(data);
-                checkmarked(data['radio_checked_key']);
-            }
-        });
+            });
+        }
 
 
     });
 
+    console.log($("#grid").val());
 
     $('#grid').find('li').click(function (event) {
         event.preventDefault();
@@ -317,19 +308,9 @@ $(document).ready(function (event) {
             data: {'id': id},
             url: "../update_question/",
             success: function (data) {
-                // console.log("successful request");
-                // console.log(data);
-                // console.log(data['question']);
-                // console.log(data['question_id']);
-                // console.log(data['choice']);
-                // console.log(data['negative']);
-                // console.log(data['negative_marks']);
-                // console.log(data['category']);
-
+                
                 question_update(data);
                 disbale_field();
-
-                // checkmarked(data['radio_checked_key']);
             }
         });
         hide_loader();
@@ -339,31 +320,24 @@ $(document).ready(function (event) {
 
     // -----
 
-    function disbale_field(){
+    function disbale_field() {
 
-       if( $("input[type='checkbox'][name='negative']").prop("checked") ){
-           $("input[type='number'][name='negative_marks']").removeAttr("disabled");
-           console.log("it is checked");
-       }
+        if ($("input[type='checkbox'][name='negative']").prop("checked")) {
+            $("input[type='number'][name='negative_marks']").removeAttr("disabled");
+            
+        }
         else {
-           $("input[type='number'][name='negative_marks']").attr("disabled", true);
-       }
+            $("input[type='number'][name='negative_marks']").attr("disabled", true);
+        }
     }
+
     // -----
 
 
     $('#previous').click(function (event) {
         event.preventDefault();
-        console.log(event.target.class);
-        console.log("Element have been subitted for previous");
+        
 
-        //selectedVal = null;
-        //
-        //var selected = $("input[type='radio'][name='choice']:checked");
-        //if (selected.length > 0) {
-        //    selectedVal = selected.val();
-        //    console.log(selectedVal);
-        //}
 
         $.ajax({
             type: "GET",
@@ -395,7 +369,7 @@ $(document).ready(function (event) {
 
         if (selected.length > 0) {
             selectedVal = selected.val();
-            console.log(selectedVal);
+
         }
         $.ajax({
             type: "POST",
@@ -404,14 +378,10 @@ $(document).ready(function (event) {
             data: {'answer': selectedVal},
             success: function (data) {
 
-                console.log("success");
-                console.log(data);
-                console.log(data['question']);
-                console.log(data['choices']);
-                console.log(data['color']);
+   
 
                 if (data['color']) {
-                    $('#' + data['color'].toString()).css("background-color", '#6CB741');
+                     $('#grid').find("#" + data['color'].toString()).css("background-color", '#6CB741');
                 }
                 var color = '#3CC541';
                 $('input[type="radio"]').each(function () {
@@ -426,9 +396,11 @@ $(document).ready(function (event) {
 
     function checkmarked(key) {
         console.log(key);
-        var data = $("input[value=" + key.toString() + "]")
-        data.prop("checked", true);
-        console.log("inside that function" + data);
+        if (key) {
+            var data = $("input[value=" + key.toString() + "]")
+            data.prop("checked", true);
+            console.log("inside that function" + data);
+        }
     }
 
     function update_category(key) {
