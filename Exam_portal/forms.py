@@ -117,7 +117,7 @@ class RegistrationForm(forms.Form):
         result = prog.match(std)
 
         if Student.objects.all().filter(student_no=std).exists():
-            raise forms.ValidationError("Roll Number already exist in data base")
+            raise forms.ValidationError("Student Number already exist in data base")
 
         if not bool(result):
             raise forms.ValidationError("Invalid format of Roll number ")

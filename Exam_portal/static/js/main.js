@@ -6,8 +6,6 @@ $(document).on("keydown", disableButtonsDown);
 
 $(document).ready(function (event) {
 
-
-
     $('#endExam').click(function (e) {
         e.preventDefault();
         if (window.confirm("You really want to end the Exam")) {
@@ -17,6 +15,14 @@ $(document).ready(function (event) {
             console.log("Studip Person. :/");
         }
     });
+
+    if(window.location.pathname == "/exam/show/"){
+        $(document).on("keydown keypress keyup", false);
+    }
+
+    if(window.location.pathname == "/exam/review/"){
+        $(document).on("keydown keypress keyup", true);
+    }
 
 
     disbale_field();
@@ -131,7 +137,7 @@ $(document).ready(function (event) {
     $('#category_list').on("change",function () {
 
         $('#question_form > div > div.category').find("input[type='text']").remove();
-        
+
         $('#category_list').prop("required", true);
         added = 1;
         if ($('#category_list').val() == ''){

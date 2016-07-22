@@ -38,6 +38,14 @@ $(document).ready(function (e) {
             $('#time_error').text("Only Integer Values are allowed");
             return false;
         }
+        if( time1 < time2){
+            $('#time_error').text("Prompt time cannot be greater the Exam time.");
+            return false;
+        }
+        if( time1 < 0  && time2 < 0){
+            $('#time_error').text("Time cannot be negative");
+            return false;
+        }
 
         return true;
     }
@@ -55,6 +63,11 @@ $(document).ready(function (e) {
         console.log(marks);
         console.log(negative_value);
 
+        if(marks <= 0){
+            $('.error').css("display", "block");
+            $('.error').text("Marks cannot be negative");
+            return false;
+        }
         if (marks <= negative_value){
             console.log("error");
             $('.error').css("display", "block");
@@ -82,6 +95,10 @@ $(document).ready(function (e) {
             return false;
         }
         else if(c2 == c3){
+            $('#same_error').text("Choices could Not be Same");
+            return false;
+        }
+        else if(c2 == c4){
             $('#same_error').text("Choices could Not be Same");
             return false;
         }
