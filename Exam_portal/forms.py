@@ -1,7 +1,7 @@
 from django import forms
 import re
 from material import Layout, Row,  Column
-from .models import Student
+from .models import Student, Question
 
 # form django.utils.translation import ugettext_lazy as _
 
@@ -29,6 +29,9 @@ class QuestionForm(forms.Form):
     negative = forms.BooleanField(label='has negative marking', required=False)
     negative_marks = forms.IntegerField(label="negative marks", required=False)
 
+    def clean_question(self):
+        print("sddssd")
+        return self.cleaned_data.get('question')
 
 
 class RegistrationForm(forms.Form):

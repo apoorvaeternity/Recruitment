@@ -1,5 +1,3 @@
-# Create your views here.
-from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib import messages
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render,  redirect, Http404
@@ -16,8 +14,9 @@ def check_question_data(request):
 
     obj = Question.objects.all()
     if len(obj) == 0:
-        return False
+        return HttpResponseRedirect(reverse('Exam_portal:notstarted'))
 
+    return True
 
 
 def custom404(request):
@@ -42,7 +41,7 @@ def timer(request):
 
     return HttpResponse(json.dumps(data), content_type='application/json')
 
-@user_passes_test(check_question_data,login_url='/exam/notstarted/')
+
 def end(request):
     test_obj = Question.objects.all();
 
@@ -74,7 +73,7 @@ def end(request):
 
     return render(request, 'Exam_portal/end.html', {})
 
-@user_passes_test(check_question_data,login_url='/exam/notstarted/')
+
 def review(request):
     test_obj = Question.objects.all();
 
@@ -154,7 +153,7 @@ def exam_starter():
 
     return context
 
-@user_passes_test(check_question_data,login_url='/exam/notstarted/')
+
 def show(request):
     test_obj = Question.objects.all();
 
@@ -248,8 +247,9 @@ def show(request):
 
     return render(request, 'Exam_portal/ajax.html', context_variable)
 
-@user_passes_test(check_question_data,login_url='/exam/notstarted/')
+
 def register(request):
+
     test_obj = Question.objects.all();
 
     if len(test_obj) == 0:
@@ -309,14 +309,15 @@ def register(request):
 
     return render(request, 'Exam_portal/register.html', context)
 
-@user_passes_test(check_question_data,login_url='/exam/notstarted/')
+
 def instruction(request):
+    check_question_data(request)
 
     test_obj = Question.objects.all();
 
     if len(test_obj) == 0:
         messages.success(request, " Exam is not Created")
-        return redirect(reverse("Exam_portal:notstarted"))
+        return HttpResponseRedirect(reverse("Exam_portal:notstarted"))
 
     try:
         obj = ExamStarter.objects.get(pk=1)

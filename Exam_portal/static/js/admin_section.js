@@ -38,7 +38,7 @@ $(document).ready(function (e) {
             $('#time_error').text("Only Integer Values are allowed");
             return false;
         }
-        
+
         return true;
     }
 
@@ -90,6 +90,7 @@ $(document).ready(function (e) {
             return false;
         }
 
+        if(marks)
         if (negative_value<0){
             $('.error').css("display", "block");
             $('.error').text("Negative sign is not allowed");
