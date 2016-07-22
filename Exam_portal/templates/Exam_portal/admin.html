@@ -41,12 +41,19 @@
                 <a class="btn btn-link" href="../adminLogout" style="float:right;padding: 15px 15px;font-size:inherit;">logout</a>
             </div>
         {% endif %}
-        <div style="padding: inherit;">
-            <a class="btn btn-link" href="{{ request.META.HTTP_REFERER }}"
-               style="float:right;padding: 15px 15px;font-size:inherit;">back</a>
-        </div>
+{#        <div style="padding: inherit;">#}
+{#            <a class="btn btn-link" href="{{ request.META.HTTP_REFERER }}"#}
+{#               style="float:right;padding: 15px 15px;font-size:inherit;">back</a>#}
+{#        </div>#}
     </div>
 </nav>
+{% if user.is_authenticated  %}
+<div class="container">
+    <ol class="breadcrumb" style="margin-bottom: 5px;">
+        {% block breadcrums %}<li><span>Admin </span></li>{% endblock %}
+    </ol>
+</div>
+{% endif %}
 
 
 <div class="container" id="ajax-loader" style="display: none;">

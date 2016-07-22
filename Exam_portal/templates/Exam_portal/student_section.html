@@ -1,5 +1,8 @@
 {% extends 'Exam_portal/admin.html' %}
-
+{% block breadcrums %}
+    <li><a href="/admin/"><span>Admin</span></a></li>
+    <li><span>Student Section</span></li>
+{% endblock %}
 
 {% block student %}
     <div class="container" xmlns="http://www.w3.org/1999/html">
@@ -7,14 +10,15 @@
             <h3>This Section contain the marks of the student</h3>
         </div>
 
-            {% for student in students %}
-                <div class="panel panel-default">
-                    <div class="panel-body"><span>Name: {{ student.student.name }}</span> <br>
-                        <span >Roll No: {{ student.student.student_no }}</span> <br>
-                        <span>Email: {{ student.student.email }}</span> <span style="float:right;">Marks: <b>{{ student.marks }}</b></span> </div>
+        {% for student in students %}
+            <div class="panel panel-default">
+                <div class="panel-body"><span>Name: {{ student.student.name }}</span> <br>
+                    <span>Roll No: {{ student.student.student_no }}</span> <br>
+                    <span>Email: {{ student.student.email }}</span> <span
+                            style="float:right;">Marks: <b>{{ student.marks }}</b></span></div>
 
-                </div>
-            {% endfor %}
+            </div>
+        {% endfor %}
 
 
     </div>

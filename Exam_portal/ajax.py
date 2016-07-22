@@ -25,6 +25,7 @@ def excel(request):
 def delete(request):
     pk = request.GET.get('id')
 
+
     question = Question.objects.get(pk=int(pk))
 
     try:

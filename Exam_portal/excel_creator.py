@@ -82,8 +82,7 @@ class StudentInformation:
 
 
 def create_excel():
-    print("creating excel")
-    print(os.system("pwd"))
+    
 
     student = StudentInformation()
     student_info = student.student_data()

@@ -43,7 +43,7 @@ class Question(models.Model):
 
 class QuestionChoice(models.Model):
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
-    choice = models.CharField(max_length=225)
+    choice = models.CharField(max_length=2000)
 
     def __str__(self):
         return "<Choice = %s>" % self.choice

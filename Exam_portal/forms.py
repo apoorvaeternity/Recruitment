@@ -21,12 +21,14 @@ class AdminLoginForm(forms.Form):
     password = forms.CharField(widget=forms.PasswordInput())
 
 
-class AdminForm(forms.Form):
+class QuestionForm(forms.Form):
     question = forms.CharField(label='Question Text', max_length=500, required=True,
-                               widget=forms.Textarea(attrs={'class': 'col-sm-6'}))
-    marks = forms.IntegerField(label='marks', required=True)
+                               widget=forms.Textarea(attrs={'class': 'col-sm-6','required':'true'}))
+    marks = forms.IntegerField(label='marks', widget=forms.NumberInput(
+        attrs={"required": "true"}))
     negative = forms.BooleanField(label='has negative marking', required=False)
     negative_marks = forms.IntegerField(label="negative marks", required=False)
+
 
 
 class RegistrationForm(forms.Form):
@@ -46,7 +48,7 @@ class RegistrationForm(forms.Form):
     )
 
     StudentNo = forms.CharField(widget=forms.TextInput(
-        attrs={'type': 'text', 'id': 'icon_prefix', 'class': 'validate',
+        attrs={'type': 'text', 'id': 'icon_student', 'class': 'validate',
                'name': 'student_no'}),
         label='Student No.'
     )

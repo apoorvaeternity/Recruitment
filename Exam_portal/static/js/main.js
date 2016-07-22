@@ -2,7 +2,11 @@ function disableButtonsDown(e) {
     if ((e.which || e.keyCode) == 116) e.preventDefault();
 }
 $(document).on("keydown", disableButtonsDown);
+
+
 $(document).ready(function (event) {
+
+
 
     $('#endExam').click(function (e) {
         e.preventDefault();
@@ -14,8 +18,9 @@ $(document).ready(function (event) {
         }
     });
 
-    
+
     disbale_field();
+
     if (window.location.pathname == '/exam/review/') {
 
         $("input[type='text'][name='StudentNo']").attr("disabled", true);
@@ -25,6 +30,7 @@ $(document).ready(function (event) {
 
 
     }
+
 
 
     ajax_loader = $('#ajax-loader');
@@ -38,6 +44,8 @@ $(document).ready(function (event) {
         ajax_loader.css("display", "none");
         ajax_loader.delay(800);
     }
+
+
 
 
     $('#delete').click(function (e) {
@@ -98,7 +106,7 @@ $(document).ready(function (event) {
 
             $('input[type="checkbox"][name="negative"]').prop("checked", "checked");
             $('input[type="number"][name="negative_marks"]').attr("value", data['negative_marks']);
-            
+
         }
         else {
             console.log(data['negative_marks']);
@@ -106,7 +114,7 @@ $(document).ready(function (event) {
             $('input[type="checkbox"][name="negative"]').removeAttr("checked");
 
         }
-  
+
 
         $('#question > input[type="text"]:nth-child(1)').attr("value", data['question_id']);
         var checked_string = "input[type='radio'][value=" + data['correct_checked'] + "]";
@@ -117,20 +125,33 @@ $(document).ready(function (event) {
     }
 
 
-    // console.log(true);
-    var entry = 1;
+
+    var added = 1;
+    
+    $('#category_list').on("change",function () {
+
+        $('#question_form > div > div.category').find("input[type='text']").remove();
+        
+        $('#category_list').prop("required", true);
+        added = 1;
+        if ($('#category_list').val() == ''){
+             $('#new_category').focus();
+        }
+    })
+    
     $('#new_category').click(function (event) {
         event.preventDefault();
 
-        if ($('#category_list').val() == '' && entry == 1) {
+
+        if ($('#category_list').val() == '' && added == 1) {
             $('.category').append("<input type='text' name='new_category' placeholder='Name of new category' required/>");
-            $('#category_list').attr("disabled", true);
-            entry = 0;
+
+            $('#category_list').removeAttr("required");
+            added = 0;
+
         }
-        else if (entry == 1) {
-            $('.category').append("<input type='text' name='new_category' placeholder='Name of new category' required/>");
-            entry = 0;
-        }
+
+
     });
 
     $('#category').click(function (e) {
@@ -152,18 +173,18 @@ $(document).ready(function (event) {
     });
 
 
-    //Above Code is for admin panel
-
 
     function disableF5(e) {
         if ((e.which || e.keyCode) == 116) e.preventDefault();
-    };
+
+
+    }
     var flagVal = "";
     var flag = $("#timeStarter");
     if (flag.length > 0) {
         flagVal = flag.val();
     }
-    
+
 
     if (flagVal == 'true') {
         disableF5(event);
@@ -185,12 +206,15 @@ $(document).ready(function (event) {
                 var epoch = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0);
                 var test_duration = Math.floor((Date.parse(test_time) - Date.parse(epoch)) / 1000);
                 var today = new Date();
+
+
                 var stop = setInterval(function () {
                     var current = new Date();
                     var diff = Math.floor((Date.parse(current) - Date.parse(today)) / 1000);
-                    
+
 
                     var before_alert = parseInt(data['warn']) * 60;
+
                     console.log(before_alert);
                     if (diff == test_duration - before_alert) {
                         // alert("about to end");
@@ -308,7 +332,7 @@ $(document).ready(function (event) {
             data: {'id': id},
             url: "../update_question/",
             success: function (data) {
-                
+
                 question_update(data);
                 disbale_field();
             }
@@ -324,7 +348,7 @@ $(document).ready(function (event) {
 
         if ($("input[type='checkbox'][name='negative']").prop("checked")) {
             $("input[type='number'][name='negative_marks']").removeAttr("disabled");
-            
+
         }
         else {
             $("input[type='number'][name='negative_marks']").attr("disabled", true);
@@ -336,7 +360,6 @@ $(document).ready(function (event) {
 
     $('#previous').click(function (event) {
         event.preventDefault();
-        
 
 
         $.ajax({
@@ -378,10 +401,9 @@ $(document).ready(function (event) {
             data: {'answer': selectedVal},
             success: function (data) {
 
-   
 
                 if (data['color']) {
-                     $('#grid').find("#" + data['color'].toString()).css("background-color", '#6CB741');
+                    $('#grid').find("#" + data['color'].toString()).css("background-color", '#6CB741');
                 }
                 var color = '#3CC541';
                 $('input[type="radio"]').each(function () {
@@ -440,10 +462,6 @@ $(document).ready(function (event) {
         console.log("checked data");
         console.log(data['radio_checked_key']);
 
-        // radio_string ="input[type='radio'][name='choice'][value="+data['radio_checked_key'].toString()+"]"
-        // console.log(radio_string);
-        // $(radio_string).prop('checked',true);
-        // $('span #question_no').text(data['question_no'] + ".");
 
 
         for (i = 0; i < data['choice_data'].length; i++) {

@@ -1,5 +1,13 @@
 {% extends 'Exam_portal/admin.html' %}
 
+{% block breadcrums %}
+    <li><a href="/admin/"><span>Admin</span></a></li>
+    <li><span>Edit time</span></li>
+{% endblock %}
+
+
+
+
 {% block time %}
     <div class="container" id="time" style="padding: .3%;">
         <div class="jumbotron">
@@ -10,7 +18,7 @@
                     style="display: inline;">{{ time.time.hour }}:{{ time.time.minute }}:00</h3></label>
             <label> Prompt time <h3 style="display: inline;">{{ time.warn_time }} min </h3></label>
         </div>
-        <form method="POST">
+        <form method="POST" id="time_form">
             {% csrf_token %}
             <span class="fields" for="name" style="font-size: larger;">Name of Exam <input type="text" name="name"
                                                                                            value="{{ time.name }}"
@@ -27,18 +35,23 @@
                     </div>
 
                     <div class="col-sm-4">
-                        <div style="margin-bottom: 10px;"><input type="text" col='30' name="minutes" placeholder="Minutes" required></div>
-                        <div style="margin-bottom: 10px;"><input type="text" col='30' name="warn" placeholder="Prompt time" required></div>
+                        <div style="margin-bottom: 10px;"><input type="text" col='30' name="minutes"
+                                                                 placeholder="Minutes" required></div>
+                        <div style="margin-bottom: 10px;"><input type="text" col='30' name="warn"
+                                                                 placeholder="Prompt time" required></div>
 
 
                     </div>
                 </div>
+            <div id="time_error"></div>
             </div>
+
 
             <button class="btn btn-primary">Update the time</button>
             <a class="btn btn-primary" href="../adminchoice">Admin Panel</a>
 
         </form>
+
     </div>
 
 

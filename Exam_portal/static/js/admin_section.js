@@ -7,7 +7,8 @@ var negative_select = 'input[name="negative"]';
 var negative_marks = 'input[name="negative_marks"]';
 var marks;
 var negative_value;
-
+var form_time = 'input[name="minutes"]'
+var warn_time = 'input[name="warn"]'
 
 //------------------ disable refresh on f5;
 
@@ -23,39 +24,111 @@ $(document).on("keydown", disableButtonsDown);
 
 $(document).ready(function (e) {
 
-    
-    $('form').on('keyup keypress', function (e) {
-        var keyCode = e.keyCode || e.which;
-        if (keyCode === 13) {
-            e.preventDefault();
+    $('#time_form').off("submit");
+
+    $("#question_form").off("submit");
+
+
+    function validate_time(){
+        
+        var time1 = $(form_time).val();
+        var time2 = $(warn_time).val();
+        
+        if (isNaN(time1) && isNaN(time2)){
+            $('#time_error').text("Only Integer Values are allowed");
             return false;
         }
-    });
+        
+        return true;
+    }
 
-
-    $('form').submit(function (e) {
-
-        marks = parseInt($(marks_select).val());
-        negative_marks = parseInt($(negative_marks).val());
-
-        if (validate()) {
-            console.log("preventing default");
-            // e.preventDefault();
-        }
-        else {
+    $('#time_form').on("submit",function (e){
+        if(!validate_time()){
             e.preventDefault();
         }
     });
 
 
-    $(marks_select).on("blur", function (e) {
-        marks = parseInt($(this).val());
-        console.log(marks);
-        console.log(window.location.href);
+    function validate_marks(){
+        marks = parseInt($(marks_select).val());
         negative_value = parseInt($(negative_marks).val());
+        console.log(marks);
+        console.log(negative_value);
 
+        if (marks <= negative_value){
+            console.log("error");
+            $('.error').css("display", "block");
+            $('.error').text("Negative marks cannot be more than or equals to actual marks");
+            return false;
+        }
+
+        var c1 = $("#choice1").val();
+        var c2 = $("#choice2").val();
+        var c3 = $("#choice3").val();
+        var c4 = $("#choice4").val();
+        console.log(c1);
+
+        if( c1 == c2 ){
+            $('#same_error').text("Choices could Not be Same");
+            return false;
+
+        }
+        else if(c1 == c3){
+            $('#same_error').text("Choices could Not be Same");
+            return false;
+        }
+        else if(c1 == c4){
+            $('#same_error').text("Choices could Not be Same");
+            return false;
+        }
+        else if(c2 == c3){
+            $('#same_error').text("Choices could Not be Same");
+            return false;
+        }
+        else if(c3 == c4){
+            $('#same_error').text("Choices could Not be Same");
+            return false;
+        }
+
+        if (negative_value<0){
+            $('.error').css("display", "block");
+            $('.error').text("Negative sign is not allowed");
+            return false;
+        }
+
+        return true;
+
+    }
+
+    $("#question_form").on("submit",function (e) {
+        if(!validate_marks()){
+            e.preventDefault();
+        }
     });
 
+    // $('form').submit(function (e) {
+    //
+    //     marks = parseInt($(marks_select).val());
+    //     negative_marks = parseInt($(negative_marks).val());
+    //
+    //     if (validate()) {
+    //         console.log("preventing default");
+    //         // e.preventDefault();
+    //     }
+    //     else {
+    //         e.preventDefault();
+    //     }
+    // });
+
+
+    // $(marks_select).on("blur", function (e) {
+    //     marks = parseInt($(this).val());
+    //     console.log(marks);
+    //     console.log(window.location.href);
+    //     negative_value = parseInt($(negative_marks).val());
+    //
+    // });
+    //
     $(negative_select).change(function () {
 
         console.log(this.checked);
@@ -81,34 +154,34 @@ $(document).ready(function (e) {
 
 
     });
-
-    $(negative_marks).on("blur", function (e) {
-        negative_value = parseInt($(this).val());
-        console.log(jQuery.type(negative_value));
-        console.log(jQuery.type(marks));
-
-        validate();
-    });
-
-    $(marks_select).on("blur", function (e) {
-        validate();
-    });
-
-    function validate() {
-        if (marks <= negative_value) {
-            $('.error').css("display", "block");
-            $('.error').text("Negative marks cannot be more than or equals to actual marks");
-            console.log(jQuery.type(marks));
-            $('#check').attr("disabled", "false");
-            return false;
-        } else {
-            $('.error').css("display", "none");
-            console.log("ssdcsdcs");
-            $('.error').text("");
-            $('#check').removeAttr("disabled");
-            return true;
-        }
-    }
+    //
+    // $(negative_marks).on("blur", function (e) {
+    //     negative_value = parseInt($(this).val());
+    //     console.log(jQuery.type(negative_value));
+    //     console.log(jQuery.type(marks));
+    //
+    //     validate();
+    // });
+    //
+    // $(marks_select).on("blur", function (e) {
+    //     validate();
+    // });
+    //
+    // function validate() {
+    //     if (marks <= negative_value) {
+    //         $('.error').css("display", "block");
+    //         $('.error').text("Negative marks cannot be more than or equals to actual marks");
+    //         console.log(jQuery.type(marks));
+    //         $('#check').attr("disabled", "false");
+    //         return false;
+    //     } else {
+    //         $('.error').css("display", "none");
+    //         console.log("ssdcsdcs");
+    //         $('.error').text("");
+    //         $('#check').removeAttr("disabled");
+    //         return true;
+    //     }
+    // }
 
 
 });
