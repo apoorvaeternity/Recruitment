@@ -24,10 +24,11 @@ urlpatterns = [
     url(r'^student_section/$', views.student_section, name="student"),
     url(r'^adminLogin/$', views.admin_auth, name="admin_auth"),
     url(r'^adminLogout/$', views.logout_admin, name="logout_admin"),
-    # url(r'^checkstudent/$', ajax.checkstudent, name="checkstudent"),
     url(r'^download/$', ajax.excel, name="excel"),
     url(r'^review/$', views.review, name="review"),
     url(r'^switch/$', views.exam_starter_switch, name="switch"),
     url(r'^notstarted/$', views.not_started, name="notstarted"),
+    url(r'^check_grid/$', ajax.check_grid, name="check_grid"),
+    url(r'^login/$', views.login, name="login"),
 
 ]

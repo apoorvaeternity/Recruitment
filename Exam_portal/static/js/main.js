@@ -13,6 +13,37 @@ $(document).ready(function (event) {
     if (window.location.pathname == '/exam/show/'){
         $('.modal-trigger').leanModal();
     }
+    if (window.location.pathname == '/exam/register/'){
+        $('#id_password').on("focus",function (e) {
+            $(this).val = "";
+        })
+    }
+
+    if(window.location.pathname == '/exam/show/'){
+
+        $.ajax({
+            type:"GET",
+            url:"../check_grid/",
+            success:function (data) {
+
+                console.log(data['first']);
+
+                checkmarked(data['first']);
+                for(i=0;i<data['marked'].length;i++){
+                    console.log(data['marked'][i]);
+                    $('#grid').find("#" + data['marked'][i].toString()).css("background-color", '#6CB741');
+                }
+                for(i=0;i<data['marked_review'].length;i++){
+
+                    $('#grid').find("#" + data['marked_review'][i].toString()).css("background-color", '#ae65e4');
+                }
+
+            }
+        })
+
+
+    }
+
 
 
 
@@ -53,6 +84,10 @@ $(document).ready(function (event) {
     if (window.location.pathname == '/exam/review/') {
 
         $("input[type='text'][name='StudentNo']").attr("disabled", true);
+        // $('#id_Password').attr("disabled", true);
+        $("input[type='password'][name='Password']").attr("disabled", true);
+        $("input[type='password'][name='Cnf_Password']").attr("disabled", true);
+
 
     } else {
         console.log("execeuting else");
@@ -291,7 +326,7 @@ $(document).ready(function (event) {
                 type: "POST",
                 url: "../next/",
                 datatype: 'json',
-                data: {'answer': selectedVal},
+                data: {'answer': selectedVal,"marked":true},
                 success: function (data) {
                     console.log("success");
                     console.log(data);
@@ -486,7 +521,7 @@ $(document).ready(function (event) {
         }
         // $("#negative").text(negative.color("red"));
 
-        $('#question').html(data['question_no'] + ". " + data['question'] + negative);
+        $('#question').html("<pre>"+data['question_no'] + ". " + data['question'] + negative+"</pre>");
 
         console.log(data['choice_data'][0][0]);
         console.log(data['choice_data'][0][1]);

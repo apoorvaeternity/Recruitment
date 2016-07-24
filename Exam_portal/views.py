@@ -1,17 +1,16 @@
 from django.contrib import messages
 from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render,  redirect, Http404
+from django.shortcuts import render, redirect, Http404
 from django.core.urlresolvers import reverse
 from django.contrib import auth
 import json
 from django.core.exceptions import ObjectDoesNotExist
-from .forms import RegistrationForm, QuestionForm, AdminLoginForm, ReviewForm
+from .forms import RegistrationForm, QuestionForm, AdminLoginForm, ReviewForm, LoginForm
 from .models import Student, Question, Category, Test, CorrectChoice, MarksOfStudent, ExamStarter
 from .ajax import markCalculate
 
 
 def check_question_data(request):
-
     obj = Question.objects.all()
     if len(obj) == 0:
         return HttpResponseRedirect(reverse('Exam_portal:notstarted'))
@@ -88,9 +87,13 @@ def review(request):
     print(request.session.get('post_data'))
 
     if request.method == "POST":
+        psd = request.session['post_data'].get('Password')
+        cnf_psd = request.session['post_data'].get('Cnf_Password')
         mutable = request.POST._mutable
         request.POST._mutable = True
         request.POST['StudentNo'] = request.session['student_id']
+        request.POST['Password'] = psd
+        request.POST['Cnf_Password'] = cnf_psd
         form = ReviewForm(request.POST or None)
         request.POST._mutable = mutable
 
@@ -165,7 +168,7 @@ def show(request):
     except ObjectDoesNotExist:
         obj = ExamStarter.objects.create(flag=False)
 
-    if obj.flag :
+    if obj.flag:
         print("exam has started")
 
     else:
@@ -248,9 +251,59 @@ def show(request):
     return render(request, 'Exam_portal/ajax.html', context_variable)
 
 
-def register(request):
+def login(request):
+    form = LoginForm()
 
-    test_obj = Question.objects.all();
+    if request.method == "POST":
+        form = LoginForm(request.POST or None)
+
+        if form.is_valid():
+            user = form.cleaned_data.get('username')
+            password = form.cleaned_data.get('password')
+
+            try:
+                student = Student.objects.get(student_no=user)
+            except ObjectDoesNotExist:
+                messages.success(request, "Invalid Student Number")
+                return HttpResponseRedirect(reverse("Exam_portal:login"))
+
+            if student.hosteler:
+                hst = 'y'
+            else:
+                hst = 'n'
+
+            review_data = {
+                'Name': student.name,
+                "Contact": student.contact,
+                "Email": student.email,
+                "Password": student.password,
+                "Cnf_Password": student.cnf_password,
+                "StudentNo": student.student_no,
+                "Branch": student.branch,
+                "Hosteler": hst,
+                "Designer": student.designer,
+                "Skills": student.skills,
+            }
+            print(review_data)
+
+            if password == student.password:
+                request.session['name'] = review_data.get('Name')
+                request.session['student_id'] = user
+                request.session['post_data'] = review_data
+                return HttpResponseRedirect(reverse("Exam_portal:instruction"))
+            else:
+                messages.success(request, "Password Does not match")
+                return HttpResponseRedirect(reverse("Exam_portal:login"))
+
+    context = {
+        'form': form,
+    }
+
+    return render(request, "Exam_portal/login.html", context)
+
+
+def register(request):
+    test_obj = Question.objects.all()
 
     if len(test_obj) == 0:
         messages.success(request, " Exam is not Created")
@@ -264,7 +317,7 @@ def register(request):
         print("exam is started")
 
     else:
-        messages.success(request, " Opps, Looks like the exam is not started yet. Come back later")
+        messages.success(request, "Opps, Looks like the exam is not started yet. Come back later")
         return redirect(reverse("Exam_portal:notstarted"))
 
     form = RegistrationForm()
@@ -279,6 +332,8 @@ def register(request):
             raise Http404("Only POST methods are allowed")
 
         if form.is_valid():
+            password = form.cleaned_data.get("Password")
+            cnf_password = form.cleaned_data.get("Cnf_Password")
             name = form.cleaned_data['Name']
             email = form.cleaned_data['Email']
             contact = form.cleaned_data['Contact']
@@ -294,7 +349,8 @@ def register(request):
             data = Student.objects.create(name=name, student_no=studentno,
                                           branch=branch, contact=contact,
                                           skills=skills, email=email,
-                                          hosteler=hosteler, designer=designer)
+                                          hosteler=hosteler, designer=designer, password=password,
+                                          cnf_password=cnf_password)
             if data:
                 request.session['name'] = name
                 request.session['student_id'] = data.student_no
@@ -311,7 +367,6 @@ def register(request):
 
 
 def instruction(request):
-
     if request.session.get('started'):
         return HttpResponseRedirect(reverse("Exam_portal:show"))
 
@@ -390,12 +445,10 @@ def admin(request):
         'display_not': True,
     }
 
-
     return render(request, "Exam_portal/update.html", query_set)
 
 
 def update_question(question_data):
-
     if question_data['form_data']['negative'] is False and question_data['form_data']['negative_marks'] is None:
         negative_marks = 0
     elif question_data['form_data']['negative'] is False and question_data['form_data']['negative_marks'] is not None:
@@ -404,24 +457,26 @@ def update_question(question_data):
         negative_marks = question_data['form_data']['negative_marks']
 
     try:
-        category = Category.objects.get(category=question_data['category'].encode('ascii','ignore').strip())
+        category = Category.objects.get(category=question_data['category'].encode('ascii', 'ignore').strip())
     except ObjectDoesNotExist:
-        category = Category.objects.create(category=question_data['category'].encode('ascii','ignore').strip())
+        category = Category.objects.create(category=question_data['category'].encode('ascii', 'ignore').strip())
 
-    question = category.question_set.create(question_text=question_data['form_data']['question'].encode('ascii','ignore').strip(),
-                                            negative=question_data['form_data']['negative'],
-                                            negative_marks=negative_marks,
-                                            marks=question_data['form_data']['marks'])
+    question = category.question_set.create(
+        question_text=question_data['form_data']['question'].encode('ascii', 'ignore').strip(),
+        negative=question_data['form_data']['negative'],
+        negative_marks=negative_marks,
+        marks=question_data['form_data']['marks'])
 
     choice = question.questionchoice_set
     choice_data = question_data['choice']
     for i in range(len(choice_data)):
-        choice.create(choice=choice_data[i].encode('ascii','ignore').strip())
+        choice.create(choice=choice_data[i].encode('ascii', 'ignore').strip())
         print (choice_data[i])
 
     CorrectChoice.objects.create(question_id=question,
                                  correct_choice=choice.get(
-                                     choice=choice_data[int(question_data['correct_choice']) - 1].encode('ascii','ignore').strip())
+                                     choice=choice_data[int(question_data['correct_choice']) - 1].encode('ascii',
+                                                                                                         'ignore').strip())
                                  )
     return True
 
@@ -495,13 +550,13 @@ def edit_question(request):
 def edit_again(request, data):
     question = Question.objects.get(pk=data['current_question'])
 
-    question.question_text = data['form_data']['question'].encode('ascii','ignore').strip()
+    question.question_text = data['form_data']['question'].encode('ascii', 'ignore').strip()
 
     choices = question.questionchoice_set.all().order_by('id')
 
     count = 0
     for choice in choices:
-        choice.choice = data['choice'][count].encode('ascii','ignore').strip()
+        choice.choice = data['choice'][count].encode('ascii', 'ignore').strip()
         count += 1
         choice.save()
     if data['form_data']['negative'] is True and data['form_data']['negative_marks'] != 0:
@@ -513,7 +568,7 @@ def edit_again(request, data):
     correct_query_set = question.correctchoice_set.all()
 
     for i in correct_query_set:
-        i.correct_choice = choices[int(data['correct_choice'].encode('ascii','ignore').strip()) - 1]
+        i.correct_choice = choices[int(data['correct_choice'].encode('ascii', 'ignore').strip()) - 1]
         i.save()
 
     question.marks = int(data['form_data']['marks'])
@@ -611,7 +666,7 @@ def adminchoice(request):
     except ObjectDoesNotExist:
         obj = ExamStarter.objects.create(flag=False)
 
-    if obj.flag :
+    if obj.flag:
         context = {
             "button": "Exam is Started",
         }

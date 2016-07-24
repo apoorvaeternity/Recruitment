@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils.encoding import python_2_unicode_compatible
+from tinymce.models import HTMLField
 
 
 @python_2_unicode_compatible
@@ -10,6 +11,8 @@ class Student(models.Model):
     student_no = models.CharField(primary_key=True, max_length=225)  # Stage2 of registration
     branch = models.CharField(max_length=5)  # Stage2 of registration
     contact = models.BigIntegerField()  # Stage1 of registration
+    password = models.CharField(max_length=35, default="rupanshu")
+    cnf_password = models.CharField(max_length=35 ,default="rupanshu")
     skills = models.CharField(max_length=2255)  # Stage3 of registration
     email = models.EmailField()  # Stage1 of registration
     hosteler = models.BooleanField()  # Stage2 of registration
@@ -34,7 +37,7 @@ class Category(models.Model):
 
 @python_2_unicode_compatible
 class Question(models.Model):
-    question_text = models.CharField(max_length=1000)
+    question_text = HTMLField()
     negative = models.BooleanField()
     negative_marks = models.IntegerField(null=True)
     marks = models.IntegerField()
@@ -69,6 +72,7 @@ class StudentAnswer(models.Model):
     answer = models.ForeignKey(QuestionChoice, on_delete=models.CASCADE, null=True)
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
     student = models.ForeignKey(Student, on_delete=models.CASCADE)
+    marked = models.BooleanField(default=False)
 
     def __str__(self):
         return "<Answer = %s>" % self.answer

@@ -1,0 +1,25 @@
+{% extends 'Exam_portal/base.html' %}
+
+
+
+{% block content %}
+
+     {% load material_form %}
+    <div class="container" style="padding: 1%;">
+        <div style="padding: 5%;">
+            <form method="POST" class="viewform">
+                {% csrf_token %}
+
+                {% form %}
+                    {% part form.username prefix %}<i class="mdi-action-account-box prefix"></i>{% endpart %}
+                    {% part form.password prefix %}<i class="mdi-communication-vpn-key prefix"></i>{% endpart %}
+                {% endform %}
+                <button type="submit" name="_submit" class="btn btn-primary btn-lr">
+                    Login
+                </button>
+
+            </form>
+        </div>
+    </div>
+
+{% endblock %}

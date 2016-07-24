@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     # 'material.admin',
     # 'material.frontend',
     'crispy_forms',
+    'tinymce',
 
     # my apps
     'Exam_portal',

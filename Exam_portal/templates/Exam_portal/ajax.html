@@ -46,7 +46,7 @@
     <form style="font-size: larger;">
         {% csrf_token %}
         <div class="container">
-            <div class="container-fluid alert" style="margin-bottom: 10px;">Duration of exam is <b>{{ time }}</b> Min
+            <div class="container-fluid alert" style="margin-bottom: 10px;">Duration of exam is <b>{{ time }}:00</b>
                 <p>You will get an alert in the last <b>{{ warn }}</b> min of exam.</p>
             </div>
 
@@ -85,7 +85,7 @@
 
                             <ul class="collection">
                                 <li class="collection-item" id="question" style="font-size:large;"><span
-                                        id="question_no">{{ instance.question_no }}. </span>{{ instance.question }}<strong><label
+                                        id="question_no">{{ instance.question_no }}. </span><pre>{{ instance.question }}</pre><strong><label
                                         id="negative" style="color: black;margin: 0px; ">
                                 </label></strong>{% if instance.negative %}
                                     <span style="padding: 2%;">&times;</span>{% endif %}</li>

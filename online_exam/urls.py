@@ -26,6 +26,7 @@ urlpatterns = [
     url(r'', include(frontend_urls)),
     url(r'^$', register, name="register"),
     url(r'^godadmin/', admin.site.urls),
+    url(r'', include('tinymce.urls')),
 
 ]
 handler404 = "Exam_portal.views.custom404"

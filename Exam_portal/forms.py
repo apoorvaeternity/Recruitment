@@ -35,6 +35,18 @@ class QuestionForm(forms.Form):
         return self.cleaned_data.get('question')
 
 
+class LoginForm(forms.Form):
+    username = forms.CharField(max_length=80, label="Username", widget=forms.TextInput(
+            attrs={'type': 'text', 'id': 'icon_prefix', 'class': 'validate',
+                   'name': 'name'}))
+    password = forms.CharField(widget=forms.PasswordInput(attrs={"class": "validate"}), label="Password")
+
+    layout = Layout(
+        Row('username'),
+        Row('password'),
+    )
+
+
 class RegistrationForm(forms.Form):
     Name = forms.CharField(max_length=80,
                            label='Name', widget=forms.TextInput(
@@ -50,6 +62,9 @@ class RegistrationForm(forms.Form):
         attrs={'type': 'text', 'id': 'email', 'class': 'validate'}),
         label="Email"
     )
+    Password = forms.CharField(widget=forms.PasswordInput(attrs={"class": "validate"}), label="Password")
+
+    Cnf_Password = forms.CharField(widget=forms.PasswordInput(attrs={"class": "validate"}), label="Confirm Password")
 
     StudentNo = forms.CharField(widget=forms.TextInput(
         attrs={'type': 'text', 'id': 'icon_student', 'class': 'validate',
@@ -85,6 +100,8 @@ class RegistrationForm(forms.Form):
     layout = Layout(
         Row('Name', 'StudentNo'),
         Row('Email', 'Contact'),
+        Row('Password', 'Cnf_Password'),
+
         Row('Branch'),
         Row('Skills'),
         Row(Column('Hosteler'),
@@ -147,6 +164,28 @@ class RegistrationForm(forms.Form):
             raise forms.ValidationError("Invalid Length")
 
         return email
+
+    def clean_Password(self):
+        password = self.cleaned_data.get("Password")
+
+        if len(str(password)) > 35:
+            raise forms.ValidationError("Invalid length of password")
+
+        return password
+
+    def clean_Password_Cnf(self):
+        cnf = self.cleaned_data.get("Cnf_Password")
+
+        if len(str(cnf)) > 35:
+            raise forms.ValidationError("Invalid length of password")
+
+        return cnf
+
+    def clean(self):
+        if 'Password' in self.cleaned_data and 'Cnf_Password' in self.cleaned_data:
+            if self.cleaned_data['Password'] != self.cleaned_data['Cnf_Password']:
+                raise forms.ValidationError("The two password fields did not match.")
+        return self.cleaned_data
 
     def clean_StudentNo(self):
 

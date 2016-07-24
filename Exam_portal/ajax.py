@@ -13,7 +13,7 @@ def excel(request):
 
     excel_path = os.path.dirname(base)
 
-    excel = open("%s/Student_Info.xlsx"%excel_path, "r")
+    excel = open("%s/Student_Info.xlsx" % excel_path, "r")
     output = StringIO.StringIO(excel.read())
     out_content = output.getvalue()
     output.close()
@@ -23,9 +23,49 @@ def excel(request):
     return response
 
 
+def check_grid(request):
+    std_no = request.session.get('student_id')
+
+    std = Student.objects.get(student_no=std_no)
+    submitted = None
+
+
+
+    try:
+        submitted = StudentAnswer.objects.filter(student=std)
+    except Exception:
+        pass
+
+    answered_id = []
+    marked_id = []
+
+
+    if submitted:
+        for id in submitted:
+            if id.marked:
+                marked_id.append(id.question.id)
+            else:
+                answered_id.append(id.question.id)
+
+    first = StudentAnswer.objects.get(question=Question.objects.first(),student=std)
+
+
+    print("submitted--")
+    print(answered_id)
+    print("reviewed--")
+    print(marked_id)
+    query_set = {
+        'marked': answered_id,
+        'first':first.answer.id ,
+        'marked_review': marked_id,
+    }
+    print(query_set.get('first  '))
+
+    return HttpResponse(json.dumps(query_set), content_type="application/json")
+
+
 def delete(request):
     pk = request.GET.get('id')
-
 
     question = Question.objects.get(pk=int(pk))
 
@@ -47,9 +87,7 @@ def question_update(request):
         return HttpResponse(json.dumps(data), content_type="application/json")
 
 
-
 def getUpdate(request, id):
-
     question = Question.objects.get(pk=id)
     print("fetching data")
 
@@ -130,7 +168,6 @@ def markCalculate(request):
 
 
 def submitAnswer(request):
-
     current = request.session.get('current')
     answer = request.POST.get('answer')
     student_id = request.session.get('student_id')
@@ -145,11 +182,18 @@ def submitAnswer(request):
         data = StudentAnswer.objects.get(question=question, student=student)
         if data is not None:
             data.answer = choice
+            if request.POST.get('marked'):
+                data.marked = True
+            else:
+                data.marked = False
             data.save()
     except ObjectDoesNotExist:
         print("Object does not found")
 
-        StudentAnswer.objects.create(answer=choice, question=question, student=student)
+        if request.POST.get("marked"):
+            StudentAnswer.objects.create(answer=choice, question=question, student=student, marked=True)
+        else:
+            StudentAnswer.objects.create(answer=choice, question=question, student=student, marked=False)
 
     return None
 
@@ -180,7 +224,7 @@ def getData(pk, request):
         query_set = {
             "question_no": question_no,
             "question": question.question_text,
-            "category":question.type.id,
+            "category": question.type.id,
             "negative": question.negative,
             "choice_data": choice_data,
             "color": color_key,
@@ -236,8 +280,6 @@ def ajaxnext(request):
                             content_type="application/json")
 
 
-
-
 def ajaxprevious(request):
     """
     :param request:
@@ -255,13 +297,11 @@ def ajaxprevious(request):
 
         choice, query_set = getData(key_list[previous], request)
 
-        if request.session.get(current)!= key_list[0]:
+        if request.session.get(current) != key_list[0]:
             request.session['current'] = key_list[previous]
 
         return HttpResponse(json.dumps(query_set),
                             content_type='application/json')
-
-
 
 
 def postajax(request):
