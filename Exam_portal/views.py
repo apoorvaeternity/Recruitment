@@ -311,6 +311,10 @@ def register(request):
 
 
 def instruction(request):
+
+    if request.session.get('started'):
+        return HttpResponseRedirect(reverse("Exam_portal:show"))
+
     check_question_data(request)
 
     test_obj = Question.objects.all();
@@ -331,7 +335,7 @@ def instruction(request):
     if request.session.get('student_id') is None:
         messages.success(request, "First Register For the exam here")
         return redirect(reverse('Exam_portal:register'))
-
+    request.session.started = True
     return render(request, "Exam_portal/instruction.html", context={})
 
 
@@ -400,11 +404,11 @@ def update_question(question_data):
         negative_marks = question_data['form_data']['negative_marks']
 
     try:
-        category = Category.objects.get(category=question_data['category'])
+        category = Category.objects.get(category=question_data['category'].encode('ascii','ignore').strip())
     except ObjectDoesNotExist:
-        category = Category.objects.create(category=question_data['category'])
+        category = Category.objects.create(category=question_data['category'].encode('ascii','ignore').strip())
 
-    question = category.question_set.create(question_text=question_data['form_data']['question'],
+    question = category.question_set.create(question_text=question_data['form_data']['question'].encode('ascii','ignore').strip(),
                                             negative=question_data['form_data']['negative'],
                                             negative_marks=negative_marks,
                                             marks=question_data['form_data']['marks'])
@@ -412,12 +416,12 @@ def update_question(question_data):
     choice = question.questionchoice_set
     choice_data = question_data['choice']
     for i in range(len(choice_data)):
-        choice.create(choice=choice_data[i])
+        choice.create(choice=choice_data[i].encode('ascii','ignore').strip())
         print (choice_data[i])
 
     CorrectChoice.objects.create(question_id=question,
                                  correct_choice=choice.get(
-                                     choice=choice_data[int(question_data['correct_choice']) - 1])
+                                     choice=choice_data[int(question_data['correct_choice']) - 1].encode('ascii','ignore').strip())
                                  )
     return True
 
@@ -491,13 +495,13 @@ def edit_question(request):
 def edit_again(request, data):
     question = Question.objects.get(pk=data['current_question'])
 
-    question.question_text = data['form_data']['question']
+    question.question_text = data['form_data']['question'].encode('ascii','ignore').strip()
 
     choices = question.questionchoice_set.all().order_by('id')
 
     count = 0
     for choice in choices:
-        choice.choice = data['choice'][count]
+        choice.choice = data['choice'][count].encode('ascii','ignore').strip()
         count += 1
         choice.save()
     if data['form_data']['negative'] is True and data['form_data']['negative_marks'] != 0:
@@ -509,7 +513,7 @@ def edit_again(request, data):
     correct_query_set = question.correctchoice_set.all()
 
     for i in correct_query_set:
-        i.correct_choice = choices[int(data['correct_choice']) - 1]
+        i.correct_choice = choices[int(data['correct_choice'].encode('ascii','ignore').strip()) - 1]
         i.save()
 
     question.marks = int(data['form_data']['marks'])

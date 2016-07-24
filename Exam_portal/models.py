@@ -1,8 +1,9 @@
 from django.db import models
+from django.utils.encoding import python_2_unicode_compatible
 
 
+@python_2_unicode_compatible
 class Student(models.Model):
-
     # create a model with student id and instantiate it with the help of this class constructor
 
     name = models.CharField(max_length=100)  # Stage1 of registration
@@ -20,6 +21,7 @@ class Student(models.Model):
         return "<Name = %s>" % self.name
 
 
+@python_2_unicode_compatible
 class Category(models.Model):
     category = models.CharField(max_length=225)
 
@@ -30,6 +32,7 @@ class Category(models.Model):
         return "Category = %s" % self.category
 
 
+@python_2_unicode_compatible
 class Question(models.Model):
     question_text = models.CharField(max_length=1000)
     negative = models.BooleanField()
@@ -41,6 +44,7 @@ class Question(models.Model):
         return "<Question: %s>" % self.question_text
 
 
+@python_2_unicode_compatible
 class QuestionChoice(models.Model):
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
     choice = models.CharField(max_length=2000)
@@ -49,15 +53,17 @@ class QuestionChoice(models.Model):
         return "<Choice = %s>" % self.choice
 
 
+@python_2_unicode_compatible
 class CorrectChoice(models.Model):
     question_id = models.ForeignKey(Question, on_delete=models.CASCADE,
                                     db_column='question_id')
     correct_choice = models.ForeignKey(QuestionChoice, on_delete=models.CASCADE)
 
     def __str__(self):
-        return "<Correct choice = %s>"%self.correct_choice
+        return "<Correct choice = %s>" % self.correct_choice
 
 
+@python_2_unicode_compatible
 class StudentAnswer(models.Model):
     # answer = models.CharField(max_length=225)
     answer = models.ForeignKey(QuestionChoice, on_delete=models.CASCADE, null=True)
@@ -68,11 +74,15 @@ class StudentAnswer(models.Model):
         return "<Answer = %s>" % self.answer
 
 
+@python_2_unicode_compatible
 class MarksOfStudent(models.Model):
-    student = models.ForeignKey(Student,on_delete=models.CASCADE)
+    student = models.ForeignKey(Student, on_delete=models.CASCADE)
     marks = models.IntegerField()
 
+    def __str__(self):
+        return "<Option= %s>" % self.marks
 
+@python_2_unicode_compatible
 class Test(models.Model):
     # question = models.ForeignKey(Question, on_delete=models.CASCADE)
     name = models.CharField(max_length=225)
@@ -80,11 +90,11 @@ class Test(models.Model):
     warn_time = models.IntegerField(default=1)
 
     def __str__(self):
-        return "<Test name = %s>"%self.name
+        return "<Test name = %s>" % self.name
 
 
+@python_2_unicode_compatible
 class ExamStarter(models.Model):
-
     flag = models.BooleanField(default=False)
 
     def __str__(self):
@@ -96,8 +106,3 @@ class Instructions(models.Model):
     instructions = models.CharField()
 
 '''
-
-
-
-
-

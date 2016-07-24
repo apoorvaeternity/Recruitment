@@ -2,6 +2,47 @@
 
 
 {% block ajax %}
+
+    <div class="container">
+        <a class="btn modal-trigger" style="color:white;background-color: #3f51b5" href="#modal1">Algorithm</a>
+    </div>
+    <!-- Modal Structure -->
+    <div id="modal1" class="modal modal-fixed-footer">
+        <div class="modal-content">
+
+            <ul class="nav nav-tabs">
+                <li class="active"><a href="#tab_a" data-toggle="tab">Algorithm 1</a></li>
+                <li><a href="#tab_b" data-toggle="tab">Algorithm 2</a></li>
+
+            </ul>
+            <div class="tab-content">
+                <div class="tab-pane active" id="tab_a">
+                    <h4>Algorithm 1.</h4>
+                    <p>eget velit. Nullam convallis semper pulvinar. Vestibulum orci velit, dapibus sit amet lacinia nec,
+                            sodales vitae dui. Donec ullamcorper molestie nulla. Nulla posuere viverra hendrerit. Nulla eu vehicula
+                            nisl. Phasellus commodo ipsum at justo bibendum scelerisque. Sed feugiat nisi eget magna volutpat
+                            cursus. Mauris accumsan est non turpis consectetur congue. Cras placerat, lectus id cursus feugiat,
+                            tellus quam aliquam nisi, in ultricies est tortor in leo.</p>
+                </div>
+                <div class="tab-pane" id="tab_b">
+                    <h4>Algorithm 2.</h4>
+                    <p>eget velit. Nullam convallis semper pulvinar. Vestibulum orci velit, dapibus sit amet lacinia nec,
+                            sodales vitae dui. Donec ullamcorper molestie nulla. Nulla posuere viverra hendrerit. Nulla eu vehicula
+                            nisl. Phasellus commodo ipsum at justo bibendum scelerisque. Sed feugiat nisi eget magna volutpat
+                            cursus. Mauris accumsan est non turpis consectetur congue. Cras placerat, lectus id cursus feugiat,
+                            tellus quam aliquam nisi, in ultricies est tortor in leo.
+                    </p>
+                </div>
+
+            </div>
+
+
+        </div>
+        <div class="modal-footer">
+            <a href="#!" class=" modal-action modal-close  btn-flat">close</a>
+        </div>
+    </div>
+
     <form style="font-size: larger;">
         {% csrf_token %}
         <div class="container">
@@ -9,7 +50,7 @@
                 <p>You will get an alert in the last <b>{{ warn }}</b> min of exam.</p>
             </div>
 
-            <div class="alert alert-warning" style="margin-bottom: 0px;display: none;" id="error_message">
+            <div class="alert alert-warning" style="margin-bottom: 3px;display: none;" id="error_message">
                 Your exam is about to end
                 <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
 
@@ -35,7 +76,7 @@
                             <div class="container" style="width: 100%;" id="category">
                                 <ul class="category_list">
                                     {% for category_question_id,category,id in instance.category %}
-                                        <li style="display: inline;padding: 2%;color: black;"
+                                        <li style="display: inline;padding: 2%;color: black;cursor: pointer;"
                                             id="{{ category_question_id }}" class="C{{ id }}">{{ category }}</li>
                                     {% endfor %}
                                 </ul>
@@ -74,7 +115,7 @@
                                 <div class="col-sm-1"></div>
                                 <button class="btn col-sm-3 btn-sm {{ request.session.current }}" type="submit"
                                         id="next"
-                                        style="background-color: #3f51b5;color:white;">Submit and Next
+                                        style="background-color: #3f51b5;color:white;">Submit && Next
                                 </button>
                             </div>
                         </div>
@@ -105,12 +146,14 @@
                          style="margin-top:5%;margin-right:0px;padding-right: 0px;text-align:right;">
 
                         <div class="col-sm-6">
-                            <label> This <span style="padding: 2%;">" &times; "</span> label after a question mean the
+                            <label style="float: left;padding: 2%;;"> This <span style="">" &times; "</span> label after
+                                a question mean the
                                 question have negative marking</label>
                         </div>
                         <div class="col-sm-6">
-                            <label style="padding: 2%; ">If you are Done you can Finish your Exam</label>
-                            <button class="btn " id="endExam" style="background-color: #f44336;">End Exam</button>
+                            <label style="padding: 2%;float: left;">If you are Done you can Finish your Exam</label>
+                            <button class="btn " id="endExam" style="background-color: #f44336;float: left;">End Exam
+                            </button>
                         </div>
 
                     </div>

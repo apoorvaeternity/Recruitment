@@ -20,7 +20,7 @@
         </div>
         <form method="POST" id="time_form">
             {% csrf_token %}
-            <span class="fields" for="name" style="font-size: larger;">Name of Exam <input type="text" name="name"
+            <span class="fields" for="name" style="font-size: larger;">Name of Exam <input type="text" name="name" id="test_name"
                                                                                            value="{{ time.name }}"
                                                                                            placeholder="Name of Examinations"
                                                                                            required></span>
@@ -43,7 +43,7 @@
 
                     </div>
                 </div>
-            <div id="time_error"></div>
+            <div id="time_error" style="color: red;padding: 5px;"></div>
             </div>
 
 

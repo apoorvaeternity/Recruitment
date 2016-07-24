@@ -31,9 +31,16 @@ $(document).ready(function (e) {
 
     function validate_time(){
         
-        var time1 = $(form_time).val();
-        var time2 = $(warn_time).val();
-        
+        var time1 = parseInt($(form_time).val());
+        var time2 = parseInt($(warn_time).val());
+        var time_name = $('#test_name').val();
+
+        if (time_name.toString().length > 20){
+            $('#time_error').text("Invalid test name length");
+            return false;
+
+        }
+
         if (isNaN(time1) && isNaN(time2)){
             $('#time_error').text("Only Integer Values are allowed");
             return false;
@@ -44,6 +51,10 @@ $(document).ready(function (e) {
         }
         if( time1 < 0  && time2 < 0){
             $('#time_error').text("Time cannot be negative");
+            return false;
+        }
+        if(time1 > 1440 && time1 > 1440 ){
+            $('#time_error').text("Invalid Length");
             return false;
         }
 

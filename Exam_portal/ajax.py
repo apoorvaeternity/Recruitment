@@ -1,5 +1,6 @@
 import json, os
 import StringIO
+from django.shortcuts import render
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponse
 from .excel_creator import create_excel
@@ -44,6 +45,7 @@ def question_update(request):
         data = getUpdate(request, id)
 
         return HttpResponse(json.dumps(data), content_type="application/json")
+
 
 
 def getUpdate(request, id):
@@ -91,7 +93,7 @@ def grid(request):
 
         return HttpResponse(json.dumps(query_set),
                             content_type="application/json")
-    return None
+    return render(request, "Exam_portal/404page.html", {})
 
 
 def markCalculate(request):
@@ -192,6 +194,8 @@ def getData(pk, request):
             "negative": question.negative,
             "choice_data": choice_data,
             "radio_checked_key": radio_checked_key,
+            "color_mark": color_key,
+
         }
 
     return choice, query_set
@@ -232,6 +236,8 @@ def ajaxnext(request):
                             content_type="application/json")
 
 
+
+
 def ajaxprevious(request):
     """
     :param request:
@@ -255,7 +261,7 @@ def ajaxprevious(request):
         return HttpResponse(json.dumps(query_set),
                             content_type='application/json')
 
-    return None
+
 
 
 def postajax(request):

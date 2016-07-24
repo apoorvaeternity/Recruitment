@@ -1,6 +1,6 @@
 from django import forms
 import re
-from material import Layout, Row,  Column
+from material import Layout, Row, Column
 from .models import Student, Question
 
 # form django.utils.translation import ugettext_lazy as _
@@ -16,6 +16,7 @@ BRANCH_CHOICES = (('cse', 'CSE'),
 YES_OR_NO = (('y', 'yes'),
              ('n', 'no'))
 
+
 class AdminLoginForm(forms.Form):
     username = forms.CharField(max_length=30)
     password = forms.CharField(widget=forms.PasswordInput())
@@ -23,7 +24,7 @@ class AdminLoginForm(forms.Form):
 
 class QuestionForm(forms.Form):
     question = forms.CharField(label='Question Text', max_length=500, required=True,
-                               widget=forms.Textarea(attrs={'class': 'col-sm-6','required':'true'}))
+                               widget=forms.Textarea(attrs={'class': 'col-sm-6', 'required': 'true'}))
     marks = forms.IntegerField(label='marks', widget=forms.NumberInput(
         attrs={"required": "true"}))
     negative = forms.BooleanField(label='has negative marking', required=False)
@@ -91,28 +92,66 @@ class RegistrationForm(forms.Form):
             )
     )
 
+    def clean_Skills(self):
+        skills = self.cleaned_data.get('Skills')
+
+        if len(str(skills)) > 1500:
+            raise forms.ValidationError("Invalid length ")
+
+        return skills
+
+
+    def clean_Name(self):
+        name = self.cleaned_data.get('Name')
+
+        re = "^[a-zA-Z' ]"
+
+        if len(str(name)) > 100:
+            raise forms.ValidationError("Invalid length ")
+
+        return name
+
+    def clean_Designer(self):
+        dsg = self.cleaned_data.get("Designer")
+
+        if len(str(dsg)) > 200:
+            raise forms.ValidationError("Invalid length ")
+
+        return dsg
+
     def clean_Contact(self):
         contact = self.cleaned_data.get('Contact')
+        patt = "^[7-9][0-9]{9}"
+        pro = re.compile(patt)
+        result = pro.match(str(contact))
+
+        if not bool(result):
+            raise forms.ValidationError("Invalid Contact number format ")
+
         if len(str(contact)) != 10:
-            raise forms.ValidationError("Invalid length of mobile number")
+            raise forms.ValidationError("Invalid Contact number format ")
         return contact
+
 
     def clean_Email(self):
         email = self.cleaned_data.get("Email")
 
-        pattern = "(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)"
+        pattern = "^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$"
         prog = re.compile(pattern)
         result = prog.match(email)
 
         if not bool(result):
             raise forms.ValidationError("Invalid Email address. Use a valid email address.")
 
+        if len(str(email)) > 60:
+            raise forms.ValidationError("Invalid Length")
+
         return email
 
     def clean_StudentNo(self):
 
         std = self.cleaned_data.get('StudentNo')
-        pattern = '^\d{7}[Dd]{0,1}$'
+        pattern = '^\d{7}[D]{0,1}$'
         prog = re.compile(pattern)
         result = prog.match(std)
 
@@ -120,10 +159,11 @@ class RegistrationForm(forms.Form):
             raise forms.ValidationError("Student Number already exist in data base")
 
         if not bool(result):
-            raise forms.ValidationError("Invalid format of Roll number ")
+            raise forms.ValidationError("Invalid format of Student number ")
         return std
 
 
 class ReviewForm(RegistrationForm):
+
     def clean_StudentNo(self):
         return self.cleaned_data.get('StudentNo')

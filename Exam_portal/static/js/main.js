@@ -4,11 +4,30 @@ function disableButtonsDown(e) {
 $(document).on("keydown", disableButtonsDown);
 
 
+//encode('ascii',ignore).strip()
+
 $(document).ready(function (event) {
+
+    // the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered
+
+    if (window.location.pathname == '/exam/show/'){
+        $('.modal-trigger').leanModal();
+    }
+
+
+
+    $('input').on("blur",function (e){
+        $(this).removeClass('valid');
+    });
+    $('textarea').on("blur",function (e){
+        $(this).removeClass('valid');
+    });
+
+
 
     $('#endExam').click(function (e) {
         e.preventDefault();
-        if (window.confirm("You really want to end the Exam")) {
+        if (window.confirm("Do you really want to end the Exam ?")) {
             window.location.href = "../review/";
         }
         else {
@@ -17,6 +36,10 @@ $(document).ready(function (event) {
     });
 
     if(window.location.pathname == "/exam/show/"){
+        $(document).on("keydown keypress keyup", false);
+    }
+
+    if(window.location.pathname == "/exam/instruction/"){
         $(document).on("keydown keypress keyup", false);
     }
 
@@ -133,7 +156,7 @@ $(document).ready(function (event) {
 
 
     var added = 1;
-    
+
     $('#category_list').on("change",function () {
 
         $('#question_form > div > div.category').find("input[type='text']").remove();
@@ -144,7 +167,7 @@ $(document).ready(function (event) {
              $('#new_category').focus();
         }
     })
-    
+
     $('#new_category').click(function (event) {
         event.preventDefault();
 
@@ -234,7 +257,7 @@ $(document).ready(function (event) {
                     if (diff == test_duration) {
                         clearInterval(stop);
 
-                        window.location.href = "../end"
+                        window.location.href = "../review/"
 
                     }
                     var seconds = diff % 60;
@@ -263,7 +286,7 @@ $(document).ready(function (event) {
             selectedVal = selected.val();
             console.log(selectedVal);
         }
-        if (selectedVal) {
+
             $.ajax({
                 type: "POST",
                 url: "../next/",
@@ -271,22 +294,27 @@ $(document).ready(function (event) {
                 data: {'answer': selectedVal},
                 success: function (data) {
                     console.log("success");
+                    console.log(data);
                     $('input[type="radio"]').each(function () {
                         $(this).checked = false;
                     });
-                    if (data['color']) {
+                    if (data['color'] !== undefined) {
                         $('#grid').find("#" + data['color'].toString()).css("background-color", '#ae65e4');
                         // $('#' + data['color'].toString()).css("background-color", '#ae65e4');
                     }
-                    else {
-                        $('#grid').find("#" + data['color'].toString()).css("background-color", '#ae65e4');
+                    else{
+                        $('#grid').find("#" + data['color_mark'].toString()).css("background-color", '#ae65e4');
                         // $('#' + data['color'].toString()).css("background-color", '#ae65e4');
                     }
+
+
+
+
                     loaddata(data);
                     checkmarked(data['radio_checked_key']);
                 }
             });
-        }
+
 
 
     });
