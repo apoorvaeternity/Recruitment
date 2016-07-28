@@ -66,9 +66,9 @@ $(document).ready(function (event) {
         }
     });
 
-    if(window.location.pathname == "/exam/show/"){
-        $(document).on("keydown keypress keyup", false);
-    }
+    // if(window.location.pathname == "/exam/show/"){
+    //     $(document).on("keydown keypress keyup", false);
+    // }
 
     if(window.location.pathname == "/exam/instruction/"){
         $(document).on("keydown keypress keyup", false);
@@ -157,6 +157,8 @@ $(document).ready(function (event) {
     function question_update(data) {
 
         $('#id_question').attr("value", data['question']);
+        $('#category_display').text("Category: "+data["type"]);
+        console.log(data["type"]);
         // $('#id_question').append(data['question']);
         $('#id_question').val('');
         $('#id_question').val($('#id_question').val() + data['question']);
@@ -510,7 +512,7 @@ $(document).ready(function (event) {
         console.log('category');
         console.log(data['category']);
 
-        update_category(data['category']);
+            update_category(data['category']);
 
         if (data['negative'] == true) {
             var negative = "<span style='padding: 2%;'>&times;</span>";

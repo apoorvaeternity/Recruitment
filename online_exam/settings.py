@@ -41,10 +41,11 @@ INSTALLED_APPS = [
 
     # Third party app
     'material',
+    'ckeditor_uploader',
     # 'material.admin',
     # 'material.frontend',
     'crispy_forms',
-    'tinymce',
+
 
     # my apps
     'Exam_portal',
@@ -136,3 +137,14 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = '/home/rupanshu/Desktop/quiz_portal/static'
+
+# for ck editor
+CKEDITOR_JQUERY_URL = '//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js'
+
+CKEDITOR_CONFIGS = {
+    'default': {
+        'toolbar': 'full',
+        'height': 300,
+        'width': 300,
+    },
+}

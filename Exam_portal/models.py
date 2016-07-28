@@ -1,6 +1,8 @@
 from django.db import models
 from django.utils.encoding import python_2_unicode_compatible
-from tinymce.models import HTMLField
+
+
+
 
 
 @python_2_unicode_compatible
@@ -15,7 +17,8 @@ class Student(models.Model):
     cnf_password = models.CharField(max_length=35 ,default="rupanshu")
     skills = models.CharField(max_length=2255)  # Stage3 of registration
     email = models.EmailField()  # Stage1 of registration
-    hosteler = models.BooleanField()  # Stage2 of registration
+    hosteler = models.BooleanField()  # Stage2 of
+    refresh_flag = models.IntegerField(default=0)
     designer = models.CharField(
         "Mention any software you worked on(photoshop etc)",
         max_length=225)  # Stage3 of registration
@@ -37,7 +40,7 @@ class Category(models.Model):
 
 @python_2_unicode_compatible
 class Question(models.Model):
-    question_text = HTMLField()
+    question_text = models.CharField(max_length=1000)
     negative = models.BooleanField()
     negative_marks = models.IntegerField(null=True)
     marks = models.IntegerField()

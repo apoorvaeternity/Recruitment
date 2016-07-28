@@ -29,8 +29,6 @@ def check_grid(request):
     std = Student.objects.get(student_no=std_no)
     submitted = None
 
-
-
     try:
         submitted = StudentAnswer.objects.filter(student=std)
     except Exception:
@@ -39,7 +37,6 @@ def check_grid(request):
     answered_id = []
     marked_id = []
 
-
     if submitted:
         for id in submitted:
             if id.marked:
@@ -47,8 +44,7 @@ def check_grid(request):
             else:
                 answered_id.append(id.question.id)
 
-    first = StudentAnswer.objects.get(question=Question.objects.first(),student=std)
-
+    first = StudentAnswer.objects.get(question=Question.objects.first(), student=std)
 
     print("submitted--")
     print(answered_id)
@@ -56,7 +52,7 @@ def check_grid(request):
     print(marked_id)
     query_set = {
         'marked': answered_id,
-        'first':first.answer.id ,
+        'first': first.answer.id,
         'marked_review': marked_id,
     }
     print(query_set.get('first  '))
@@ -107,6 +103,7 @@ def getUpdate(request, id):
     print(correct_radio_checked + 1)
 
     data = {
+        "type": question.type.category,
         "question": question.question_text,
         "question_id": question.id,
         "marks": question.marks,

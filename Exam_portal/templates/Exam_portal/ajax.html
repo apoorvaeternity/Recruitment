@@ -84,8 +84,8 @@
                             {#                    ------------------- Category End --------------------------------------#}
 
                             <ul class="collection">
-                                <li class="collection-item" id="question" style="font-size:large;"><span
-                                        id="question_no">{{ instance.question_no }}. </span><pre>{{ instance.question }}</pre><strong><label
+                                <li class="collection-item" id="question" style="font-size:large;"><pre><span
+                                        id="question_no">{{ instance.question_no }}. </span>{{ instance.question }}</pre><strong><label
                                         id="negative" style="color: black;margin: 0px; ">
                                 </label></strong>{% if instance.negative %}
                                     <span style="padding: 2%;">&times;</span>{% endif %}</li>
@@ -104,19 +104,25 @@
                                 </div>
                             </ul>
 
-                            <div class="container-fluid row" style="padding: 0px;margin: 0px;">
-                                <button class="btn btn-sm col-sm-3" type="submit" id="previous"
-                                        style="color:white;background-color: #3f51b5">Previous
-                                </button>
-                                <div class="col-sm-1"></div>
-                                <button class="btn btn-sm col-sm-4" type="submit" id="mark"
-                                        style="color:white;background:#f44336;">Mark for Review
-                                </button>
-                                <div class="col-sm-1"></div>
-                                <button class="btn col-sm-3 btn-sm {{ request.session.current }}" type="submit"
-                                        id="next"
-                                        style="background-color: #3f51b5;color:white;">Submit && Next
-                                </button>
+                            <div class="container-fluid" style="padding: 2px;margin: 0px;">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <button class="btn" type="submit" id="previous"
+                                                style="color:white;background-color: #3f51b5;   ">Previous
+                                        </button>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <button class="btn" type="submit" id="mark"
+                                                style="color:white;background:#f44336;">Mark for Review
+                                        </button>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <button class="btn  {{ request.session.current }}" type="submit"
+                                                id="next"
+                                                style="background-color: #3f51b5;color:white;">Submit & Next
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         {#                    ---------------------- question grid-------------------------#}

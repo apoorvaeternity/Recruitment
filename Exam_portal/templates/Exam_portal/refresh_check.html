@@ -1,0 +1,23 @@
+{% extends "Exam_portal/admin.html" %}
+
+
+
+{% block content %}
+
+    <div class="container">
+            <h3>These Students were found guilty cheating or refreshing</h3>
+
+            {{ title }}
+            {% for student in students %}
+            <div class="panel panel-default">
+                <div class="panel-body"><span>Name: {{ student.name }}</span> <br>
+                    <span>Roll No: {{ student.student_no }}</span> <br>
+                    <span>Email: {{ student.email }}</span>
+                </div>
+
+            </div>
+        {% endfor %}
+
+    </div>
+
+{% endblock %}

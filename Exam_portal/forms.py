@@ -2,7 +2,7 @@ from django import forms
 import re
 from material import Layout, Row, Column
 from .models import Student, Question
-
+from ckeditor.widgets import CKEditorWidget
 # form django.utils.translation import ugettext_lazy as _
 
 BRANCH_CHOICES = (('cse', 'CSE'),
@@ -25,6 +25,9 @@ class AdminLoginForm(forms.Form):
 class QuestionForm(forms.Form):
     question = forms.CharField(label='Question Text', max_length=500, required=True,
                                widget=forms.Textarea(attrs={'class': 'col-sm-6', 'required': 'true'}))
+
+
+    # question = forms.CharField(widget=CKEditorWidget())
     marks = forms.IntegerField(label='marks', widget=forms.NumberInput(
         attrs={"required": "true"}))
     negative = forms.BooleanField(label='has negative marking', required=False)

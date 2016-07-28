@@ -16,10 +16,7 @@
         input {
             background-color: white;
             border-image-source: initial;
-{#            border-image-slice: initial;#}
-{#            border-image-width: initial;#}
-{#            border-image-outset: initial;#}
-            border-image-repeat: initial;
+        {#            border-image-slice: initial;#}{#            border-image-width: initial;#}{#            border-image-outset: initial;#} border-image-repeat: initial;
             border-width: 1px;
 
             border-color: #A9A9A7;
@@ -37,7 +34,7 @@
             <a class="btn btn-primary" href="../admin">Add Question</a>
 
             <div class="row">
-            <h2>You can Edit Questions here.</h2>
+                <h2>You can Edit Questions here.</h2>
             </div>
         {% else %}
             <a class="btn btn-primary" href="../edit">Edit question</a>
@@ -77,7 +74,8 @@
 
 
 
-        <form method="POST" class="viewform" id="question_form" {% comment %}action={% url 'Exam_portal:admin' %}{% endcomment %}>
+        <form method="POST" class="viewform"
+              id="question_form" {% comment %}action={% url 'Exam_portal:admin' %}{% endcomment %}>
             {% csrf_token %}
             {#        <div name="current"  value="3"></div>#}
             {#        {{ question }}#}
@@ -112,33 +110,43 @@
                 {% endif %}
                 <div class="question_section">
 
+
                     <div class="row" id="question">
+                        <div id="category_display">
+
+                        </div>
+
+                        {{ form.media }}
                         <input type="text" name="current" style="display: none" value="{{ question.id }}"/>
                         <label>{{ form.question.label }} </label>
-                        <p > {{ form.question }}</p>
+                        <p> {{ form.question }}</p>
                     </div>
                     <div id="choice_section" class="container">
-                    <div class="row" style="padding-top:1%; "><input type="text" name='choice1' id="choice1" placeHolder="Option1" required><input
-                            type='radio'
-                            name='correct_choice'
-                            value="1"
-                            id="1"
-                            required style="margin-left:10px; "/></div>
-                    <div class="row" style="padding-top:1%; "><input type="text" name='choice2' id="choice2" placeHolder="Option2" required><input
-                            type='radio'
-                            name='correct_choice'
-                            value="2"
-                            required style="margin-left:10px;"/></div>
-                    <div class="row" style="padding-top:1%; "><input type="text" name='choice3' id="choice3" placeHolder="Option3" required><input
-                            type='radio'
-                            name='correct_choice'
-                            value="3"
-                            required style="margin-left:10px;"/></div>
-                    <div class="row" style="padding-top:1%; "><input type="text" name='choice4' id="choice4" placeHolder="Option4" required><input
-                            type='radio'
-                            name='correct_choice'
-                            value="4"
-                            required style="margin-left:10px;"/></div>
+                        <div class="row" style="padding-top:1%; "><input type="text" name='choice1' id="choice1"
+                                                                         placeHolder="Option1" required><input
+                                type='radio'
+                                name='correct_choice'
+                                value="1"
+                                id="1"
+                                required style="margin-left:10px; "/></div>
+                        <div class="row" style="padding-top:1%; "><input type="text" name='choice2' id="choice2"
+                                                                         placeHolder="Option2" required><input
+                                type='radio'
+                                name='correct_choice'
+                                value="2"
+                                required style="margin-left:10px;"/></div>
+                        <div class="row" style="padding-top:1%; "><input type="text" name='choice3' id="choice3"
+                                                                         placeHolder="Option3" required><input
+                                type='radio'
+                                name='correct_choice'
+                                value="3"
+                                required style="margin-left:10px;"/></div>
+                        <div class="row" style="padding-top:1%; "><input type="text" name='choice4' id="choice4"
+                                                                         placeHolder="Option4" required><input
+                                type='radio'
+                                name='correct_choice'
+                                value="4"
+                                required style="margin-left:10px;"/></div>
                     </div>
                     <div id="same_error" style="color: red;">
 

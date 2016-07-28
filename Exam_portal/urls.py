@@ -30,5 +30,6 @@ urlpatterns = [
     url(r'^notstarted/$', views.not_started, name="notstarted"),
     url(r'^check_grid/$', ajax.check_grid, name="check_grid"),
     url(r'^login/$', views.login, name="login"),
+    url(r'^refresh/$', views.refresh, name="refresh"),
 
 ]

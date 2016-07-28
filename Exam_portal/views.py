@@ -64,6 +64,10 @@ def end(request):
     # print(request.session['post_data'])
     # print(request.session['student_id'])
 
+    # s = Student.objects.get(student_no=request.session['student_id'])
+    # s.refresh_flag = 0
+    # s.save()
+
     del request.session['student_id']
     del request.session['post_data']
     del request.session['name']
@@ -160,6 +164,8 @@ def exam_starter():
 def show(request):
     test_obj = Question.objects.all();
 
+
+
     if len(test_obj) == 0:
         messages.success(request, " Exam is not Created")
         return redirect(reverse("Exam_portal:notstarted"))
@@ -180,6 +186,15 @@ def show(request):
         return redirect(reverse('Exam_portal:register'))
 
     category1 = Category.objects.all()
+
+    s = Student.objects.get(student_no=request.session.get('student_id'))
+
+    if s.refresh_flag == 1:
+        s.refresh_flag = 2
+        s.save()
+    elif s.refresh_flag == 2:
+        s.refresh_flag = 0
+        s.save()
 
     print (category1)
     if len(category1) == 0:
@@ -372,7 +387,7 @@ def instruction(request):
 
     check_question_data(request)
 
-    test_obj = Question.objects.all();
+    test_obj = Question.objects.all()
 
     if len(test_obj) == 0:
         messages.success(request, " Exam is not Created")
@@ -390,8 +405,31 @@ def instruction(request):
     if request.session.get('student_id') is None:
         messages.success(request, "First Register For the exam here")
         return redirect(reverse('Exam_portal:register'))
+
     request.session.started = True
+
+    s = Student.objects.get(student_no=request.session.get("student_id"))
+    if s.refresh_flag == 2:
+        s.refresh_flag = 2
+    else:
+        s.refresh_flag = 1
+    s.save()
+
     return render(request, "Exam_portal/instruction.html", context={})
+
+
+def refresh(request):
+    s = Student.objects.filter(refresh_flag=0)
+
+    for a in s:
+        print (a)
+
+    context = {
+        "title": "Students who refreshed ",
+        "students": s,
+    }
+
+    return render(request, "Exam_portal/refresh_check.html", context)
 
 
 def admin(request):
