@@ -10,30 +10,30 @@ $(document).ready(function (event) {
 
     // the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered
 
-    if (window.location.pathname == '/exam/show/'){
+    if (window.location.pathname == '/exam/show/') {
         $('.modal-trigger').leanModal();
     }
-    if (window.location.pathname == '/exam/register/'){
-        $('#id_password').on("focus",function (e) {
+    if (window.location.pathname == '/exam/register/') {
+        $('#id_password').on("focus", function (e) {
             $(this).val = "";
         })
     }
 
-    if(window.location.pathname == '/exam/show/'){
+    if (window.location.pathname == '/exam/show/') {
 
         $.ajax({
-            type:"GET",
-            url:"../check_grid/",
-            success:function (data) {
+            type: "GET",
+            url: "../check_grid/",
+            success: function (data) {
 
                 console.log(data['first']);
 
                 checkmarked(data['first']);
-                for(i=0;i<data['marked'].length;i++){
+                for (i = 0; i < data['marked'].length; i++) {
                     console.log(data['marked'][i]);
                     $('#grid').find("#" + data['marked'][i].toString()).css("background-color", '#6CB741');
                 }
-                for(i=0;i<data['marked_review'].length;i++){
+                for (i = 0; i < data['marked_review'].length; i++) {
 
                     $('#grid').find("#" + data['marked_review'][i].toString()).css("background-color", '#ae65e4');
                 }
@@ -45,15 +45,12 @@ $(document).ready(function (event) {
     }
 
 
-
-
-    $('input').on("blur",function (e){
+    $('input').on("blur", function (e) {
         $(this).removeClass('valid');
     });
-    $('textarea').on("blur",function (e){
+    $('textarea').on("blur", function (e) {
         $(this).removeClass('valid');
     });
-
 
 
     $('#endExam').click(function (e) {
@@ -66,17 +63,17 @@ $(document).ready(function (event) {
         }
     });
 
-    // if(window.location.pathname == "/exam/show/"){
+    // if (window.location.pathname == "/exam/show/") {
     //     $(document).on("keydown keypress keyup", false);
     // }
-
-    if(window.location.pathname == "/exam/instruction/"){
-        $(document).on("keydown keypress keyup", false);
-    }
-
-    if(window.location.pathname == "/exam/review/"){
-        $(document).on("keydown keypress keyup", true);
-    }
+    //
+    // if (window.location.pathname == "/exam/instruction/") {
+    //     $(document).on("keydown keypress keyup", false);
+    // }
+    //
+    // if (window.location.pathname == "/exam/review/") {
+    //     $(document).on("keydown keypress keyup", true);
+    // }
 
 
     disbale_field();
@@ -96,7 +93,6 @@ $(document).ready(function (event) {
     }
 
 
-
     ajax_loader = $('#ajax-loader');
 
     function show_loader() {
@@ -108,8 +104,6 @@ $(document).ready(function (event) {
         ajax_loader.css("display", "none");
         ajax_loader.delay(800);
     }
-
-
 
 
     $('#delete').click(function (e) {
@@ -157,7 +151,7 @@ $(document).ready(function (event) {
     function question_update(data) {
 
         $('#id_question').attr("value", data['question']);
-        $('#category_display').text("Category: "+data["type"]);
+        $('#category_display').text("Category: " + data["type"]);
         console.log(data["type"]);
         // $('#id_question').append(data['question']);
         $('#id_question').val('');
@@ -191,17 +185,16 @@ $(document).ready(function (event) {
     }
 
 
-
     var added = 1;
 
-    $('#category_list').on("change",function () {
+    $('#category_list').on("change", function () {
 
         $('#question_form > div > div.category').find("input[type='text']").remove();
 
         $('#category_list').prop("required", true);
         added = 1;
-        if ($('#category_list').val() == ''){
-             $('#new_category').focus();
+        if ($('#category_list').val() == '') {
+            $('#new_category').focus();
         }
     })
 
@@ -239,12 +232,12 @@ $(document).ready(function (event) {
     });
 
 
-
     function disableF5(e) {
         if ((e.which || e.keyCode) == 116) e.preventDefault();
 
 
     }
+
     var flagVal = "";
     var flag = $("#timeStarter");
     if (flag.length > 0) {
@@ -264,47 +257,116 @@ $(document).ready(function (event) {
             url: '../timer',
 
             success: function (data) {
-                var h = data['time'][0];
-                var m = data['time'][1];
-                var s = data['time'][2];
-                var now = new Date();
-                var test_time = new Date(now.getFullYear(), now.getMonth(), now.getDate(), h, m, s);
-                var epoch = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0);
-                var test_duration = Math.floor((Date.parse(test_time) - Date.parse(epoch)) / 1000);
-                var today = new Date();
+                // var h = data['time'][0];
+                // var m = data['time'][1];
+                // var s = data['time'][2];
+                // var now = new Date();
+                // var test_time = new Date(now.getFullYear(), now.getMonth(), now.getDate(), h, m, s);
+                // var epoch = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0);
+                // var test_duration = Math.floor((Date.parse(test_time) - Date.parse(epoch)) / 1000);
+                // var today = new Date();
+
+                var HOUR = data['time'][0];
+                var MIN = data['time'][1];
+                var SEC = data['time'][2];
+                var duration = HOUR * 60 * 60 + MIN * 60 + SEC;
+                var time = duration;
+                var BEFORE_ALERT = parseInt(data['warn']) * 60;
+                var h, m, s;
+                console.log(m);
 
 
-                var stop = setInterval(function () {
-                    var current = new Date();
-                    var diff = Math.floor((Date.parse(current) - Date.parse(today)) / 1000);
+                var myVar = setInterval(myTimer, 1000);
 
+                function myTimer() {
 
-                    var before_alert = parseInt(data['warn']) * 60;
+                    h = parseInt(duration / 3600);
+                    m = parseInt((duration - h * 60 *60)/ 60);
+                    s = parseInt(duration % 60);
 
-                    console.log(before_alert);
-                    if (diff == test_duration - before_alert) {
-                        // alert("about to end");
+                    h = h < 10 ? "0" + h : h;
+                    m = m < 10 ? "0" + m : m;
+                    s = s < 10 ? "0" + s : s;
+                    document.getElementById("time").innerHTML = h + ':' + m + ':' + s;
 
+                    if (HOUR * 60 * 60 + MIN * 60 + SEC - BEFORE_ALERT == parseInt(h) * 60 * 60 + parseInt(m) * 60 + parseInt(s)) {
                         $('#error_message').css("display", "block");
 
                         // $('#chip').css({"border": "solid 4px red", "padding": "2px"});
-
                     }
 
-                    if (diff == test_duration) {
-                        clearInterval(stop);
-
+                    if (s == 0 && m == 0 && h == 0) {
+                        clearInterval(myVar);
                         window.location.href = "../review/"
+                    }
+
+                    else {
+                        --duration;
 
                     }
-                    var seconds = diff % 60;
-                    var minutes = Math.floor(diff / 60) % 60;
-                    var hours = Math.floor(diff / 60 / 60) % 24;
+                    //     else if (s == 0) {
+                    //         if (m == 0) {
+                    //             s = m = 60;
+                    //             h--;
+                    //         }
+                    //         m--;
+                    //         s = 59;
+                    //
+                    //     }
+                    //     else {
+                    //         s--;
+                    //     }
+                    //     if (s < 10 && m < 10 ) {
+                    //         document.getElementById("time").innerHTML = h + ":0" + m + ":" + "0" + s;
+                    //     }
+                    //     if (m < 10) {
+                    //         document.getElementById("time").innerHTML = h + ":" + "0" + m + ":" + s;
+                    //     }
+                    //     if (h < 10) {
+                    //         document.getElementById("time").innerHTML = "0" + h + ":" + m + ":" + s;
+                    //     }
+                    //     if (s < 10){
+                    //         document.getElementById("time").innerHTML = h + ":" + "0" + m + ":" + "0" + s;
+                    //     }
+                    //     else
+                    //         document.getElementById("time").innerHTML = h + ":" + m + ":"  + s;
+                    //     console.log(h + ":" + m + ":" + s);
+                    // }
 
 
-                    document.getElementById("time").innerHTML = hours + ':' + minutes + ':' + seconds;
+                }
 
-                }, 1000);
+                // var stop = setInterval(function () {
+                //     var current = new Date();
+                //     var diff = Math.floor((Date.parse(current) - Date.parse(today)) / 1000);
+                //
+                //
+                //     var before_alert = parseInt(data['warn']) * 60;
+                //
+                //     console.log(before_alert);
+                //     if (diff == test_duration - before_alert) {
+                //         // alert("about to end");
+                //
+                //         $('#error_message').css("display", "block");
+                //
+                //         // $('#chip').css({"border": "solid 4px red", "padding": "2px"});
+                //
+                //     }
+                //
+                //     if (diff == test_duration) {
+                //         clearInterval(stop);
+                //
+                //         window.location.href = "../review/"
+                //
+                //     }
+                //     var seconds = diff % 60;
+                //     var minutes = Math.floor(diff / 60) % 60;
+                //     var hours = Math.floor(diff / 60 / 60) % 24;
+                //
+                //
+                //     document.getElementById("time").innerHTML = hours + ':' + minutes + ':' + seconds;
+                //
+                // }, 1000);
             }
         });
     }
@@ -324,34 +386,31 @@ $(document).ready(function (event) {
             console.log(selectedVal);
         }
 
-            $.ajax({
-                type: "POST",
-                url: "../next/",
-                datatype: 'json',
-                data: {'answer': selectedVal,"marked":true},
-                success: function (data) {
-                    console.log("success");
-                    console.log(data);
-                    $('input[type="radio"]').each(function () {
-                        $(this).checked = false;
-                    });
-                    if (data['color'] !== undefined) {
-                        $('#grid').find("#" + data['color'].toString()).css("background-color", '#ae65e4');
-                        // $('#' + data['color'].toString()).css("background-color", '#ae65e4');
-                    }
-                    else{
-                        $('#grid').find("#" + data['color_mark'].toString()).css("background-color", '#ae65e4');
-                        // $('#' + data['color'].toString()).css("background-color", '#ae65e4');
-                    }
-
-
-
-
-                    loaddata(data);
-                    checkmarked(data['radio_checked_key']);
+        $.ajax({
+            type: "POST",
+            url: "../next/",
+            datatype: 'json',
+            data: {'answer': selectedVal, "marked": true},
+            success: function (data) {
+                console.log("success");
+                console.log(data);
+                $('input[type="radio"]').each(function () {
+                    $(this).checked = false;
+                });
+                if (data['color'] !== undefined) {
+                    $('#grid').find("#" + data['color'].toString()).css("background-color", '#ae65e4');
+                    // $('#' + data['color'].toString()).css("background-color", '#ae65e4');
                 }
-            });
+                else {
+                    $('#grid').find("#" + data['color_mark'].toString()).css("background-color", '#ae65e4');
+                    // $('#' + data['color'].toString()).css("background-color", '#ae65e4');
+                }
 
+
+                loaddata(data);
+                checkmarked(data['radio_checked_key']);
+            }
+        });
 
 
     });
@@ -512,7 +571,7 @@ $(document).ready(function (event) {
         console.log('category');
         console.log(data['category']);
 
-            update_category(data['category']);
+        update_category(data['category']);
 
         if (data['negative'] == true) {
             var negative = "<span style='padding: 2%;'>&times;</span>";
@@ -523,7 +582,7 @@ $(document).ready(function (event) {
         }
         // $("#negative").text(negative.color("red"));
 
-        $('#question').html("<pre>"+data['question_no'] + ". " + data['question'] + negative+"</pre>");
+        $('#question').html("<pre>" + data['question_no'] + ". " + data['question'] + negative + "</pre>");
 
         console.log(data['choice_data'][0][0]);
         console.log(data['choice_data'][0][1]);
@@ -532,7 +591,6 @@ $(document).ready(function (event) {
 
         console.log("checked data");
         console.log(data['radio_checked_key']);
-
 
 
         for (i = 0; i < data['choice_data'].length; i++) {
