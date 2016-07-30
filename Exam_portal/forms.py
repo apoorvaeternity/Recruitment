@@ -12,6 +12,7 @@ BRANCH_CHOICES = (('cse', 'CSE'),
                   ('me', 'ME'),
                   ('ce', 'CE'),
                   ('ei', 'EI'),
+                  ('mca', 'MCA'),
                   )
 YES_OR_NO = (('y', 'yes'),
              ('n', 'no'))
@@ -112,6 +113,21 @@ class RegistrationForm(forms.Form):
             )
     )
 
+    def clean_Name(self):
+        name = self.cleaned_data.get('Name')
+
+        pat = "^[A-Za-z\s]{1,}[\.]{0,1}[A-Za-z\s]{0,}$"
+        pro = re.compile(pat)
+        result = pro.match(name)
+
+        if not bool(result):
+            raise forms.ValidationError("Invalid Name format")
+
+        if len(str(name)) > 100:
+            raise forms.ValidationError("Invalid length ")
+
+        return name
+
     def clean_Skills(self):
         skills = self.cleaned_data.get('Skills')
 
@@ -120,16 +136,6 @@ class RegistrationForm(forms.Form):
 
         return skills
 
-
-    def clean_Name(self):
-        name = self.cleaned_data.get('Name')
-
-        re = "^[a-zA-Z' ]"
-
-        if len(str(name)) > 100:
-            raise forms.ValidationError("Invalid length ")
-
-        return name
 
     def clean_Designer(self):
         dsg = self.cleaned_data.get("Designer")

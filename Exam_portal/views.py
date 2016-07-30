@@ -267,7 +267,29 @@ def show(request):
 
 
 def login(request):
+    if request.session.get('started'):
+        return HttpResponseRedirect(reverse("Exam_portal:show"))
+
+    test_obj = Question.objects.all()
+
+    if len(test_obj) == 0:
+        messages.success(request, " Exam is not Created")
+        return redirect(reverse("Exam_portal:notstarted"))
+    try:
+        obj = ExamStarter.objects.get(pk=1)
+    except ObjectDoesNotExist:
+        obj = ExamStarter.objects.create(flag=False)
+
+    if obj.flag is True:
+        print("exam is started")
+
+    else:
+        messages.success(request, "Opps, Looks like the exam is not started yet. Come back later")
+        return redirect(reverse("Exam_portal:notstarted"))
+
     form = LoginForm()
+    if request.session.get('student_id'):
+        return redirect(reverse('Exam_portal:instruction'))
 
     if request.method == "POST":
         form = LoginForm(request.POST or None)

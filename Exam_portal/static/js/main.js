@@ -19,6 +19,8 @@ $(document).ready(function (event) {
         })
     }
 
+    $('.tooltipped').tooltip({delay: 50});
+
     if (window.location.pathname == '/exam/show/') {
 
         $.ajax({
@@ -63,17 +65,17 @@ $(document).ready(function (event) {
         }
     });
 
-    // if (window.location.pathname == "/exam/show/") {
-    //     $(document).on("keydown keypress keyup", false);
-    // }
-    //
-    // if (window.location.pathname == "/exam/instruction/") {
-    //     $(document).on("keydown keypress keyup", false);
-    // }
-    //
-    // if (window.location.pathname == "/exam/review/") {
-    //     $(document).on("keydown keypress keyup", true);
-    // }
+    if (window.location.pathname == "/exam/show/") {
+        $(document).on("keydown keypress keyup", false);
+    }
+
+    if (window.location.pathname == "/exam/instruction/") {
+        $(document).on("keydown keypress keyup", false);
+    }
+
+    if (window.location.pathname == "/exam/review/") {
+        $(document).on("keydown keypress keyup", true);
+    }
 
 
     disbale_field();
@@ -257,32 +259,35 @@ $(document).ready(function (event) {
             url: '../timer',
 
             success: function (data) {
-                // var h = data['time'][0];
-                // var m = data['time'][1];
-                // var s = data['time'][2];
-                // var now = new Date();
-                // var test_time = new Date(now.getFullYear(), now.getMonth(), now.getDate(), h, m, s);
-                // var epoch = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0);
-                // var test_duration = Math.floor((Date.parse(test_time) - Date.parse(epoch)) / 1000);
-                // var today = new Date();
+
 
                 var HOUR = data['time'][0];
                 var MIN = data['time'][1];
                 var SEC = data['time'][2];
-                var duration = HOUR * 60 * 60 + MIN * 60 + SEC;
+                if (!localStorage.getItem("duration",duration)){
+                    var duration = HOUR * 60 * 60 + MIN * 60 + SEC;
+                }
+                else{
+                    var duration = localStorage.getItem("duration")
+                }
+                // var duration = HOUR * 60 * 60 + MIN * 60 + SEC;
                 var time = duration;
                 var BEFORE_ALERT = parseInt(data['warn']) * 60;
                 var h, m, s;
                 console.log(m);
+
+                if (!localStorage.getItem("duration",duration)){
+                localStorage.setItem("duration",duration)
+                }
 
 
                 var myVar = setInterval(myTimer, 1000);
 
                 function myTimer() {
 
-                    h = parseInt(duration / 3600);
-                    m = parseInt((duration - h * 60 *60)/ 60);
-                    s = parseInt(duration % 60);
+                    h = parseInt(localStorage.getItem("duration")/ 3600);
+                    m = parseInt((localStorage.getItem("duration") - h * 60 *60)/ 60);
+                    s = parseInt(localStorage.getItem("duration") % 60);
 
                     h = h < 10 ? "0" + h : h;
                     m = m < 10 ? "0" + m : m;
@@ -302,71 +307,10 @@ $(document).ready(function (event) {
 
                     else {
                         --duration;
+                        localStorage.setItem("duration",duration)
 
                     }
-                    //     else if (s == 0) {
-                    //         if (m == 0) {
-                    //             s = m = 60;
-                    //             h--;
-                    //         }
-                    //         m--;
-                    //         s = 59;
-                    //
-                    //     }
-                    //     else {
-                    //         s--;
-                    //     }
-                    //     if (s < 10 && m < 10 ) {
-                    //         document.getElementById("time").innerHTML = h + ":0" + m + ":" + "0" + s;
-                    //     }
-                    //     if (m < 10) {
-                    //         document.getElementById("time").innerHTML = h + ":" + "0" + m + ":" + s;
-                    //     }
-                    //     if (h < 10) {
-                    //         document.getElementById("time").innerHTML = "0" + h + ":" + m + ":" + s;
-                    //     }
-                    //     if (s < 10){
-                    //         document.getElementById("time").innerHTML = h + ":" + "0" + m + ":" + "0" + s;
-                    //     }
-                    //     else
-                    //         document.getElementById("time").innerHTML = h + ":" + m + ":"  + s;
-                    //     console.log(h + ":" + m + ":" + s);
-                    // }
-
-
                 }
-
-                // var stop = setInterval(function () {
-                //     var current = new Date();
-                //     var diff = Math.floor((Date.parse(current) - Date.parse(today)) / 1000);
-                //
-                //
-                //     var before_alert = parseInt(data['warn']) * 60;
-                //
-                //     console.log(before_alert);
-                //     if (diff == test_duration - before_alert) {
-                //         // alert("about to end");
-                //
-                //         $('#error_message').css("display", "block");
-                //
-                //         // $('#chip').css({"border": "solid 4px red", "padding": "2px"});
-                //
-                //     }
-                //
-                //     if (diff == test_duration) {
-                //         clearInterval(stop);
-                //
-                //         window.location.href = "../review/"
-                //
-                //     }
-                //     var seconds = diff % 60;
-                //     var minutes = Math.floor(diff / 60) % 60;
-                //     var hours = Math.floor(diff / 60 / 60) % 24;
-                //
-                //
-                //     document.getElementById("time").innerHTML = hours + ':' + minutes + ':' + seconds;
-                //
-                // }, 1000);
             }
         });
     }

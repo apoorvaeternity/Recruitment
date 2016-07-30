@@ -13,11 +13,11 @@
 
 
     {% load material_form %}
-    <div class="container" style="padding: 1%;">
-        <div style="padding: 5%;">
-            <h1 style="margin-bottom: 3cd %;">{{ heading }}</h1>
-            {% if display %}
-                <h5><a class="btn-link" href="/exam/login/">Or login.</a></h5>
+    <div class="container" >
+        <div style="padding: 1% 6% 6%;">
+            <h2 style="margin-bottom: 3cd %;">{{ heading }}</h2>
+            {% if not display %}
+                <h6><a class="btn-link" href="/exam/login/">Or login.</a></h6>
             {% endif %}
             <form method="POST" class="viewform">
                 {% csrf_token %}
@@ -31,6 +31,8 @@
                     {% endpart %}
 
                     {% part form.Contact prefix %}<i class="mdi-communication-call prefix"></i>{% endpart %}
+                    {% part form.Password prefix %}<i class="mdi-action-lock-outline prefix"></i>{% endpart %}
+                    {% part form.Cnf_Password prefix %}<i class="mdi-action-lock-outline prefix"></i>{% endpart %}
                     {% part form.Branch prefix %}{% endpart %}
                     {% part form.Skills prefix %}{% endpart %}
                 {% endform %}
