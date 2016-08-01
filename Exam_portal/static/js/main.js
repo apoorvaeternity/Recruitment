@@ -19,7 +19,7 @@ $(document).ready(function (event) {
         })
     }
 
-    $('.tooltipped').tooltip({delay: 50});
+    $('.tooltipped').tooltip({delay: 90});
 
     if (window.location.pathname == '/exam/show/') {
 
@@ -65,9 +65,9 @@ $(document).ready(function (event) {
         }
     });
 
-    if (window.location.pathname == "/exam/show/") {
-        $(document).on("keydown keypress keyup", false);
-    }
+    // if (window.location.pathname == "/exam/show/") {
+    //     $(document).on("keydown keypress keyup", false);
+    // }
 
     if (window.location.pathname == "/exam/instruction/") {
         $(document).on("keydown keypress keyup", false);
@@ -252,6 +252,7 @@ $(document).ready(function (event) {
         $(this).bind("contextmenu", function (e) {
             return false;
         });
+        // sessionStorage.removeItem(duration);
 
         $.ajax({
             type: "GET",
@@ -264,40 +265,52 @@ $(document).ready(function (event) {
                 var HOUR = data['time'][0];
                 var MIN = data['time'][1];
                 var SEC = data['time'][2];
-                if (!localStorage.getItem("duration",duration)){
-                    var duration = HOUR * 60 * 60 + MIN * 60 + SEC;
-                }
-                else{
-                    var duration = localStorage.getItem("duration")
-                }
-                // var duration = HOUR * 60 * 60 + MIN * 60 + SEC;
+                // if (!sessionStorage.getItem("duration",duration)){
+                //     var duration = HOUR * 60 * 60 + MIN * 60 + SEC;
+                // }
+                // else{
+                //     var duration = duration
+                // }
+                var duration = HOUR * 60 * 60 + MIN * 60 + SEC;
                 var time = duration;
                 var BEFORE_ALERT = parseInt(data['warn']) * 60;
                 var h, m, s;
                 console.log(m);
 
-                if (!localStorage.getItem("duration",duration)){
-                localStorage.setItem("duration",duration)
-                }
-
-
+                // if (parseInt(sessionStorage.getItem("duration",duration)) != 0){
+                //
+                //     duration = sessionStorage.getItem("duration",duration)
+                //
+                // }
+                // else{
+                //     duration = HOUR * 60 * 60 + MIN * 60 + SEC;
+                // }
+                // if (typeof(Storage) !== "undefined") {
+                //     sessionStorage.setItem('duration',duration);
+                // } else {
+                //     // Sorry! No Web Storage support..
+                //     duration = HOUR * 60 * 60 + MIN * 60 + SEC;
+                // }
+                sessionStorage.setItem('duration',duration);
                 var myVar = setInterval(myTimer, 1000);
 
                 function myTimer() {
 
-                    h = parseInt(localStorage.getItem("duration")/ 3600);
-                    m = parseInt((localStorage.getItem("duration") - h * 60 *60)/ 60);
-                    s = parseInt(localStorage.getItem("duration") % 60);
+                    duration = sessionStorage.getItem('duration');
 
+                    h = parseInt(duration / 3600);
+                    m = parseInt((duration - h * 60 * 60) / 60);
+                    s = parseInt(duration % 60);
+                    console.log(m);
+                    console.log(s);
+                    console.log(h);
                     h = h < 10 ? "0" + h : h;
                     m = m < 10 ? "0" + m : m;
                     s = s < 10 ? "0" + s : s;
                     document.getElementById("time").innerHTML = h + ':' + m + ':' + s;
 
-                    if (HOUR * 60 * 60 + MIN * 60 + SEC - BEFORE_ALERT == parseInt(h) * 60 * 60 + parseInt(m) * 60 + parseInt(s)) {
+                    if (HOUR * 60 * 60 + MIN * 60 + SEC - (HOUR * 60 * 60 + MIN * 60 + SEC - BEFORE_ALERT) == parseInt(h) * 60 * 60 + parseInt(m) * 60 + parseInt(s)) {
                         $('#error_message').css("display", "block");
-
-                        // $('#chip').css({"border": "solid 4px red", "padding": "2px"});
                     }
 
                     if (s == 0 && m == 0 && h == 0) {
@@ -307,7 +320,8 @@ $(document).ready(function (event) {
 
                     else {
                         --duration;
-                        localStorage.setItem("duration",duration)
+                        sessionStorage.setItem('duration',duration);
+
 
                     }
                 }

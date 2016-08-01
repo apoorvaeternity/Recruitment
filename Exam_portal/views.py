@@ -123,6 +123,8 @@ def review(request):
 
             return HttpResponseRedirect(reverse("Exam_portal:end"))
 
+    request.session['end'] = True
+
     context = {
         "title": "Review Exam",
         "heading": "Review your registration details.",
@@ -164,7 +166,8 @@ def exam_starter():
 def show(request):
     test_obj = Question.objects.all();
 
-
+    if request.session.get('end'):
+        return HttpResponseRedirect(reverse('Exam_portal:review'))
 
     if len(test_obj) == 0:
         messages.success(request, " Exam is not Created")
@@ -268,7 +271,7 @@ def show(request):
 
 def login(request):
     if request.session.get('started'):
-        return HttpResponseRedirect(reverse("Exam_portal:show"))
+        return HttpResponseRedirect(reverse("Exam_portal:ajaxshow"))
 
     test_obj = Question.objects.all()
 
@@ -405,7 +408,7 @@ def register(request):
 
 def instruction(request):
     if request.session.get('started'):
-        return HttpResponseRedirect(reverse("Exam_portal:show"))
+        return HttpResponseRedirect(reverse("Exam_portal:ajaxshow"))
 
     check_question_data(request)
 
@@ -428,7 +431,7 @@ def instruction(request):
         messages.success(request, "First Register For the exam here")
         return redirect(reverse('Exam_portal:register'))
 
-    request.session.started = True
+    request.session['started'] = True
 
     s = Student.objects.get(student_no=request.session.get("student_id"))
     if s.refresh_flag == 2:
