@@ -44,18 +44,30 @@ def check_grid(request):
             else:
                 answered_id.append(id.question.id)
 
-    first = StudentAnswer.objects.get(question=Question.objects.first(), student=std)
+    try:
+        first = StudentAnswer.objects.get(question=Question.objects.first(), student=std)
+    except:
+        first = None
 
     print("submitted--")
     print(answered_id)
     print("reviewed--")
     print(marked_id)
-    query_set = {
-        'marked': answered_id,
-        'first': first.answer.id,
-        'marked_review': marked_id,
-    }
-    print(query_set.get('first  '))
+
+    if first:
+        query_set = {
+            'marked': answered_id,
+            'first': first.answer.id,
+            'marked_review': marked_id,
+        }
+    else:
+        query_set = {
+            'marked': answered_id,
+            'first':20,
+            'marked_review': marked_id,
+        }
+
+    print(query_set.get('first'))
 
     return HttpResponse(json.dumps(query_set), content_type="application/json")
 
@@ -253,6 +265,8 @@ def ajaxnext(request):
     """
 
     if request.is_ajax() or request.method == 'POST':
+
+
 
         if request.POST.get('answer') != '':
             submitAnswer(request)

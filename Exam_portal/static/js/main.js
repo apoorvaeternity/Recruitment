@@ -271,7 +271,13 @@ $(document).ready(function (event) {
                 // else{
                 //     var duration = duration
                 // }
+
                 var duration = HOUR * 60 * 60 + MIN * 60 + SEC;
+                // console.log($.cookie('duration'));
+                // if ($.cookie('duration')){
+                //     duration = parseInt($.cookie('duration'));
+                // }
+
                 var time = duration;
                 var BEFORE_ALERT = parseInt(data['warn']) * 60;
                 var h, m, s;
@@ -291,12 +297,12 @@ $(document).ready(function (event) {
                 //     // Sorry! No Web Storage support..
                 //     duration = HOUR * 60 * 60 + MIN * 60 + SEC;
                 // }
-                sessionStorage.setItem('duration',duration);
+                // sessionStorage.setItem('duration',duration);
                 var myVar = setInterval(myTimer, 1000);
 
                 function myTimer() {
 
-                    duration = sessionStorage.getItem('duration');
+                    // duration = sessionStorage.getItem('duration');
 
                     h = parseInt(duration / 3600);
                     m = parseInt((duration - h * 60 * 60) / 60);
@@ -320,7 +326,8 @@ $(document).ready(function (event) {
 
                     else {
                         --duration;
-                        sessionStorage.setItem('duration',duration);
+
+                        // sessionStorage.setItem('duration',duration);
 
 
                     }
@@ -349,7 +356,29 @@ $(document).ready(function (event) {
             url: "../next/",
             datatype: 'json',
             data: {'answer': selectedVal, "marked": true},
-            success: function (data) {
+            // success: function (data) {
+                // console.log("success");
+                // console.log(data);
+                // $('input[type="radio"]').each(function () {
+                //     $(this).checked = false;
+                // });
+                // if (data['color'] !== undefined) {
+                //     $('#grid').find("#" + data['color'].toString()).css("background-color", '#ae65e4');
+                //     // $('#' + data['color'].toString()).css("background-color", '#ae65e4');
+                // }
+                // else {
+                //     $('#grid').find("#" + data['color_mark'].toString()).css("background-color", '#ae65e4');
+                //     // $('#' + data['color'].toString()).css("background-color", '#ae65e4');
+                // }
+                //
+                //
+                // loaddata(data);
+                // checkmarked(data['radio_checked_key']);
+            // },
+            // error: function (XMLHttpRequest, textStatus, errorThrown) {
+            //     alert("error");
+            // }
+        }).done(function (data) {
                 console.log("success");
                 console.log(data);
                 $('input[type="radio"]').each(function () {
@@ -367,7 +396,8 @@ $(document).ready(function (event) {
 
                 loaddata(data);
                 checkmarked(data['radio_checked_key']);
-            }
+        }).fail(function () {
+            alert("console");
         });
 
 

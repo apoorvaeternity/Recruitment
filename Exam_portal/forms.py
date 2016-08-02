@@ -40,13 +40,13 @@ class QuestionForm(forms.Form):
 
 
 class LoginForm(forms.Form):
-    username = forms.CharField(max_length=80, label="Username", widget=forms.TextInput(
+    student_no = forms.CharField(max_length=80, label="Student Number", widget=forms.TextInput(
             attrs={'type': 'text', 'id': 'icon_prefix', 'class': 'validate',
                    'name': 'name'}))
     password = forms.CharField(widget=forms.PasswordInput(attrs={"class": "validate"}), label="Password")
 
     layout = Layout(
-        Row('username'),
+        Row('student_no'),
         Row('password'),
     )
 

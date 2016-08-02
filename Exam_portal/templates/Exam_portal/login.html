@@ -11,7 +11,7 @@
                 {% csrf_token %}
 
                 {% form %}
-                    {% part form.username prefix %}<i class="mdi-action-account-box prefix"></i>{% endpart %}
+                    {% part form.student_no prefix %}<i class="mdi-action-account-box prefix"></i>{% endpart %}
                     {% part form.password prefix %}<i class="mdi-communication-vpn-key prefix"></i>{% endpart %}
                 {% endform %}
                 <button type="submit" name="_submit" style="background-color:#3F51B5;" class="btn btn-primary btn-lr">

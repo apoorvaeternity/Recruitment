@@ -4,6 +4,7 @@ from django.shortcuts import render, redirect, Http404
 from django.core.urlresolvers import reverse
 from django.contrib import auth
 import json
+from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
 from .forms import RegistrationForm, QuestionForm, AdminLoginForm, ReviewForm, LoginForm
 from .models import Student, Question, Category, Test, CorrectChoice, MarksOfStudent, ExamStarter
@@ -70,7 +71,9 @@ def end(request):
 
     del request.session['student_id']
     del request.session['post_data']
+    del request.session['end']
     del request.session['name']
+    del request.session['started']
 
     request.session.modified = True
 
@@ -270,6 +273,7 @@ def show(request):
 
 
 def login(request):
+
     if request.session.get('started'):
         return HttpResponseRedirect(reverse("Exam_portal:ajaxshow"))
 
