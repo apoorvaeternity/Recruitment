@@ -1,5 +1,13 @@
 {% extends 'Exam_portal/base.html' %}
 
+{% block login %}
+    {% if request.session.name %}
+    <a href="#">Hello {{ request.session.name }}</a>
+    {% else %}
+        <a href="/exam/login/" >Login</a>
+    {% endif %}
+{% endblock %}
+
 {% block content %}
     <style type="text/css">
         @media only screen and (min-width: 601px) {
@@ -13,37 +21,36 @@
 
 
     {% load material_form %}
-    <div class="container" >
-        <div style="padding: 1% 6% 6%;">
-            <h2 style="margin-bottom: 3cd %;">{{ heading }}</h2>
-            {% if not display %}
-                <h6><a class="btn-link" href="/exam/login/">Or login.</a></h6>
-            {% endif %}
-            <form method="POST" class="viewform">
+    <div class="container" id="register_container">
+        <div>
+            <h4 style="margin: 0px;padding-bottom:10px; ">{{ heading }}</h4>
+
+
+            <form method="POST" id="register_class" >
                 {% csrf_token %}
                 {% form %}
-                    {% part form.Name prefix %}<i class="mdi-action-account-box prefix"></i>{% endpart %}
+                    {% part form.Name prefix %}<i class="mdi-action-account-box prefix glyphicons"></i>{% endpart %}
 
-                    {% part form.StudentNo prefix %}<i class="mdi-action-exit-to-app prefix"></i>{% endpart %}
-                    {% part form.Email prefix %}<i class="mdi-communication-email prefix"></i>
+                    {% part form.StudentNo prefix %}<i class="mdi-action-exit-to-app prefix glyphicons"></i>{% endpart %}
+                    {% part form.Email prefix %}<i class="mdi-communication-email prefix glyphicons"></i>
 
 
                     {% endpart %}
 
-                    {% part form.Contact prefix %}<i class="mdi-communication-call prefix"></i>{% endpart %}
-                    {% part form.Password prefix %}<i class="mdi-action-lock-outline prefix"></i>{% endpart %}
-                    {% part form.Cnf_Password prefix %}<i class="mdi-action-lock-outline prefix"></i>{% endpart %}
+                    {% part form.Contact prefix %}<i class="mdi-communication-call prefix glyphicons"></i>{% endpart %}
+                    {% part form.Password prefix %}<i class="mdi-action-lock-outline prefix glyphicons"></i>{% endpart %}
+                    {% part form.Cnf_Password prefix %}<i class="mdi-action-lock-outline prefix glyphicons"></i>{% endpart %}
                     {% part form.Branch prefix %}{% endpart %}
-                    {% part form.Skills prefix %}{% endpart %}
-                {% endform %}
+                   <div class="register_skills"> {% part form.Skills prefix %}{% endpart %}
+                {% endform %}</div>
                 <div class="row" style="padding-top: 2%;">
-                    <button type="submit" name="_submit" class="btn btn-primary btn-lr"
+                    <button type="submit" name="_submit" class="btn btn-primary btn-lr" id="register-submit"
                             style="background-color:#3F51B5">{% if display %}Update your Info{% else %}Submit{% endif %}
                     </button>
 
                     {% if display %}
 
-                        <a class="btn btn-primary btn-lr" href="../end/" style="float: right;background-color:#3F51B5; ">No Update is required</a>
+                        <a class="btn btn-primary btn-lr pull-right"  href="../end/">No Update is required</a>
 
                     {% endif %}
                 </div>

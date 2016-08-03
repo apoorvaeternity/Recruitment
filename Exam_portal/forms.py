@@ -54,30 +54,30 @@ class LoginForm(forms.Form):
 class RegistrationForm(forms.Form):
     Name = forms.CharField(max_length=80,
                            label='Name', widget=forms.TextInput(
-            attrs={'type': 'text', 'id': 'icon_prefix', 'class': 'validate',
+            attrs={'type': 'text', 'id': 'icon_prefix', 'class': 'validate register',
                    'name': 'name'})
                            )
 
     Contact = forms.IntegerField(widget=forms.NumberInput(
-        attrs={'type': 'number', 'id': 'icon_telephone', 'class': 'validate',
+        attrs={'type': 'number', 'id': 'icon_telephone', 'class': 'validate register',
                'name': 'contact'}), label='Contact No.'
     )
     Email = forms.EmailField(widget=forms.TextInput(
-        attrs={'type': 'text', 'id': 'email', 'class': 'validate'}),
+        attrs={'type': 'text', 'id': 'email', 'class': 'validate register'}),
         label="Email"
     )
-    Password = forms.CharField(widget=forms.PasswordInput(attrs={"class": "validate"}), label="Password")
+    Password = forms.CharField(widget=forms.PasswordInput(attrs={"class": "validate register"}), label="Password")
 
-    Cnf_Password = forms.CharField(widget=forms.PasswordInput(attrs={"class": "validate"}), label="Confirm Password")
+    Cnf_Password = forms.CharField(widget=forms.PasswordInput(attrs={"class": "validate register"}), label="Confirm Password")
 
     StudentNo = forms.CharField(widget=forms.TextInput(
-        attrs={'type': 'text', 'id': 'icon_student', 'class': 'validate',
+        attrs={'type': 'text', 'id': 'icon_student', 'class': 'validate register',
                'name': 'student_no'}),
         label='Student No.'
     )
 
     Branch = forms.ChoiceField(widget=forms.Select(
-        attrs={'type': 'text', 'id': 'branch', 'class': 'select-dropdown', 'name': 'Branch'}),
+        attrs={'type': 'text', 'id': 'branch', 'class': 'select-dropdown ', 'name': 'Branch'}),
         label='Choose your branch name',
         choices=BRANCH_CHOICES, required=True
     )
@@ -89,13 +89,13 @@ class RegistrationForm(forms.Form):
     )
 
     Skills = forms.CharField(widget=forms.TextInput(
-        attrs={'type': 'text', 'id': 'skills_area', 'class': 'validate',
+        attrs={'type': 'text', 'id': 'skills_area', 'class': 'validate ',
                'name': 'skills'}),
         label='Mention your Technical skills e.g HTML, CSS, PHP, etc'
     )
 
     Designer = forms.CharField(widget=forms.Textarea(
-        attrs={'type': 'textarea', 'id': 'designer_area', 'class': 'validate',
+        attrs={'type': 'textarea', 'id': 'designer_area', 'class': 'validate register',
                'name': 'skills'}),
         label='Any Designing Software used like Photostop,etc',
         required=False,

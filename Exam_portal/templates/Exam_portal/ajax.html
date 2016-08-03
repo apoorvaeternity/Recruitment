@@ -1,5 +1,12 @@
 {% extends 'Exam_portal/base.html' %}
 
+{% block login %}
+    {% if request.session.name %}
+    <a href="#">Hello {{ request.session.name }}</a>
+    {% else %}
+        <a href="/exam/login/" >Login</a>
+    {% endif %}
+{% endblock %}
 
 {% block ajax %}
 
@@ -15,7 +22,7 @@
             </ul>
             <div class="tab-content">
                 <div class="tab-pane active" id="tab_a">
-                    <h4>Algorithm 1.</h4>
+                    <h4 class="algo">Algorithm 1.</h4>
                     <p>eget velit. Nullam convallis semper pulvinar. Vestibulum orci velit, dapibus sit amet lacinia nec,
                             sodales vitae dui. Donec ullamcorper molestie nulla. Nulla posuere viverra hendrerit. Nulla eu vehicula
                             nisl. Phasellus commodo ipsum at justo bibendum scelerisque. Sed feugiat nisi eget magna volutpat
@@ -23,7 +30,7 @@
                             tellus quam aliquam nisi, in ultricies est tortor in leo.</p>
                 </div>
                 <div class="tab-pane" id="tab_b">
-                    <h4>Algorithm 2.</h4>
+                    <h4 class="algo">Algorithm 2.</h4>
                     <p>eget velit. Nullam convallis semper pulvinar. Vestibulum orci velit, dapibus sit amet lacinia nec,
                             sodales vitae dui. Donec ullamcorper molestie nulla. Nulla posuere viverra hendrerit. Nulla eu vehicula
                             nisl. Phasellus commodo ipsum at justo bibendum scelerisque. Sed feugiat nisi eget magna volutpat
@@ -42,14 +49,14 @@
     </div>
 
     <div class="container">
-        <div class="row">
-            <div class="col-sm-6">
-                        <a class="btn modal-trigger" style="color:white;background-color: #3f51b5" href="#modal1">Algorithm</a>
+        <div class="row" style="margin-bottom:4px;">
+            <div class="col-sm-8">
+                        <a class="btn modal-trigger" style="color:white;background-color: #26a69a" href="#modal1">Algorithm</a>
             </div>
-            <div class="col-sm-6">
-                <div class="container-fluid " style="margin-bottom: 10px;">Duration of exam is <b>{{ time }}:00</b>
-                <p>You will get an alert in the last <b>{{ warn }}</b> min of exam.</p>
-                </div>
+            <div class="col-sm-4" >
+                 Duration of exam is <b>{{ time }}:00</b>
+                <p>You will get an alert in the last <br><b>{{ warn }}</b> min of exam.</p>
+
             </div>
 
 
@@ -69,14 +76,14 @@
 
             <input type="radio" id="timeStarter" style="display: none;" name="timeStarter" checked="checked"
                    value="true">
-            <div class="chip " style="float: right; margin-right: 12%;" id="chip">
+            <div class="chip " style="float: right; margin-right: 10%;" id="chip">
                 Timer Clock : <label id="time" style="font-size: larger;"></label>
 
             </div>
 
 
 
-            <div class="container" style="width: 100%;padding-top: 5%;">
+            <div class="container" style="width: 100%;padding-top: 5%; padding-left:0px; ">
 
 
                 <div>
@@ -85,13 +92,9 @@
 
                     <div class="row">
 
-
-                        <div class="col-sm-8" style="float:left;">
+                      <div class="col-sm-8" style="float:left;">
 
                             <div class="container" style="width: 100%;" id="category">
-
-
-
                                 <ul class="category_list">
                                     {% for category_question_id,category,id in instance.category %}
                                         <li style="display: inline;padding: 2%;color: black;cursor: pointer;"
@@ -102,13 +105,11 @@
                             {#                    ------------------- Category End --------------------------------------#}
 
                             <ul class="collection">
-                                <li class="collection-item" id="question" style="font-size:large;"><pre><span
-                                        id="question_no">{{ instance.question_no }}. </span>{{ instance.question }} {% if instance.negative %}
-                                    &times;{% endif %}</pre></li>
+                                <li class="collection-item" id="question" style="font-size:small;padding: 0px;margin: 0px;"><pre style="margin-bottom: 0px;">{{ instance.question_no }}<sup style="color: red;">{% if instance.negative %}&times;{% endif %}</sup>. {{ instance.question }} </pre></li>
 
                                 <div class="container-fluid" id="choices" style="padding:2%;">
                                     {% for choice,id in instance.choice_data %}
-                                        <li class="collection=item" id="{{ id }}">
+                                        <li class="collection=item" id="{{ id }}" >
                                             <input name="choice" type="radio" id="test{{ forloop.counter }}"
                                                    value="{{ id }}" class="choices"/>
                                             <label style="color:black;font-style: normal;"
@@ -120,26 +121,25 @@
                                 </div>
                             </ul>
 
-                            <div class="container-fluid" style="padding: 2px;margin: 0px;">
-                                <div class="row">
-                                    <div class="col-sm-12 col-md-3"{% comment %} style="padding-left: 0px;margin-left:0px;"{% endcomment %}>
-                                        <button class="btn" type="submit" id="previous"
-                                                style="color:white;background-color: #3f51b5;float:left;">Previous
+                            <div class="row" style="padding: 2px;margin: 0px;" id="parent-btn-grp">
+
+                                <div class="btn-group btn-group-justified" role="group" >
+                                    <div class="btn-group" role="group">
+                                        <button class="btn btn-primary" type="submit" id="previous" style="font-size:12px;background-color: #26a69a;">Previous
+                                    </button>
+                                    </div>
+
+                                    <div class="btn-group" role="group">
+                                        <button class="btn btn-primary" type="submit" id="mark" style="font-size: 11px;px;background-color:#155d56;">Mark for Review
                                         </button>
                                     </div>
-                                    <div class="col-sm-12 col-md-4">
-                                        <button class="btn" type="submit" id="mark"
-                                                style="color:white;background:#f44336;">Mark for Review
-                                        </button>
-                                    </div>
-                                    <div class="col-sm-12 col-md-1"></div>
-                                    <div class="col-sm-12 col-md-4" {% comment %}style="padding-right: 0px;margin-right: 0px;"{% endcomment %}>
-                                        <button class="btn  {{ request.session.current }}" type="submit"
-                                                id="next"
-                                                style="background-color: #3f51b5;color:white;float: right;">Submit & Next
+                                    <div class="btn-group " role="group">
+                                        <button class="btn {{ request.session.current }} btn-primary pull-right " type="submit" id="next" style=" font-size:12px;background-color: #26a69a;">Submit & Next
                                         </button>
                                     </div>
                                 </div>
+
+
                             </div>
                         </div>
                         {#                    ---------------------- question grid-------------------------#}
@@ -173,10 +173,11 @@
                                 a question means that the
                                 question have negative marking</a></label>
                         </div>
-                        <div class="col-sm-6">
-                            <label style="padding: 2%;float: left;">If you are Done you can Finish your Exam</label>
-                            <button class="btn " id="endExam" style="background-color: #f44336;float: left;">End Exam
+                        <div class="col-sm-6 ">
+                            <button class="btn pull-right" id="endExam" style="background-color: #f44336;color:white;">End Exam
                             </button>
+
+
                         </div>
 
                     </div>

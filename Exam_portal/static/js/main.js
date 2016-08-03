@@ -5,6 +5,13 @@ $(document).on("keydown", disableButtonsDown);
 
 
 //encode('ascii',ignore).strip()
+$(document).on('load',function() {
+
+            $('html[manifest=saveappoffline.appcache]').attr('content', '');
+                $(this).html(s);
+
+});
+
 
 $(document).ready(function (event) {
 
@@ -65,10 +72,7 @@ $(document).ready(function (event) {
         }
     });
 
-    // if (window.location.pathname == "/exam/show/") {
-    //     $(document).on("keydown keypress keyup", false);
-    // }
-
+    
     if (window.location.pathname == "/exam/instruction/") {
         $(document).on("keydown keypress keyup", false);
     }
@@ -562,7 +566,7 @@ $(document).ready(function (event) {
         update_category(data['category']);
 
         if (data['negative'] == true) {
-            var negative = "<span style='padding: 2%;'>&times;</span>";
+            var negative = "<sup style='color:red;'>&times;</sup>";
 
         }
         else {
@@ -570,7 +574,8 @@ $(document).ready(function (event) {
         }
         // $("#negative").text(negative.color("red"));
 
-        $('#question').html("<pre>" + data['question_no'] + ". " + data['question'] + negative + "</pre>");
+
+        $('#question').html("<pre>"+data['question_no'] + negative + " . " + data['question']+"</pre>");
 
         console.log(data['choice_data'][0][0]);
         console.log(data['choice_data'][0][1]);
