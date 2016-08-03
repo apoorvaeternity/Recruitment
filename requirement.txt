@@ -1,6 +1,10 @@
 Django==1.9.2
+django-ckeditor==5.0.3
 django-crispy-forms==1.6.0
 django-material==0.6.0
+django-tinymce==2.3.0
+django-wysiwyg==0.7.1
 psycopg2==2.6.1
 XlsxWriter==0.9.1
+
 

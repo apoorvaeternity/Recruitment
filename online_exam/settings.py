@@ -42,10 +42,7 @@ INSTALLED_APPS = [
     # Third party app
     'material',
     'ckeditor_uploader',
-    # 'material.admin',
-    # 'material.frontend',
     'crispy_forms',
-
 
     # my apps
     'Exam_portal',
@@ -87,15 +84,10 @@ WSGI_APPLICATION = 'online_exam.wsgi.application'
 
 DATABASES = {
     'default': {
-        # 'ENGINE': 'django.db.backends.sqlite3',
         'ENGINE': 'django.db.backends.postgresql',
-        # 'NAME': 'newdb',
-        'NAME': os.environ['NAME'],
-        # # 'NAME': ,
-        'USER': os.environ['USER'],
-        'PASSWORD': os.environ['PASSWORD'],
-        'HOST': os.environ['HOST'],
-        'PORT': os.environ['PORT'],
+        'NAME': os.environ['DB_NAME'],
+        'USER': os.environ['DB_USER'],
+        'PASSWORD': os.environ['DB_PASSWORD']
     }
 }
 
@@ -136,7 +128,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = '/home/rupanshu/Desktop/quiz_portal/static'
+STATIC_ROOT = os.path.join(os.environ.get('HOME', '/home/si/'), 'Assets/RecruitmentPortal/static')
 
 # for ck editor
 CKEDITOR_JQUERY_URL = '//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js'
