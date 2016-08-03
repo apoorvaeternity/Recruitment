@@ -11,6 +11,10 @@ from .models import Student, Question, Category, Test, CorrectChoice, MarksOfStu
 from .ajax import markCalculate
 
 
+#dscsdcdscds
+#sdvdsv@sddssdcsd
+#@sdcsd
+
 def check_question_data(request):
     obj = Question.objects.all()
     if len(obj) == 0:
