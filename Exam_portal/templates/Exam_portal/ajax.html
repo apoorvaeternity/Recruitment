@@ -105,7 +105,7 @@
                             {#                    ------------------- Category End --------------------------------------#}
 
                             <ul class="collection">
-                                <li class="collection-item" id="question" style="font-size:small;padding: 0px;margin: 0px;"><pre style="margin-bottom: 0px;">{{ instance.question_no }}<sup style="color: red;">{% if instance.negative %}&times;{% endif %}</sup>. {{ instance.question }} </pre></li>
+                                <li class="collection-item" id="question" style="font-size:small;padding: 0px;margin: 0px;"><pre style="margin-bottom: 0px;">{{ instance.question_no }}<sup style="color: red;">{% if instance.negative %}&times;{% endif %}</sup>. {{ instance.question|safe }} </pre></li>
 
                                 <div class="container-fluid" id="choices" style="padding:2%;">
                                     {% for choice,id in instance.choice_data %}
@@ -114,7 +114,7 @@
                                                    value="{{ id }}" class="choices"/>
                                             <label style="color:black;font-style: normal;"
                                                    for="test{{ forloop.counter }}"
-                                                   id="q{{ forloop.counter }}">{{ choice }}</label>
+                                                   id="q{{ forloop.counter }}">{{ choice|safe }}</label>
                                         </li>
                                     {% endfor %}
 
@@ -169,7 +169,7 @@
                          style="margin-top:5%;margin-right:0px;padding-right: 0px;text-align:right;">
 
                         <div class="col-sm-6">
-                            <label style="float: left;padding: 2%;;"> <a class="tooltipped" style="color:#9e9e9e;" data-position="top" data-delay="50" data-tooltip="Negative Marking">This <span style="">" &times; "</span> label after
+                            <label style="float: left;padding: 2%;;"> <a class="tooltipped" style="color:#9e9e9e;" data-position="top" data-delay="50" data-tooltip="Negative Marking">This <span style="color:red;">" &times; "</span> label after
                                 a question means that the
                                 question have negative marking</a></label>
                         </div>

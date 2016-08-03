@@ -72,7 +72,7 @@ $(document).ready(function (event) {
         }
     });
 
-    
+
     if (window.location.pathname == "/exam/instruction/") {
         $(document).on("keydown keypress keyup", false);
     }
@@ -181,8 +181,9 @@ $(document).ready(function (event) {
 
         }
 
-
-        $('#question > input[type="text"]:nth-child(1)').attr("value", data['question_id']);
+        console.log(data['question_id']);
+        $('#current_question').attr("value", data['question_id']);
+        // $('#question > input[type="text"]:nth-child(1)').attr("value", data['question_id']);
         var checked_string = "input[type='radio'][value=" + data['correct_checked'] + "]";
         // console.log((checked_string));
         $(checked_string).prop("checked", true);
@@ -360,29 +361,7 @@ $(document).ready(function (event) {
             url: "../next/",
             datatype: 'json',
             data: {'answer': selectedVal, "marked": true},
-            // success: function (data) {
-                // console.log("success");
-                // console.log(data);
-                // $('input[type="radio"]').each(function () {
-                //     $(this).checked = false;
-                // });
-                // if (data['color'] !== undefined) {
-                //     $('#grid').find("#" + data['color'].toString()).css("background-color", '#ae65e4');
-                //     // $('#' + data['color'].toString()).css("background-color", '#ae65e4');
-                // }
-                // else {
-                //     $('#grid').find("#" + data['color_mark'].toString()).css("background-color", '#ae65e4');
-                //     // $('#' + data['color'].toString()).css("background-color", '#ae65e4');
-                // }
-                //
-                //
-                // loaddata(data);
-                // checkmarked(data['radio_checked_key']);
-            // },
-            // error: function (XMLHttpRequest, textStatus, errorThrown) {
-            //     alert("error");
-            // }
-        }).done(function (data) {
+            success: function (data) {
                 console.log("success");
                 console.log(data);
                 $('input[type="radio"]').each(function () {
@@ -400,8 +379,8 @@ $(document).ready(function (event) {
 
                 loaddata(data);
                 checkmarked(data['radio_checked_key']);
-        }).fail(function () {
-            alert("console");
+            }
+
         });
 
 
@@ -590,7 +569,7 @@ $(document).ready(function (event) {
 
             id = '#q' + (i + 1).toString();
             $('#test' + (i + 1).toString()).attr({'value': data['choice_data'][i][1], 'checked': false});
-            $(id).text(data['choice_data'][i][0]);
+            $(id).html(data['choice_data'][i][0]);
 
             // $('#choices').append('<li class="collection=item"><input name="choice" type="radio" id="test"' + toString(i + 1) + 'value="' + toString(data['choice_data'][i][1]) + '"/><label style="color:black;font-style: normal;" for="test' + toString(i + 1) + '" id="q' + toString(i + 1) + '">' + data['choice_data'][i][0] + '</label></li>');
 

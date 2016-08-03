@@ -7,7 +7,7 @@ from ckeditor.widgets import CKEditorWidget
 
 BRANCH_CHOICES = (('cse', 'CSE'),
                   ('it', 'IT'),
-                  ('ec', 'EC'),
+                  ('ec', 'ECE'),
                   ('en', 'EN'),
                   ('me', 'ME'),
                   ('ce', 'CE'),

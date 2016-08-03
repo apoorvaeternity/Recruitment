@@ -4,7 +4,7 @@ from django.shortcuts import render, redirect, Http404
 from django.core.urlresolvers import reverse
 from django.contrib import auth
 import json
-from django.contrib.auth.decorators import login_required
+from django.utils.html import escape
 from django.core.exceptions import ObjectDoesNotExist
 from .forms import RegistrationForm, QuestionForm, AdminLoginForm, ReviewForm, LoginForm
 from .models import Student, Question, Category, Test, CorrectChoice, MarksOfStudent, ExamStarter
@@ -470,7 +470,7 @@ def admin(request):
             choice = []
 
             for i in range(1, 5):
-                choice.append(request.POST.get(choice_selector + str(i)))
+                choice.append(escape(request.POST.get(choice_selector + str(i))))
 
             if request.POST.get('new_category') != "" and request.POST.get('new_category') is not None:
                 category = request.POST.get('new_category')
@@ -524,7 +524,7 @@ def update_question(question_data):
         category = Category.objects.create(category=question_data['category'])
 
     question = category.question_set.create(
-        question_text=question_data['form_data']['question'],
+        question_text=escape(question_data['form_data']['question']),
         negative=question_data['form_data']['negative'],
         negative_marks=negative_marks,
         marks=question_data['form_data']['marks'])
@@ -532,7 +532,7 @@ def update_question(question_data):
     choice = question.questionchoice_set
     choice_data = question_data['choice']
     for i in range(len(choice_data)):
-        choice.create(choice=choice_data[i])
+        choice.create(choice=(choice_data[i]))
         print (choice_data[i])
 
     CorrectChoice.objects.create(question_id=question,
@@ -576,9 +576,9 @@ def edit_question(request):
             choice = []
 
             for i in range(1, 5):
-                choice.append(request.POST.get(choice_selector + str(i)))
+                choice.append((request.POST.get(choice_selector + str(i))))
 
-            current_question = int(request.POST.get('current'))
+            current_question = int((request.POST.get('current')))
 
             correct_choice = request.POST.get('correct_choice')
 
@@ -612,13 +612,13 @@ def edit_question(request):
 def edit_again(request, data):
     question = Question.objects.get(pk=data['current_question'])
 
-    question.question_text = data['form_data']['question']
+    question.question_text = (data['form_data']['question'])
 
     choices = question.questionchoice_set.all().order_by('id')
 
     count = 0
     for choice in choices:
-        choice.choice = data['choice'][count]
+        choice.choice = (data['choice'][count])
         count += 1
         choice.save()
     if data['form_data']['negative'] is True and data['form_data']['negative_marks'] != 0:
