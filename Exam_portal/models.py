@@ -1,6 +1,6 @@
 from django.db import models
 from django.utils.encoding import python_2_unicode_compatible
-
+from datetime import datetime
 
 
 
@@ -19,6 +19,7 @@ class Student(models.Model):
     email = models.EmailField()  # Stage1 of registration
     hosteler = models.BooleanField()  # Stage2 of
     refresh_flag = models.IntegerField(default=0)
+    updated = models.DateTimeField(default=datetime.now(), blank=True, )
     designer = models.CharField(
         "Mention any software you worked on(photoshop etc)",
         max_length=225)  # Stage3 of registration
@@ -30,6 +31,7 @@ class Student(models.Model):
 @python_2_unicode_compatible
 class Category(models.Model):
     category = models.CharField(max_length=225)
+    order = models.IntegerField(null=True,blank=True)
 
     class Meta:
         verbose_name_plural = "Categories"

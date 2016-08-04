@@ -554,7 +554,7 @@ $(document).ready(function (event) {
         // $("#negative").text(negative.color("red"));
 
 
-        $('#question').html("<pre>"+data['question_no'] + negative + " . " + data['question']+"</pre>");
+        $('#question').html("<pre>"+data['question_no'] + negative + ". " + data['question']+"</pre>");
 
         console.log(data['choice_data'][0][0]);
         console.log(data['choice_data'][0][1]);

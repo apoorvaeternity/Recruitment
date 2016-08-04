@@ -9,7 +9,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from .forms import RegistrationForm, QuestionForm, AdminLoginForm, ReviewForm, LoginForm
 from .models import Student, Question, Category, Test, CorrectChoice, MarksOfStudent, ExamStarter
 from .ajax import markCalculate
-
+from datetime import datetime
 
 #dscsdcdscds
 #sdvdsv@sddssdcsd
@@ -166,7 +166,7 @@ def exam_starter():
 
 
 def show(request):
-    test_obj = Question.objects.all();
+    test_obj = Question.objects.all()
 
     if request.session.get('end'):
         return HttpResponseRedirect(reverse('Exam_portal:review'))
@@ -190,15 +190,17 @@ def show(request):
         messages.error(request, "First Register for the examination here..")
         return redirect(reverse('Exam_portal:register'))
 
-    category1 = Category.objects.all()
+    category1 = Category.objects.all().order_by('order')
 
     s = Student.objects.get(student_no=request.session.get('student_id'))
 
     if s.refresh_flag == 1:
         s.refresh_flag = 2
+        s.update = datetime.now()
         s.save()
     elif s.refresh_flag == 2:
         s.refresh_flag = 0
+        s.update = datetime.now()
         s.save()
 
     print (category1)

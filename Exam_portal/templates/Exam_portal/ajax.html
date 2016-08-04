@@ -181,7 +181,7 @@
                             {#                    ------------------- Category End --------------------------------------#}
 
                             <ul class="collection">
-                                <li class="collection-item" id="question" style="font-size:small;padding: 0px;margin: 0px;"><pre style="margin-bottom: 0px;">{{ instance.question_no }}<sup style="color: red;">{% if instance.negative %}&times;{% endif %}</sup>. {{ instance.question|safe }} </pre></li>
+                                <li class="collection-item" id="question" style="font-size:small;padding: 0px;margin: 0px;"><pre style="margin-bottom: 0px;">{{ instance.question_no }}<sup style="color:red;">{% if instance.negative %}&times;{% endif %}</sup>. {{ instance.question|safe }} </pre></li>
 
                                 <div class="container-fluid" id="choices" style="padding:2%;">
                                     {% for choice,id in instance.choice_data %}

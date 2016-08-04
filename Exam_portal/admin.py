@@ -9,9 +9,9 @@ class QuestionInLine(admin.TabularInline):
 
 
 class CategoryAdmin(admin.ModelAdmin):
-    list_editable = ['category']
-    search_fields = ['category']
-    list_display = ('id', 'category')
+    list_editable = ['category','order']
+    search_fields = ['category', 'order']
+    list_display = ('id', 'category' , 'order')
     inlines = [QuestionInLine]
 
     class Meta:
