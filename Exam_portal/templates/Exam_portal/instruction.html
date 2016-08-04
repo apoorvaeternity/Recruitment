@@ -13,16 +13,17 @@
             <li class="list-group-item">Read the questions thoroughly and answer carefully.</li>
             <li class="list-group-item">The question paper contains:-
                 <ul id="ins-bul">
-                    <li ><b>HTML/CSS</b>- 10 questions</li>
+                    <li ><b>HTML/CSS</b> - 10 questions</li>
                     <li><b>SQL</b> - 5 questions</li>
-                    <li><b>OOP</b>- 5 questions</li>
-                    <li><b>C</b>- 10 questions</li>
-                    <li><b>Aptitude</b>- 5 questions</li>
-                    <li><b>Algorithm</b>–  2 questions</li>
+                    <li><b>OOP</b> - 5 questions</li>
+                    <li><b>C</b> - 10 questions</li>
+                    <li><b>Aptitude</b> - 5 questions</li>
+                    <li><b>Algorithm</b> – 2 questions</li>
                 </ul>
             </li>
             <li class="list-group-item"><b>Do not </b>press the back button or refresh the web page.</li>
             <li class="list-group-item">For every correct answer, <b>3 marks are awarded</b>.</li>
+            <li class="list-group-item">Algorithm question carry <b>10 marks</b> each. <b>No negative</b> marks for these quesitions</li>
             <li class="list-group-item">All questions marked with an asterisk carry <b>1 negative mark </b>for a wrong answer.
 </li>
             <li class="list-group-item">Options once marked can <b>later be changed</b> but <b>cannot be unmarked</b>.
@@ -46,5 +47,5 @@
 
 {% endblock content %}
 {% block login %}
-    <a href="#">Hello {{ request.session.name }}</a>
+    <span>Hello! {{ request.session.name }}</span>
 {% endblock %}

@@ -223,6 +223,7 @@ $(document).ready(function (event) {
     $('#category').click(function (e) {
         e.preventDefault();
         var category_id = e.target.id;
+        show_loader();
         $.ajax({
             type: "GET",
             datatype: "JSON",
@@ -231,7 +232,7 @@ $(document).ready(function (event) {
             success: function (data) {
                 loaddata(data);
                 checkmarked(data['radio_checked_key']);
-
+                hide_loader();
             }
 
         });
@@ -259,6 +260,7 @@ $(document).ready(function (event) {
         });
         // sessionStorage.removeItem(duration);
 
+        // show_loader();
         $.ajax({
             type: "GET",
             datatype: 'json',
@@ -355,6 +357,8 @@ $(document).ready(function (event) {
             selectedVal = selected.val();
             console.log(selectedVal);
         }
+        show_loader();
+
 
         $.ajax({
             type: "POST",
@@ -376,7 +380,7 @@ $(document).ready(function (event) {
                     // $('#' + data['color'].toString()).css("background-color", '#ae65e4');
                 }
 
-
+                hide_loader();
                 loaddata(data);
                 checkmarked(data['radio_checked_key']);
             }
@@ -461,7 +465,7 @@ $(document).ready(function (event) {
 
     $('#previous').click(function (event) {
         event.preventDefault();
-
+        show_loader();
 
         $.ajax({
             type: "GET",
@@ -469,7 +473,7 @@ $(document).ready(function (event) {
             //data:{'answer':selectedVal},
             url: "../previous/",
             success: function (data) {
-
+                hide_loader();
                 console.log("Ajax on previous have been called");
                 console.log(data);
                 console.log(data['question']);
@@ -495,13 +499,14 @@ $(document).ready(function (event) {
             selectedVal = selected.val();
 
         }
+        show_loader();
         $.ajax({
             type: "POST",
             url: "../next/",
             datatype: 'json',
             data: {'answer': selectedVal},
             success: function (data) {
-
+                hide_loader();
 
                 if (data['color']) {
                     $('#grid').find("#" + data['color'].toString()).css("background-color", '#6CB741');
@@ -545,7 +550,7 @@ $(document).ready(function (event) {
         update_category(data['category']);
 
         if (data['negative'] == true) {
-            var negative = "<sup style='color:red;'>&times;</sup>";
+            var negative = "<sup style='color:red;'>*</sup>";
 
         }
         else {

@@ -2,7 +2,7 @@
 
 {% block login %}
     {% if request.session.name %}
-    <a href="#">Hello {{ request.session.name }}</a>
+    <span>Hello {{ request.session.name }}</span>
     {% else %}
         <a href="/exam/login/" >Login</a>
     {% endif %}
