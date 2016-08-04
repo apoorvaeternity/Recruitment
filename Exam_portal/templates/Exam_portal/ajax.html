@@ -23,20 +23,96 @@
             <div class="tab-content">
                 <div class="tab-pane active" id="tab_a">
                     <h4 class="algo">Algorithm 1.</h4>
-                    <p>eget velit. Nullam convallis semper pulvinar. Vestibulum orci velit, dapibus sit amet lacinia nec,
-                            sodales vitae dui. Donec ullamcorper molestie nulla. Nulla posuere viverra hendrerit. Nulla eu vehicula
-                            nisl. Phasellus commodo ipsum at justo bibendum scelerisque. Sed feugiat nisi eget magna volutpat
-                            cursus. Mauris accumsan est non turpis consectetur congue. Cras placerat, lectus id cursus feugiat,
-                            tellus quam aliquam nisi, in ultricies est tortor in leo.</p>
+                    <p>1.Shizuka, the daughter of Code King, is the most beautiful girl of Candyland. Every other Prince wants to marry her.The Code King invites all the other Prince in the town for a RACE and the winner of the race gets a chance to marry her.
+                    Obviously , the RACE will be full of hurdles. Given the number of Prince N, each with ID (0 to N-1) and their maximum jumping strengths (A[i] : i = 0,1,...,N-1) and the number of hurdles K, each with its height ( D[i] : i = 0,1,...K-1) in the RACE, find the winner !!
+                    The Prince who crosses maximum number of levels wins the RACE. In case of ties, the Prince with minimum ID wins the RACE.
+                    for further clarification refer the testcases.</p>
+
+                    <p><b>INPUT:</b><br>
+                    First line of input contains a single integer t denoting the number of test cases .<br>
+                    first line of each test case contains two space separated integers N and K denoting the total number of Prince and the number of hurdles.<br>
+                    The second line of each test case contains N space separated integers A[0],A[1],...,A[N-1] denoting princes jumping strength.<br>
+                    The third line of the each test case contains K space separated integers D[0],D[1],..,D[K-1] denoting height of hurdle i.<br>
+                    </p>
+                    <p><b>OUTPUT:</b><br>
+                        output a single integer denoting the ID of the winning prince.<br>
+                        CONSTRAINTS:<br>
+
+                        1<=t<=50<br>
+                        1 <= N <= 10^6<br>
+                        1 <= K <= 10^6<br>
+                        0 <= A[i] <= 10^9<br>
+                        0 <= D[i] <= 10^9<br>
+                        <p>
+                        <b>SAMPLE INPUT</b>
+                        </p>
+                        <p>
+                        2<br>
+                        5 5<br>
+                        10 20 30 40 50<br>
+                        7 7 7 7 7<br>
+                        7 5<br>
+                        1 2 3 4 5 6 7<br>
+                        2 1 5 1 8<br>
+                        </p>
+
+                        <p><b>SAMPLE OUTPUT</b></p>
+                        <p>
+                        0
+                        4
+                        </p>
+</p>
                 </div>
                 <div class="tab-pane" id="tab_b">
                     <h4 class="algo">Algorithm 2.</h4>
-                    <p>eget velit. Nullam convallis semper pulvinar. Vestibulum orci velit, dapibus sit amet lacinia nec,
-                            sodales vitae dui. Donec ullamcorper molestie nulla. Nulla posuere viverra hendrerit. Nulla eu vehicula
-                            nisl. Phasellus commodo ipsum at justo bibendum scelerisque. Sed feugiat nisi eget magna volutpat
-                            cursus. Mauris accumsan est non turpis consectetur congue. Cras placerat, lectus id cursus feugiat,
-                            tellus quam aliquam nisi, in ultricies est tortor in leo.
+                    <p>2. Andrii is good in Math, but not in Programming. He is asking you to solve following problem: Given an integer number N and two sets of integer A and B. Let set A contain all numbers from 1 to N and set B contain all numbers from N + 1 to 2N. Multiset C contains all sums a + b such that a belongs to A and b belongs to B. Note that multiset may contain several elements with the same values.
+                        For example, if N equals to three, thenA = {1, 2, 3}, B = {4, 5, 6} and C = {5, 6, 6, 7, 7, 7, 8, 8, 9}.
+                        Andrii has M queries about multiset C. Every query is defined by a single integer q.
+                        Andrii wants to know the number of times q is contained in C.
+                        For example, number 6 is contained two times, 1 is not contained in C at all. <br>
+                        Please, help Andrii to answer all the queries.
                     </p>
+
+                    <p>
+                        <b>Input</b><br>
+                        The first line of the input contains two integers N and M.<br>
+                        Each of the next M line contains one integer q, the query asked by Andrii.<br>
+
+                    </p>
+                    <p>
+                        <b>Output</b><br>
+                        Output the answer for each query in separate lines as in example.
+
+                    </p>
+                    <p>
+                        <b>Constraints</b><br>
+                        1. 1 ≤ N ≤ 109<br>
+                        2. 1 ≤ M ≤ 105<br>
+                        3. 1 ≤ q ≤ 3N<br>
+
+
+                    </p>
+                     <p>
+                         <b>Example</b>
+                         <br>
+                         INPUT:<br>
+                         3 5<br>
+                         6<br>
+                         2<br>
+                         9<br>
+                         7<br>
+                         5<br>
+
+                         OUTPUT:<br>
+                         2<br>
+                        0<br>
+                        1<br>
+                        3<br>
+                        1<br>
+
+
+                     </p>
+
                 </div>
 
             </div>
@@ -169,8 +245,8 @@
                          style="margin-top:5%;margin-right:0px;padding-right: 0px;text-align:right;">
 
                         <div class="col-sm-6">
-                            <label style="float: left;padding: 2%;;"> <a class="tooltipped" style="color:#9e9e9e;" data-position="top" data-delay="50" data-tooltip="Negative Marking">This <span style="color:red;">" &times; "</span> label after
-                                a question means that the
+                            <label style="float: left;padding: 2%;;"> <a class="tooltipped" style="color:#9e9e9e;" data-position="top" data-delay="50" data-tooltip="Negative Marking">This <span style="color:red;">" &times; "</span> label on
+                                ath question means that the
                                 question have negative marking</a></label>
                         </div>
                         <div class="col-sm-6 ">
