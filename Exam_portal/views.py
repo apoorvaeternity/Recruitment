@@ -68,18 +68,23 @@ def end(request):
     markCalculate(request)
 
 
+    #deleting all the created session while the user logged in
+
     del request.session['student_id']
     del request.session['post_data']
     del request.session['end']
     del request.session['name']
     del request.session['started']
 
+    #modifies the session variable 
     request.session.modified = True
 
     return render(request, 'Exam_portal/end.html', {})
 
 
 def review(request):
+
+    #Review for with the inheritate class of register form with different def clean_StudentNo method
     test_obj = Question.objects.all();
 
     if len(test_obj) == 0:
@@ -137,8 +142,9 @@ def review(request):
 
 
 def exam_starter_switch(request):
-    context = exam_starter()
 
+    #with this exam can be started or not
+    context = exam_starter()
     return render(request, "Exam_portal/admin_interface.html", context)
 
 
@@ -166,6 +172,8 @@ def exam_starter():
 
 
 def show(request):
+
+    #The main page of exam where the question shows up
     test_obj = Question.objects.all()
 
     if request.session.get('end'):
@@ -275,6 +283,7 @@ def show(request):
 
 def login(request):
 
+    #view for login
     if request.session.get('started'):
         return HttpResponseRedirect(reverse("Exam_portal:ajaxshow"))
 
@@ -348,6 +357,7 @@ def login(request):
 
 
 def register(request):
+    #Registration view
     test_obj = Question.objects.all()
 
     if len(test_obj) == 0:
@@ -412,6 +422,8 @@ def register(request):
 
 
 def instruction(request):
+    #next milestone for Instructiton won't be hard coded 
+
     if request.session.get('started'):
         return HttpResponseRedirect(reverse("Exam_portal:ajaxshow"))
 
@@ -447,7 +459,7 @@ def instruction(request):
 
     return render(request, "Exam_portal/instruction.html", context={})
 
-
+#detect the refresh on show page
 def refresh(request):
     s = Student.objects.filter(refresh_flag=0)
 
@@ -461,7 +473,7 @@ def refresh(request):
 
     return render(request, "Exam_portal/refresh_check.html", context)
 
-
+#View for the admin panel
 def admin(request):
     if not request.user.is_authenticated():
         messages.error(request, "Opps You're not an admin ")
@@ -515,7 +527,7 @@ def admin(request):
 
     return render(request, "Exam_portal/update.html", query_set)
 
-
+#View for the admin panel
 def update_question(question_data):
     if question_data['form_data']['negative'] is False and question_data['form_data']['negative_marks'] is None:
         negative_marks = 0
@@ -548,7 +560,7 @@ def update_question(question_data):
                                  )
     return True
 
-
+#View for Admin panel
 def edit_question(request):
     if not request.user.is_authenticated():
         messages.error(request, "Opps You're not an admin ")
@@ -614,7 +626,7 @@ def edit_question(request):
 
     return render(request, "Exam_portal/update.html", query_set)
 
-
+#admin panel view
 def edit_again(request, data):
     question = Question.objects.get(pk=data['current_question'])
 
@@ -643,7 +655,7 @@ def edit_again(request, data):
     question.save()
     return True
 
-
+#admin panel view
 def edittime(request):
     if not request.user.is_authenticated():
         messages.error(request, "Opps You're not an admin ")
@@ -675,7 +687,7 @@ def edittime(request):
 
     return render(request, "Exam_portal/time.html", {"time": time_test})
 
-
+#admin panel view
 def student_section(request):
     if not request.user.is_authenticated():
         messages.error(request, "Opps You're not an admin ")
@@ -687,7 +699,7 @@ def student_section(request):
 
     return render(request, "Exam_portal/student_section.html", {"students": student_marks})
 
-
+#admin authenctication
 def admin_auth(request):
     if request.user.is_authenticated():
         return HttpResponseRedirect(reverse("Exam_portal:adminchoice"))
@@ -720,13 +732,13 @@ def admin_auth(request):
 
     return render(request, "Exam_portal/admin_login.html", context_variable)
 
-
+#admin
 def logout_admin(request):
     print("logout")
     auth.logout(request)
     return HttpResponseRedirect(reverse("Exam_portal:admin_auth"))
 
-
+#Admin
 def adminchoice(request):
     print("adminchoice")
     try:

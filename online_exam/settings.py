@@ -126,9 +126,10 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
-
+#rupanshu/Desktop/quiz_portal/static
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(os.environ.get('HOME', '/home/si/'), 'Assets/RecruitmentPortal/static')
+
 
 # for ck editor
 CKEDITOR_JQUERY_URL = '//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js'
