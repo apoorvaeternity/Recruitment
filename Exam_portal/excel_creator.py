@@ -2,6 +2,28 @@ import xlsxwriter
 from .models import *
 
 
+def SectionWiseMarks(student):
+
+    categories = Category.objects.all()
+    category_marks = []
+    for category in categories:
+        category_question = category.question_set.all()
+        marks = 0
+        for question in category_question:
+            print question.question_text
+            answers = StudentAnswer.objects.all().filter(student=student,question=question)
+            for answer in answers:
+                if answer.answer.choice == question.correctchoice_set.all()[0].correct_choice.choice:
+                    marks += question.marks
+                elif question.negative is True:
+                    marks -= question.negative_marks
+            marks_data = (marks,category.category)
+        category_marks.append(marks_data)
+
+    print category_marks
+    return category_marks
+
+
 def total_marks():
     marks = 0
     try:
@@ -30,6 +52,11 @@ label_exam = [
     'Algorithm analysis',
     'Grand Total',
 ]
+label_category_marks = [
+    'Sno.',
+    'Student Number',
+    'name',
+]
 
 label_skillset = [
     'Sno.',
@@ -44,6 +71,19 @@ label_skillset = [
 class StudentInformation:
     def __init__(self):
         print("Instantiating the Constructor of StudentInformation class")
+
+    def category_marks(self):
+        students = Student.objects.all()
+        info = []
+        for student in students:
+            marks = SectionWiseMarks(student.student_no)
+            data = [int(list(students).index(student) + 1), student.student_no, student.name]
+            for mark,category in marks:
+                data.append(mark)
+            info.append(data)
+        print info
+        return info
+
 
     def student_data(self):
 
@@ -82,17 +122,21 @@ class StudentInformation:
 
 
 def create_excel():
-    
-
+    categories = Category.objects.all()
+    for category in categories:
+        label_category_marks.append(category.category)
+        
     student = StudentInformation()
     student_info = student.student_data()
     exam_info = student.exam_data()
     skill_info = student.skill_set()
+    category = student.category_marks()
 
     workbook = xlsxwriter.Workbook("../Student_Info.xlsx")
     worksheet_info = workbook.add_worksheet('Students Info')
     worksheet_exam = workbook.add_worksheet('Exam Info')
     worksheet_skillset = workbook.add_worksheet('Student Skillset')
+    worksheet_category_marks = workbook.add_worksheet('Student Category Marks')
 
     # # Adding a bold format to workbook
     bold = workbook.add_format({"bold": True, 'align': 'center'})
@@ -111,6 +155,10 @@ def create_excel():
     col = 0
     for head in label_skillset:
         worksheet_skillset.write(row, col, head, bold)
+        col += 1
+    col = 0
+    for head in label_category_marks:
+        worksheet_category_marks.write(row, col, head, bold)
         col += 1
 
     row += 1
@@ -156,9 +204,15 @@ def create_excel():
         worksheet_skillset.write(row, col + 4, h, center_align)
         worksheet_skillset.write(row, col + 5, d, center_align)
         row += 1
+    row = 1
 
-    # Writing content to the worksheet of work
-    # worksheet.write(row,col,data)
 
+
+    for data in category:
+        col = 0
+        for item in data:
+            worksheet_category_marks.write(row,col,item,center_align)
+            col +=1
+        row += 1
 
     workbook.close()

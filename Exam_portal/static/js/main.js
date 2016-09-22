@@ -264,7 +264,7 @@ $(document).ready(function (event) {
         $.ajax({
             type: "GET",
             datatype: 'json',
-            url: '../timer',
+            url: '../timer/',
 
             success: function (data) {
 
@@ -272,44 +272,18 @@ $(document).ready(function (event) {
                 var HOUR = data['time'][0];
                 var MIN = data['time'][1];
                 var SEC = data['time'][2];
-                // if (!sessionStorage.getItem("duration",duration)){
-                //     var duration = HOUR * 60 * 60 + MIN * 60 + SEC;
-                // }
-                // else{
-                //     var duration = duration
-                // }
 
                 var duration = HOUR * 60 * 60 + MIN * 60 + SEC;
-                // console.log($.cookie('duration'));
-                // if ($.cookie('duration')){
-                //     duration = parseInt($.cookie('duration'));
-                // }
 
                 var time = duration;
                 var BEFORE_ALERT = parseInt(data['warn']) * 60;
                 var h, m, s;
                 console.log(m);
 
-                // if (parseInt(sessionStorage.getItem("duration",duration)) != 0){
-                //
-                //     duration = sessionStorage.getItem("duration",duration)
-                //
-                // }
-                // else{
-                //     duration = HOUR * 60 * 60 + MIN * 60 + SEC;
-                // }
-                // if (typeof(Storage) !== "undefined") {
-                //     sessionStorage.setItem('duration',duration);
-                // } else {
-                //     // Sorry! No Web Storage support..
-                //     duration = HOUR * 60 * 60 + MIN * 60 + SEC;
-                // }
-                // sessionStorage.setItem('duration',duration);
                 var myVar = setInterval(myTimer, 1000);
 
                 function myTimer() {
 
-                    // duration = sessionStorage.getItem('duration');
 
                     h = parseInt(duration / 3600);
                     m = parseInt((duration - h * 60 * 60) / 60);
@@ -333,9 +307,6 @@ $(document).ready(function (event) {
 
                     else {
                         --duration;
-
-                        // sessionStorage.setItem('duration',duration);
-
 
                     }
                 }

@@ -19,7 +19,7 @@ class Student(models.Model):
     email = models.EmailField()  # Stage1 of registration
     hosteler = models.BooleanField()  # Stage2 of
     refresh_flag = models.IntegerField(default=0)
-    updated = models.DateTimeField(default=datetime.now(), blank=True, )
+    updated = models.DateTimeField(auto_now=True, auto_now_add=False)
     designer = models.CharField(
         "Mention any software you worked on(photoshop etc)",
         max_length=225)  # Stage3 of registration

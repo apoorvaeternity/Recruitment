@@ -39,7 +39,7 @@ class QuestionAdmin(admin.ModelAdmin):
 
 
 class StudentAdmin(admin.ModelAdmin):
-    list_display = ('student_no', 'name', 'branch')
+    list_display = ('student_no', 'name', 'branch', 'updated')
     search_fields = ['name']
     ordering = ('student_no',)
 
