@@ -43,6 +43,8 @@ INSTALLED_APPS = [
     'material',
     'ckeditor_uploader',
     'crispy_forms',
+    'markdown_deux',
+    'pagedown',
 
     # my apps
     'Exam_portal',

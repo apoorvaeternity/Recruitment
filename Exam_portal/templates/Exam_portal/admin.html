@@ -24,8 +24,11 @@
 
     <script src="{% static 'material/js/jquery-2.2.0.js' %}"></script>
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    {% block head_extra %}
+    {% endblock %}
 </head>
 <body>
+
 
 {% csrf_token %}
 <nav class="navbar navbar-inverse">
@@ -87,6 +90,12 @@
 {% block admin %} {% endblock %}
 {% block endadmin %}{% endblock %}
 
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/marked/0.3.6/marked.min.js" ></script>
+<script type="text/javascript">
+    $(document).ready(function(){
+        var question = $('#id_question').text();
+        var markedContent = marked(content)
+    });
+</script>
 </body>
 <html>

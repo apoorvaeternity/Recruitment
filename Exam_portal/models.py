@@ -2,8 +2,8 @@ from django.db import models
 from django.utils.encoding import python_2_unicode_compatible
 from datetime import datetime
 
-
-
+from django.utils.safestring import mark_safe
+from markdown_deux  import markdown
 
 @python_2_unicode_compatible
 class Student(models.Model):
@@ -36,6 +36,8 @@ class Category(models.Model):
     class Meta:
         verbose_name_plural = "Categories"
 
+
+
     def __str__(self):
         return "Category = %s" % self.category
 
@@ -47,6 +49,11 @@ class Question(models.Model):
     negative_marks = models.IntegerField(null=True)
     marks = models.IntegerField()
     type = models.ForeignKey(Category, on_delete=models.CASCADE)
+
+    def get_markedown(self):
+        question_text = self.question_text
+        return mark_safe(markdown(question_text))
+
 
     def __str__(self):
         return "<Question: %s>" % self.question_text

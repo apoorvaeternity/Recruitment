@@ -17,17 +17,18 @@ from django.conf.urls import url, include, handler404
 from django.contrib import admin
 from material.frontend import urls as frontend_urls
 # from Exam_portal.ajax import *
-from Exam_portal.views import register, admin_auth
+from Exam_portal.views import admin_auth, Register
+
 
 urlpatterns = [
     url(r'^admin/', admin_auth, name="admin_auth"),
 
     url(r'^exam/', include('Exam_portal.urls', namespace="Exam_portal")),
     url(r'', include(frontend_urls)),
-    url(r'^$', register, name="register"),
+    url(r'^$', Register.as_view(), name="register"),
     url(r'^godadmin/', admin.site.urls),
     # url(r'', include('tinymce.urls')),
-    url(r'^ckeditor/', include('ckeditor_uploader.urls')),
+    # url(r'^ckeditor/', include('ckeditor_uploader.urls')),
 
 ]
 handler404 = "Exam_portal.views.custom404"

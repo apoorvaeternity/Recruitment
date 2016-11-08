@@ -2,7 +2,7 @@ import xlsxwriter
 from .models import *
 
 
-def SectionWiseMarks(student):
+def sectionwisemarks(student):
 
     categories = Category.objects.all()
     category_marks = []
@@ -76,7 +76,7 @@ class StudentInformation:
         students = Student.objects.all()
         info = []
         for student in students:
-            marks = SectionWiseMarks(student.student_no)
+            marks = sectionwisemarks(student.student_no)
             data = [int(list(students).index(student) + 1), student.student_no, student.name]
             for mark,category in marks:
                 data.append(mark)
@@ -125,7 +125,7 @@ def create_excel():
     categories = Category.objects.all()
     for category in categories:
         label_category_marks.append(category.category)
-        
+
     student = StudentInformation()
     student_info = student.student_data()
     exam_info = student.exam_data()

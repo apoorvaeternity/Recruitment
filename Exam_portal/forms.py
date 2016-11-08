@@ -1,8 +1,10 @@
 from django import forms
 import re
 from material import Layout, Row, Column
-from .models import Student, Question
-from ckeditor.widgets import CKEditorWidget
+from .models import Student, Question, Category
+from pagedown.widgets import PagedownWidget
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import Layout, Fieldset, ButtonHolder, Submit,MultiField, Div
 # form django.utils.translation import ugettext_lazy as _
 
 BRANCH_CHOICES = (('cse', 'CSE'),
@@ -16,26 +18,58 @@ BRANCH_CHOICES = (('cse', 'CSE'),
                   )
 YES_OR_NO = (('y', 'yes'),
              ('n', 'no'))
+CORRECR_CHOICE = (('1', '1'),
+                  ('2', '2'),
+                  ('3', '3'),
+                  ('4', '4'),
+                  )
 
+
+
+# helper function
+def category_name_list():
+    categories = Category.objects.all()
+    CATEGORY_CHOICE = ()
+
+    for category in categories:
+        data = ((category.category, category.category),)
+        CATEGORY_CHOICE = CATEGORY_CHOICE + data
+
+    return CATEGORY_CHOICE
 
 class AdminLoginForm(forms.Form):
     username = forms.CharField(max_length=30)
     password = forms.CharField(widget=forms.PasswordInput())
 
 
+class AddCategory(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(AddCategory, self).__init__(*args, **kwargs)
+        self.fields['order'].label = 'Category ordering of question'
+    class Meta:
+        model = Category
+        fields = ['category','order',]
+
 class QuestionForm(forms.Form):
+
+    category = forms.ChoiceField(choices=category_name_list,label="Question Category")
     question = forms.CharField(label='Question Text', max_length=500, required=True,
-                               widget=forms.Textarea(attrs={'class': 'col-sm-6', 'required': 'true'}))
+                               widget=PagedownWidget())
 
 
-    # question = forms.CharField(widget=CKEditorWidget())
-    marks = forms.IntegerField(label='marks', widget=forms.NumberInput(
-        attrs={"required": "true"}))
+    choice1 = forms.CharField(label="option 1.",max_length=500,required=True)
+    choice2 = forms.CharField(label="option 2.",max_length=500,required=True)
+    choice3 = forms.CharField(label="option 3.",max_length=500,required=True)
+    choice4 = forms.CharField(label="option 4.",max_length=500,required=True)
+    correct_choice = forms.ChoiceField(widget=forms.RadioSelect(),choices=CORRECR_CHOICE)
+
+
+    marks = forms.IntegerField(label='marks',required=True)
     negative = forms.BooleanField(label='has negative marking', required=False)
     negative_marks = forms.IntegerField(label="negative marks", required=False)
 
     def clean_question(self):
-        print("sddssd")
+
         return self.cleaned_data.get('question')
 
 
