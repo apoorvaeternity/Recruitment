@@ -5,9 +5,14 @@
 
     {{ form.media }}
 {% endblock %}
+{% block breadcrums %}
+    <li><a href="/admin/"><span>Admin</span></a></li>
+    <li><span>{% if display %}Edit Question{% else %}Add Question{% endif %} </span></li>
+{% endblock %}
 {% block content %}
     <div class="container">
         <div class="Jumbortron">
+            {% if category_flag %}
             <div class="modal fade" id="myModal" role="dialog">
             <div class="modal-dialog modal-sm">
               <div class="modal-content">
@@ -27,8 +32,10 @@
                 </div>
               </div>
             </div>
-          </div>
+            </div>
+
             <button type="button" class="btn btn-info" data-toggle="modal" data-target="#myModal">Add Category</button>
+            {% endif %}
             <form method="POST" class="viewform">
                 {% csrf_token %}
                 {{ form|crispy }}

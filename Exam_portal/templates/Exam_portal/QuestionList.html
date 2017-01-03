@@ -1,7 +1,10 @@
 {% extends 'Exam_portal/admin.html' %}
 {% load crispy_forms_tags %}
 {% load staticfiles %}
-
+{% block breadcrums %}
+    <li><a href="/admin/"><span>Admin</span></a></li>
+    <li><span>{% if display %}Edit Question{% else %}Add Question{% endif %} </span></li>
+{% endblock %}
 {% block content %}
     <div class="blog-header">
         <div class="container">
@@ -10,7 +13,9 @@
         </div>
         <hr>
         <div class="container">
-
+            {% for c in question %}
+                <a href="/exam/questionupdate/{{ c.id }}/">{{ forloop.counter }}. {{ c.question_text }} {{ c.type }}</a><br>
+            {% endfor %}
         </div>
     </div>
-{% endblock %}
+{% endblock content %}xx

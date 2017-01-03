@@ -41,7 +41,6 @@ INSTALLED_APPS = [
 
     # Third party app
     'material',
-    'ckeditor_uploader',
     'crispy_forms',
     'markdown_deux',
     'pagedown',
@@ -133,13 +132,3 @@ STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(os.environ.get('HOME', '/home/si/'), 'Assets/RecruitmentPortal/static')
 
 
-# for ck editor
-CKEDITOR_JQUERY_URL = '//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js'
-
-CKEDITOR_CONFIGS = {
-    'default': {
-        'toolbar': 'full',
-        'height': 300,
-        'width': 300,
-    },
-}

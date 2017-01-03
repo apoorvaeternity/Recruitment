@@ -1,6 +1,6 @@
 from django import forms
 import re
-from material import Layout, Row, Column
+from material import *
 from .models import Student, Question, Category
 from pagedown.widgets import PagedownWidget
 from crispy_forms.helper import FormHelper
@@ -135,16 +135,19 @@ class RegistrationForm(forms.Form):
         required=False,
     )
 
+    # helper = FormHelper()
+    # helper
+    #
     layout = Layout(
         Row('Name', 'StudentNo'),
         Row('Email', 'Contact'),
         Row('Password', 'Cnf_Password'),
 
-        Row('Branch'),
-        Row('Skills'),
-        Row(Column('Hosteler'),
-            Column('Designer')
-            )
+        # Row('Branch'),
+        # Row('Skills'),
+        # Row(Column('Hosteler'),
+        #     Column('Designer'),
+        #     )
     )
 
     def clean_Name(self):

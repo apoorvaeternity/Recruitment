@@ -1,17 +1,18 @@
 from django.contrib import messages
+from django.template import loader
+
 from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render, redirect, Http404
+from django.shortcuts import render, redirect, Http404, get_object_or_404
 from django.core.urlresolvers import reverse
 from django.contrib import auth
-from django.views.generic import View
+
 import json
-from django.utils.html import escape
 from django.core.exceptions import ObjectDoesNotExist
 from .forms import RegistrationForm, QuestionForm, AdminLoginForm, ReviewForm, LoginForm, AddCategory
 from .models import Student, Question, Category, Test, CorrectChoice, MarksOfStudent, ExamStarter
 from .ajax import markCalculate
 from datetime import datetime
-from django.views.generic import ListView
+from django.views.generic import ListView,   View
 
 
 
@@ -361,41 +362,31 @@ def login(request):
 
     return render(request, "Exam_portal/login.html", context)
 
-class Register(View):
+def register(request):
+    #Registration view
+    test_obj = Question.objects.all()
 
-    context = {
-        'title': 'SI recruitment',
-        "heading": "Registration",
-    }
+    if len(test_obj) == 0:
+        messages.success(request, " Exam is not Created")
+        return redirect(reverse("Exam_portal:notstarted"))
+    try:
+        obj = ExamStarter.objects.get(pk=1)
+    except ObjectDoesNotExist:
+        obj = ExamStarter.objects.create(flag=False)
 
-    def get(self,request,*args,**kwargs):
+    if obj.flag is True:
+        print("exam is started")
 
-        test_obj = Question.objects.all()
+    else:
+        messages.success(request, "Opps, Looks like the exam is not started yet. Come back later")
+        return redirect(reverse("Exam_portal:notstarted"))
 
-        if len(test_obj) == 0:
-            messages.success(request, " Exam is not Created")
-            return redirect(reverse("Exam_portal:notstarted"))
-        try:
-            obj = ExamStarter.objects.get(pk=1)
-        except ObjectDoesNotExist:
-            obj = ExamStarter.objects.create(flag=False)
+    form = RegistrationForm()
 
-        if obj.flag is True:
-            print("exam is started")
+    if request.session.get('student_id'):
+        return redirect(reverse('Exam_portal:instruction'))
 
-        else:
-            messages.success(request, "Opps, Looks like the exam is not started yet. Come back later")
-            return redirect(reverse("Exam_portal:notstarted"))
-
-        form = RegistrationForm()
-        self.context['form'] = form
-
-        if request.session.get('student_id'):
-            return redirect(reverse('Exam_portal:instruction'))
-
-        return render(request,'Exam_portal/register.html', self.context)
-
-    def post(self,request,*args,**kwargs):
+    if request.method == "POST":
         form = RegistrationForm(request.POST or None)
 
         if request.method != "POST":
@@ -426,6 +417,15 @@ class Register(View):
                 request.session['student_id'] = data.student_no
                 request.session['post_data'] = request.POST
                 return HttpResponseRedirect(reverse('Exam_portal:instruction'))
+
+    context = {
+        'title': 'SI recruitment',
+        "heading": "Registration",
+        'form': form,
+    }
+    template = loader.get_template('Exam_portal/register.html')
+
+    return HttpResponse(template.render(context,request))
 
 
 
@@ -495,6 +495,7 @@ def add_category(request):
 
 
 
+
 def admin(request):
     if not request.user.is_authenticated():
         messages.error(request, "Opps You're not an admin ")
@@ -503,38 +504,14 @@ def admin(request):
     category = Category.objects.all().order_by('id')
     if request.method == "POST":
         form = QuestionForm(request.POST or None)
-
+        category_form = AddCategory()
 
         if form.is_valid():
             print(request.POST)
 
-            # return HttpResponse(request.POST)
-            # choice_selector = "choice"
-            # choice = []
-            #
-            # for i in range(1, 5):
-            #     choice.append(escape(request.POST.get(choice_selector + str(i))))
-            #
-            # if request.POST.get('new_category') != "" and request.POST.get('new_category') is not None:
-            #     category = request.POST.get('new_category')
-            # else:
-            #     category = request.POST.get('category')
-            #
-            # correct_choice = request.POST.get('correct_choice')
-
-            # question_data = {
-            #     "choice": choice,
-            #     "category": category,
-            #     "correct_choice": correct_choice,
-            #     "form_data": form.cleaned_data,
-            # }
-
-
-            if update_question(request.POST):
+            if create_question(request.POST):
                 messages.success(request, "Question have been Added into the data base")
             return HttpResponse("Question added")
-
-            # return HttpResponseRedirect(reverse('Exam_portal:admin'))
 
     else:
         form = QuestionForm()
@@ -557,8 +534,69 @@ def admin(request):
     return render(request, "Exam_portal/Question.html", query_set)
     # return render(request, "Exam_portal/update.html", query_set)
 
+
+def question_edit(request,pk):
+
+    question = get_object_or_404(Question,id=pk)
+    choices = question.questionchoice_set.all()
+    correctchoice = question.correctchoice_set.all()
+
+    correct = correctchoice[0].correct_choice.choice
+    print(correct)
+    choice = []
+    for c in choices:
+        choice.append(c.choice)
+
+    question_data = {
+        'category':question.type.category,
+        'question':question.question_text,
+        'marks':question.marks,
+        'negative':question.negative,
+        'negative_marks':question.negative_marks,
+        'choice1':choice[0],
+        'choice2':choice[1],
+        'choice3':choice[2],
+        'choice4':choice[3],
+        'correct_choice':choice.index(correct) + 1,
+    }
+
+    print(question_data.get('correct_choice'))
+
+    form = QuestionForm(question_data)
+
+    if request.method == "POST":
+        form = QuestionForm(request.POST)
+        if form.is_valid():
+            print(form.cleaned_data)
+            if edit_again(pk=pk,data = form.cleaned_data):
+                print("updated")
+
+    context_varaible = {
+        'form':form,
+        'question_id':pk,
+        'category_show':False,
+    }
+
+
+
+    return  render(request,"Exam_portal/Question.html",context_varaible)
+
+def question_list(request):
+    try:
+        question = Question.objects.all().order_by('type')
+    except Question.DoesNotExist:
+        pass
+
+    query_set = {
+        'question':question,
+    }
+
+    return render(request,"Exam_portal/QuestionList.html",query_set)
+
+
+
 #View for the admin panel
-def update_question(question_data):
+def create_question(question_data):
     try:
         if question_data['negative'] is False and question_data['negative_marks'] is None:
             negative_marks = 0
@@ -597,108 +635,49 @@ def update_question(question_data):
     return True
 
 #View for Admin panel
-def edit_question(request):
-    if not request.user.is_authenticated():
-        messages.error(request, "Opps You're not an admin ")
-        return HttpResponseRedirect(reverse("Exam_portal:admin_auth"))
 
-    categories = Category.objects.all().order_by('id')
+def edit_again(pk,data):
 
-    question_key =[]
-    for category in categories:
-        questions = category.question_set.all()
-        for q in  questions:
-            question_key.append(q.id)
+    try:
+        if data['negative'] is False and data['negative_marks'] is None:
+            negative_marks = 0
+            negative = False
+        elif data['negative'] is False and data['negative_marks'] is not None:
+            negative_marks = 0
+            negative = False
+        else:
+            negative_marks = data['negative_marks']
+            negative = True
+    except Exception,e:
+        negative_marks = 0
+        negative = False
 
-    question = Question.objects.all().order_by('id')
-    if len(question) < 1:
-        messages.success(request, "first add a Question to be added kiddo :P !!!")
-        return HttpResponseRedirect(reverse('Exam_portal:adminchoice'))
-    choice = question[0].questionchoice_set.all().order_by('id')
+    question = get_object_or_404(Question,pk=pk)
+    question.type = Category.objects.get(category = data['category'])
 
-    # question_key = []
-    # for i in question:
-    #     question_key.append(i.id)
-
-    question_data = []
-    for i in range(1, len(question_key) + 1):
-        data = (i, question_key[i - 1])
-        question_data.append(data)
-
-    choice_data = []
-    for i in range(0, len(choice)):
-        data = (choice[i].choice, choice[i].id)
-        choice_data.append(data)
-
-    if request.method == "POST":
-        form = QuestionForm(request.POST or None)
-        if form.is_valid():
-            choice_selector = "choice"
-            choice = []
-
-            for i in range(1, 5):
-                choice.append((request.POST.get(choice_selector + str(i))))
-
-            current_question = int((request.POST.get('current')))
-
-            correct_choice = request.POST.get('correct_choice')
-
-            data = {
-                "choice": choice,
-                "current_question": current_question,
-                "correct_choice": correct_choice,
-                "form_data": form.cleaned_data,
-
-                }
-
-            if edit_again(request, data):
-                messages.success(request, "Question have been updated!")
-
-    else:
-        form = QuestionForm(None)
-
-    query_set = {
-        "category": categories,
-        "display": True,
-        "display_not": False,
-        "form": form,
-        "Number": question_data,
-        "question": question[0],
-
-    }
-
-    return render(request, "Exam_portal/update.html", query_set)
-
-#admin panel view
-def edit_again(request, data):
-    question = Question.objects.get(pk=data['current_question'])
-
-    question.question_text = (data['form_data']['question'])
+    question.question_text = data['question']
+    question.marks = data['marks']
+    question.negative = negative
+    question.negative_marks = negative_marks
 
     choices = question.questionchoice_set.all().order_by('id')
 
-    count = 0
+    count = 1
     for choice in choices:
-        choice.choice = (data['choice'][count])
+        choice.choice = data['choice'+str(count)]
         count += 1
-        choice.save()
-    if data['form_data']['negative'] is True and data['form_data']['negative_marks'] != 0:
-        question.negative = data['form_data']['negative']
-        question.negative_marks = data['form_data']['negative_marks']
-    elif data['form_data']['negative'] is False:
-        question.negative = data['form_data']['negative']
-        question.negative_marks = 0
-    correct_query_set = question.correctchoice_set.all()
 
-    for i in correct_query_set:
-        i.correct_choice = choices[int(data['correct_choice']) - 1]
-        i.save()
+    correct_query_set = question.correctchoice_set.all()[0]
 
-    question.marks = int(data['form_data']['marks'])
+    correct_query_set.correct_choice.choice = data['choice'+str(data['correct_choice'])]
+
     question.save()
     return True
 
 #admin panel view
+
+
+
 def edittime(request):
     if not request.user.is_authenticated():
         messages.error(request, "Opps You're not an admin ")

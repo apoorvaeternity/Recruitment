@@ -8,7 +8,7 @@ from . import ajax
 urlpatterns = [
     # url(r'^register/$', views.register, name="register"),
     url(r'^list/$', views.ListQuestion.as_view(), name='list'),
-    url(r'^register/$', views.Register.as_view(), name="register"),
+    url(r'^register/$', views.register, name="register"),
     url(r'^instruction/$', views.Instruction.as_view(), name="instruction"),
     url(r'^show/$', views.show, name="ajaxshow"),
     url(r'^next/$', ajax.ajaxnext, name="ajaxnext"),
@@ -18,7 +18,6 @@ urlpatterns = [
     url(r'^timer/$', views.timer, name='timer'),
     url(r'^end/$', views.end, name="end"),
     url(r'^admin/$', views.admin, name="admin"),
-    url(r'^edit/$', views.edit_question, name="edit_question"),
     url(r'^update_question/$', ajax.question_update, name="question_update"),
     url(r'^delete/$', ajax.delete, name="delete"),
     url(r'^adminchoice/$', views.AdminChoice.as_view(), name="adminchoice"),
@@ -34,5 +33,8 @@ urlpatterns = [
     url(r'^login/$', views.login, name="login"),
     url(r'^refresh/$', views.refresh, name="refresh"),
     url(r'^category/$', views.add_category, name="category"),
+    url(r'^questionlist/$', views.question_list, name="question_list"),
+    url(r'^questionupdate/(?P<pk>[0-9]+)/$', views.question_edit, name="question_edit"),
+
 
 ]
