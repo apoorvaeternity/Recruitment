@@ -29,7 +29,6 @@
 </head>
 <body>
 
-
 {% csrf_token %}
 <nav class="navbar navbar-inverse">
 
@@ -92,10 +91,21 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/0.3.6/marked.min.js" ></script>
 <script type="text/javascript">
-    $(document).ready(function(){
-        var question = $('#id_question').text();
-        var markedContent = marked(content)
-    });
+	$(document).ready(function(){
+	    $(".content-markdown").each(function(){
+	            var content = $(this).text()
+	            var markedContent = marked(content)
+	            $(this).html(markedContent)
+	    });
+
+	});
+
+	$(document).ready(function(){
+	    $(".content-markdown img").each(function(){
+	            $(this).addClass("img-responsive")
+	    });
+
+	});
 </script>
 </body>
 <html>

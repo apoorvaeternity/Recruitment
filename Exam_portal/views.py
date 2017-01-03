@@ -1,34 +1,28 @@
 from django.contrib import messages
-from django.template import loader
-
 from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render, redirect, Http404, get_object_or_404
+from django.shortcuts import render, redirect, Http404 , get_object_or_404
 from django.core.urlresolvers import reverse
 from django.contrib import auth
-
 import json
+from django.utils.html import escape
 from django.core.exceptions import ObjectDoesNotExist
-from .forms import RegistrationForm, QuestionForm, AdminLoginForm, ReviewForm, LoginForm, AddCategory
+from .forms import RegistrationForm, QuestionForm, AdminLoginForm, ReviewForm, LoginForm , AddCategory
 from .models import Student, Question, Category, Test, CorrectChoice, MarksOfStudent, ExamStarter
 from .ajax import markCalculate
 from datetime import datetime
-from django.views.generic import ListView,   View
+from django.views.generic import ListView
 
+def check_question_data(request):
+    obj = Question.objects.all()
+    if len(obj) == 0:
+        return HttpResponseRedirect(reverse('Exam_portal:notstarted'))
 
+    return True
 
 class ListQuestion(ListView):
     model = Question
     template_name = 'Exam_portal/Question.html'
     context_object_name = "question"
-
-
-def check_question_data(request):
-    obj = Question.objects.all()
-    if len(obj) == 0:
-        return HttpResponseRedirect(reverse('Exam_portal:no tstarted'))
-
-    return True
-
 
 def custom404(request):
     return render(request, "Exam_portal/404page.html")
@@ -362,6 +356,7 @@ def login(request):
 
     return render(request, "Exam_portal/login.html", context)
 
+
 def register(request):
     #Registration view
     test_obj = Question.objects.all()
@@ -423,50 +418,47 @@ def register(request):
         "heading": "Registration",
         'form': form,
     }
-    template = loader.get_template('Exam_portal/register.html')
 
-    return HttpResponse(template.render(context,request))
-
+    return render(request, 'Exam_portal/register.html', context)
 
 
-class Instruction(View):
+def instruction(request):
     #next milestone for Instructiton won't be hard coded 
-    def get(self,request,*args,**kwargs):
-        if request.session.get('started'):
-            return HttpResponseRedirect(reverse("Exam_portal:ajaxshow"))
 
-        check_question_data(request)
+    if request.session.get('started'):
+        return HttpResponseRedirect(reverse("Exam_portal:ajaxshow"))
 
-        test_obj = Question.objects.all()
+    check_question_data(request)
 
-        if len(test_obj) == 0:
-            messages.success(request, " Exam is not Created")
-            return HttpResponseRedirect(reverse("Exam_portal:notstarted"))
+    test_obj = Question.objects.all()
 
-        try:
-            obj = ExamStarter.objects.get(pk=1)
-        except ObjectDoesNotExist:
-            obj = ExamStarter.objects.create(flag=False)
+    if len(test_obj) == 0:
+        messages.success(request, " Exam is not Created")
+        return HttpResponseRedirect(reverse("Exam_portal:notstarted"))
 
-        if not obj.flag:
-            messages.success(request, " Opps, Looks like the exam is not started yet. Come back later")
-            return redirect(reverse("Exam_portal:notstarted"))
+    try:
+        obj = ExamStarter.objects.get(pk=1)
+    except ObjectDoesNotExist:
+        obj = ExamStarter.objects.create(flag=False)
 
-        if request.session.get('student_id') is None:
-            messages.success(request, "First Register For the exam here")
-            return redirect(reverse('Exam_portal:register'))
+    if not obj.flag:
+        messages.success(request, " Opps, Looks like the exam is not started yet. Come back later")
+        return redirect(reverse("Exam_portal:notstarted"))
 
-        request.session['started'] = True
+    if request.session.get('student_id') is None:
+        messages.success(request, "First Register For the exam here")
+        return redirect(reverse('Exam_portal:register'))
 
-        s = Student.objects.get(student_no=request.session.get("student_id"))
-        if s.refresh_flag == 2:
-            s.refresh_flag = 2
-        else:
-            s.refresh_flag = 1
-        s.save()
+    request.session['started'] = True
 
-        return render(request, "Exam_portal/instruction.html", context={})
+    s = Student.objects.get(student_no=request.session.get("student_id"))
+    if s.refresh_flag == 2:
+        s.refresh_flag = 2
+    else:
+        s.refresh_flag = 1
+    s.save()
 
+    return render(request, "Exam_portal/instruction.html", context={})
 
 #detect the refresh on show page
 def refresh(request):
@@ -482,8 +474,6 @@ def refresh(request):
 
     return render(request, "Exam_portal/refresh_check.html", context)
 
-#View for the admin panel
-
 def add_category(request):
     if request.method == "POST":
         form = AddCategory(request.POST)
@@ -496,6 +486,7 @@ def add_category(request):
 
 
 
+#View for the admin panel
 def admin(request):
     if not request.user.is_authenticated():
         messages.error(request, "Opps You're not an admin ")
@@ -532,9 +523,8 @@ def admin(request):
     }
 
     return render(request, "Exam_portal/Question.html", query_set)
-    # return render(request, "Exam_portal/update.html", query_set)
 
-
+#View for the admin panel
 def question_edit(request,pk):
 
     question = get_object_or_404(Question,id=pk)
@@ -594,8 +584,6 @@ def question_list(request):
     return render(request,"Exam_portal/QuestionList.html",query_set)
 
 
-
-#View for the admin panel
 def create_question(question_data):
     try:
         if question_data['negative'] is False and question_data['negative_marks'] is None:
@@ -634,7 +622,6 @@ def create_question(question_data):
                                      choice=question_data['choice'+question_data['correct_choice']]))
     return True
 
-#View for Admin panel
 
 def edit_again(pk,data):
 
@@ -674,10 +661,8 @@ def edit_again(pk,data):
     question.save()
     return True
 
+
 #admin panel view
-
-
-
 def edittime(request):
     if not request.user.is_authenticated():
         messages.error(request, "Opps You're not an admin ")
@@ -761,25 +746,23 @@ def logout_admin(request):
     return HttpResponseRedirect(reverse("Exam_portal:admin_auth"))
 
 #Admin
-class AdminChoice(View):
+def adminchoice(request):
+    print("adminchoice")
+    try:
+        obj = ExamStarter.objects.get(pk=1)
+    except ObjectDoesNotExist:
+        obj = ExamStarter.objects.create(flag=False)
 
-    def get(self,request,*args,**kwargs):
+    if obj.flag:
+        context = {
+            "button": "Exam is Started",
+        }
+    else:
+        context = {
+            "button": "Exam is Stopped",
+        }
 
-        try:
-            obj = ExamStarter.objects.get(pk=1)
-        except ObjectDoesNotExist:
-            obj = ExamStarter.objects.create(flag=False)
-
-        if obj.flag:
-            context = {
-                "button": "Exam is Started",
-            }
-        else:
-            context = {
-                "button": "Exam is Stopped",
-            }
-
-        if not request.user.is_authenticated():
-            messages.error(request, "Opps You're not an admin ")
-            return HttpResponseRedirect(reverse("Exam_portal:admin_auth"))
-        return render(request, 'Exam_portal/admin_interface.html', context)
+    if not request.user.is_authenticated():
+        messages.error(request, "Opps You're not an admin ")
+        return HttpResponseRedirect(reverse("Exam_portal:admin_auth"))
+    return render(request, 'Exam_portal/admin_interface.html', context)

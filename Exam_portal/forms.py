@@ -1,10 +1,8 @@
 from django import forms
 import re
-from material import *
-from .models import Student, Question, Category
+from material import Layout, Row, Column
+from .models import Student, Question , Category
 from pagedown.widgets import PagedownWidget
-from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Fieldset, ButtonHolder, Submit,MultiField, Div
 # form django.utils.translation import ugettext_lazy as _
 
 BRANCH_CHOICES = (('cse', 'CSE'),
@@ -23,10 +21,6 @@ CORRECR_CHOICE = (('1', '1'),
                   ('3', '3'),
                   ('4', '4'),
                   )
-
-
-
-# helper function
 def category_name_list():
     categories = Category.objects.all()
     CATEGORY_CHOICE = ()
@@ -41,7 +35,6 @@ class AdminLoginForm(forms.Form):
     username = forms.CharField(max_length=30)
     password = forms.CharField(widget=forms.PasswordInput())
 
-
 class AddCategory(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(AddCategory, self).__init__(*args, **kwargs)
@@ -51,7 +44,6 @@ class AddCategory(forms.ModelForm):
         fields = ['category','order',]
 
 class QuestionForm(forms.Form):
-
     category = forms.ChoiceField(choices=category_name_list,label="Question Category")
     question = forms.CharField(label='Question Text', max_length=500, required=True,
                                widget=PagedownWidget())
@@ -135,19 +127,16 @@ class RegistrationForm(forms.Form):
         required=False,
     )
 
-    # helper = FormHelper()
-    # helper
-    #
     layout = Layout(
         Row('Name', 'StudentNo'),
         Row('Email', 'Contact'),
         Row('Password', 'Cnf_Password'),
 
-        # Row('Branch'),
-        # Row('Skills'),
-        # Row(Column('Hosteler'),
-        #     Column('Designer'),
-        #     )
+        Row('Branch'),
+        Row('Skills'),
+        Row(Column('Hosteler'),
+            Column('Designer')
+            )
     )
 
     def clean_Name(self):
