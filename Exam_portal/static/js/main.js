@@ -449,6 +449,7 @@ $(document).ready(function (event) {
                 console.log(data);
                 console.log(data['question']);
                 loaddata(data);
+                loaddata(data);
                 checkmarked(data['radio_checked_key']);
 
 
@@ -530,7 +531,13 @@ $(document).ready(function (event) {
         // $("#negative").text(negative.color("red"));
 
 
-        $('#question').html("<pre>"+data['question_no'] + negative + ". " + data['question']+"</pre>");
+        $('#question').html(marked("<span>"+data['question_no'] + negative + ". " + data['question']+"</span>"));
+
+        $("#question").each(function(){
+	            var content = $(this).text();
+	            var markedContent = marked(content);
+	            $(this).html(markedContent);
+	             });
 
         console.log(data['choice_data'][0][0]);
         console.log(data['choice_data'][0][1]);
@@ -557,6 +564,11 @@ $(document).ready(function (event) {
             $(input_string).find('input').prop("checked", true);
 
         }
+        $("#question").each(function(){
+	            var content = $(this).text();
+	            var markedContent = marked(content);
+	            $(this).html(markedContent);
+	             });
 
     }
 

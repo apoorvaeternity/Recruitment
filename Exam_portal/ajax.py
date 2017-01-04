@@ -259,13 +259,13 @@ def getData(pk, request):
     question_no = request.session.get('key_list').index(pk) + 1
 
     for i in range(0, len(choice)):
-        data = (choice[i].choice, choice[i].id)
+        data = (choice[i].get_marked_choice(), choice[i].id)
         choice_data.append(data)
 
     if request.method == "POST" and request.POST.get('answer') != '':
         query_set = {
             "question_no": question_no,
-            "question": question.question_text,
+            "question": question.get_marked_down(),
             "category": question.type.id,
             "negative": question.negative,
             "choice_data": choice_data,

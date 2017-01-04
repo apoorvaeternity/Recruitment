@@ -246,12 +246,12 @@ def show(request):
     choice_data = []
 
     for i in range(0, len(choice)):
-        data = (choice[i].choice, choice[i].id)
+        data = (choice[i].get_marked_choice(), choice[i].id)
         choice_data.append(data)
 
     query_set = {
         "question_no": "1",
-        "question": question[0].question_text,
+        "question": question[0].get_marked_down(),
         "negative": question[0].negative,
         "choice_data": choice_data,
         "category": category_first_data
@@ -653,6 +653,7 @@ def edit_again(pk,data):
     for choice in choices:
         choice.choice = data['choice'+str(count)]
         count += 1
+        choice.save()
 
     correct_query_set = question.correctchoice_set.all()[0]
 

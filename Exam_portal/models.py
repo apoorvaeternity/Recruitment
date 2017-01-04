@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils.encoding import python_2_unicode_compatible
 from datetime import datetime
+from markdown_deux import markdown
 
 
 
@@ -48,6 +49,9 @@ class Question(models.Model):
     marks = models.IntegerField()
     type = models.ForeignKey(Category, on_delete=models.CASCADE)
 
+    def get_marked_down(self):
+        return markdown(self.question_text)
+
     def __str__(self):
         return "<Question: %s>" % self.question_text
 
@@ -56,6 +60,9 @@ class Question(models.Model):
 class QuestionChoice(models.Model):
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
     choice = models.CharField(max_length=2000)
+
+    def get_marked_choice(self):
+        return markdown(self.choice)
 
     def __str__(self):
         return "<Choice = %s>" % self.choice
