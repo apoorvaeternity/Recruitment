@@ -20,7 +20,7 @@ def SectionWiseMarks(student):
             marks_data = (marks,category.category)
         category_marks.append(marks_data)
 
-    print category_marks
+    # print category_marks
     return category_marks
 
 

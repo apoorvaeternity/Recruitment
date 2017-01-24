@@ -175,40 +175,6 @@ def markCalculate(request):
 
     return None
 
-
-def SectionWiseMarks(student):
-
-    categories = Category.objects.all()
-    category_marks = []
-    for category in categories:
-        category_question = category.question_set.all()
-        marks = 0
-        for question in category_question:
-            print question.question_text
-            answers = StudentAnswer.objects.all().filter(student=student,question=question)
-            for answer in answers:
-                # print question.correctchoice_set.all()[0]
-                if answer.answer.choice == question.correctchoice_set.all()[0].correct_choice.choice:
-                    marks += question.marks
-                elif question.negative is True:
-                    marks -= question.negative_marks
-            marks_data = (marks,category.category)
-        category_marks.append(marks_data)
-
-    print category_marks
-                # if answer.answer == question.correctchoice_set.all()[0]:
-                #     print True
-            # print answer
-            # print question.correctchoice_set.all()
-        # for a in answer:
-        #     print a
-
-# SectionWiseMarks(1410172)
-
-
-
-
-
 def submitAnswer(request):
     current = request.session.get('current')
     answer = request.POST.get('answer')
@@ -275,7 +241,7 @@ def getData(pk, request):
     else:
         query_set = {
             "question_no": question_no,
-            "question": question.question_text,
+            "question": question.get_marked_down(),
             "category": question.type.id,
             "negative": question.negative,
             "choice_data": choice_data,

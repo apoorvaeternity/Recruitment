@@ -35,5 +35,6 @@ urlpatterns = [
     url(r'^category/$', views.add_category, name="category"),
     url(r'^questionlist/$', views.question_list, name="question_list"),
     url(r'^questionupdate/(?P<pk>[0-9]+)/$', views.question_edit, name="question_edit"),
+    url(r'^graph/(?P<id>[0-9]+)/$', views.graph, name="graph"),
 
 ]

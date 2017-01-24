@@ -533,11 +533,11 @@ $(document).ready(function (event) {
 
         $('#question').html(marked("<span>"+data['question_no'] + negative + ". " + data['question']+"</span>"));
 
-        $("#question").each(function(){
-	            var content = $(this).text();
-	            var markedContent = marked(content);
-	            $(this).html(markedContent);
-	             });
+        // $("#question").each(function(){
+	     //        var content = $(this).text();
+	     //        var markedContent = marked(content);
+	     //        $(this).html(markedContent);
+	     //         });
 
         console.log(data['choice_data'][0][0]);
         console.log(data['choice_data'][0][1]);
@@ -564,11 +564,11 @@ $(document).ready(function (event) {
             $(input_string).find('input').prop("checked", true);
 
         }
-        $("#question").each(function(){
-	            var content = $(this).text();
-	            var markedContent = marked(content);
-	            $(this).html(markedContent);
-	             });
+        // $("#question").each(function(){
+	     //        var content = $(this).text();
+	     //        var markedContent = marked(content);
+	     //        $(this).html(markedContent);
+	     //         });
 
     }
 

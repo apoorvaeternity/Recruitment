@@ -1,0 +1,82 @@
+{% extends 'Exam_portal/admin.html' %}
+{% block breadcrums %}
+    <li><a href="/admin/"><span>Admin</span></a></li>
+    <li><span>Graph </span></li>
+{% endblock %}
+
+{% block student %}
+    <script src="http://canvasjs.com/assets/script/canvasjs.min.js"></script>
+
+    <script type="text/javascript">
+        window.onload = function () {
+            var chart = new CanvasJS.Chart("chartContainer", {
+
+                title: {
+                    text: "Student graphical analysis"
+
+                },
+                animationEnabled: true,
+                axisX: {
+                    interval: 1,
+                    gridThickness: 0,
+                    labelFontSize: 15,
+                    labelFontStyle: "normal",
+                    labelFontWeight: "normal",
+                    labelFontFamily: "Lucida Sans Unicode"
+
+                },
+                axisY2: {
+                    interlacedColor: "rgba(1,77,101,.2)",
+                    gridColor: "rgba(1,77,101,.1)"
+
+                },
+
+                data: [
+                    {
+                        type: "bar",
+                        name: "companies",
+                        axisYType: "secondary",
+                        color: "#014D65",
+                        dataPoints: [
+                            {% for mark,category in marks %}
+                                {y: {{ mark }}, label: "{{ category }}"},
+                            {% endfor %}
+                        ]
+                    }
+
+                ]
+            });
+
+            chart.render();
+        }</script>
+
+    <div class="container">
+        <div class="row">
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th>Category</th>
+                    <th>Total Marks</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for cat,marks in category %}
+                <tr>
+                    <td>{{ cat }}</td>
+                    <td>{{ marks }}</td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="row">
+            <div id="chartContainer" style="height: 300px; width: 100%;"></div>
+        </div>
+    </div>
+
+
+
+
+
+    </div>
+{% endblock %}

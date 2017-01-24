@@ -4,7 +4,7 @@ from django.shortcuts import render, redirect, Http404 , get_object_or_404
 from django.core.urlresolvers import reverse
 from django.contrib import auth
 import json
-from django.utils.html import escape
+from .excel_creator import SectionWiseMarks, total_marks
 from django.core.exceptions import ObjectDoesNotExist
 from .forms import RegistrationForm, QuestionForm, AdminLoginForm, ReviewForm, LoginForm , AddCategory
 from .models import Student, Question, Category, Test, CorrectChoice, MarksOfStudent, ExamStarter
@@ -767,3 +767,24 @@ def adminchoice(request):
         messages.error(request, "Opps You're not an admin ")
         return HttpResponseRedirect(reverse("Exam_portal:admin_auth"))
     return render(request, 'Exam_portal/admin_interface.html', context)
+
+def graph(request,id):
+    # student = get_object_or_404(Student,student_no=id)
+    marks = SectionWiseMarks(id)
+    categories = Category.objects.all()
+    category_marks = list()
+    for category in categories:
+        question = category.question_set.all()
+        total_mark = 0
+        for q in question:
+            total_mark += q.marks
+        category_marks.append((category.category ,total_mark))
+
+
+
+    context_variable ={
+        "marks":marks,
+        "total":total_marks(),
+        'category':category_marks,
+    }
+    return render(request,'Exam_portal/graph.html',context_variable)

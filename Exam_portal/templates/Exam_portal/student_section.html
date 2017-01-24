@@ -5,6 +5,7 @@
 {% endblock %}
 
 {% block student %}
+    <script src="http://canvasjs.com/assets/script/canvasjs.min.js"></script>
     <div class="container" xmlns="http://www.w3.org/1999/html">
         <div class="jumbotron">
             <h3>This Section contain the marks of the student</h3>
@@ -12,10 +13,8 @@
 
         {% for student in students %}
             <div class="panel panel-default">
-                <div class="panel-body"><span>Name: {{ student.student.name }}</span> <br>
-                    <span>Roll No: {{ student.student.student_no }}</span> <br>
-                    <span>Email: {{ student.student.email }}</span> <span
-                            style="float:right;">Marks: <b>{{ student.marks }}</b></span></div>
+                <div class="panel-body">Name:<a href="/exam/graph/{{ student.student.student_no }}/">{{ student.student.name }} </a> <span class="text-right">Marks: {{ student.marks }}</span>
+
 
             </div>
         {% endfor %}
