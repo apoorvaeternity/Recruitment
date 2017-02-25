@@ -27,22 +27,22 @@
 
 
             <form method="POST" id="register_class" >
-                {% csrf_token %}
-                {% form %}
-                    {% part form.Name prefix %}<i class="mdi-action-account-box prefix glyphicons"></i>{% endpart %}
+                    {% csrf_token %}
+                    {% form %}
+                        {% part form.Name prefix %}<i class="mdi-action-account-box prefix glyphicons"></i>{% endpart %}
 
-                    {% part form.StudentNo prefix %}<i class="mdi-action-exit-to-app prefix glyphicons"></i>{% endpart %}
-                    {% part form.Email prefix %}<i class="mdi-communication-email prefix glyphicons"></i>
+                        {% part form.StudentNo prefix %}<i class="mdi-action-exit-to-app prefix glyphicons"></i>{% endpart %}
+                        {% part form.Email prefix %}<i class="mdi-communication-email prefix glyphicons"></i>
 
 
-                    {% endpart %}
+                        {% endpart %}
 
-                    {% part form.Contact prefix %}<i class="mdi-communication-call prefix glyphicons"></i>{% endpart %}
-                    {% part form.Password prefix %}<i class="mdi-action-lock-outline prefix glyphicons"></i>{% endpart %}
-                    {% part form.Cnf_Password prefix %}<i class="mdi-action-lock-outline prefix glyphicons"></i>{% endpart %}
-                    {% part form.Branch prefix %}{% endpart %}
-                   <div class="register_skills"> {% part form.Skills prefix %}{% endpart %}
-                {% endform %}</div>
+                        {% part form.Contact prefix %}<i class="mdi-communication-call prefix glyphicons"></i>{% endpart %}
+                        {% part form.Password prefix %}<i class="mdi-action-lock-outline prefix glyphicons"></i>{% endpart %}
+                        {% part form.Cnf_Password prefix %}<i class="mdi-action-lock-outline prefix glyphicons"></i>{% endpart %}
+                        {% part form.Branch prefix %}{% endpart %}
+                       <div class="register_skills"> {% part form.Skills prefix %}{% endpart %}
+                    {% endform %}</div>
                 <div class="row" style="padding-top: 2%;">
                     <button type="submit" name="_submit" class="btn btn-primary btn-lr" id="register-submit"
                             style="background-color:#3F51B5">{% if display %}Update your Info{% else %}Submit{% endif %}

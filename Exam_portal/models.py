@@ -4,6 +4,14 @@ from datetime import datetime
 from markdown_deux import markdown
 
 
+class StudentInfo(models.Model):
+    name = models.CharField(max_length=100)  # Stage1 of registration
+    student_no = models.CharField(primary_key=True, max_length=225)  # Stage2 of registration
+    email = models.EmailField()  # Stage1 of registration
+
+    def __str__(self):
+        return "{}|{}".format(self.name,self.student_no)
+
 
 
 @python_2_unicode_compatible
@@ -39,7 +47,6 @@ class Category(models.Model):
 
     def __str__(self):
         return "Category = %s" % self.category
-
 
 @python_2_unicode_compatible
 class Question(models.Model):
@@ -116,9 +123,10 @@ class ExamStarter(models.Model):
     def __str__(self):
         return "Exam starter object"
 
+class PythonRegister(models.Model):
+    name = models.CharField(max_length=1000)
+    student_number = models.IntegerField()
+    email = models.EmailField()
 
-'''
-class Instructions(models.Model):
-    instructions = models.CharField()
-
-'''
+    def __str__(self):
+        return "{} - {}".format(self.name,self.student_number)

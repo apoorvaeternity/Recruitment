@@ -6,7 +6,7 @@ from django.contrib import auth
 import json
 from .excel_creator import SectionWiseMarks, total_marks
 from django.core.exceptions import ObjectDoesNotExist
-from .forms import RegistrationForm, QuestionForm, AdminLoginForm, ReviewForm, LoginForm , AddCategory
+from .forms import RegistrationForm, QuestionForm, AdminLoginForm, ReviewForm, LoginForm , AddCategory, PythonRegisterForm
 from .models import Student, Question, Category, Test, CorrectChoice, MarksOfStudent, ExamStarter
 from .ajax import markCalculate
 from datetime import datetime
@@ -201,16 +201,16 @@ def show(request):
 
     category1 = Category.objects.all().order_by('order')
 
-    s = Student.objects.get(student_no=request.session.get('student_id'))
-
-    if s.refresh_flag == 1:
-        s.refresh_flag = 2
-        s.update = datetime.now()
-        s.save()
-    elif s.refresh_flag == 2:
-        s.refresh_flag = 0
-        s.update = datetime.now()
-        s.save()
+    # s = Student.objects.get(student_no=request.session.get('student_id'))
+    #
+    # if s.refresh_flag == 1:
+    #     s.refresh_flag = 2
+    #     s.update = datetime.now()
+    #     s.save()
+    # elif s.refresh_flag == 2:
+    #     s.refresh_flag = 0
+    #     s.update = datetime.now()
+    #     s.save()
 
     print (category1)
     if len(category1) == 0:
@@ -450,13 +450,15 @@ def instruction(request):
         return redirect(reverse('Exam_portal:register'))
 
     request.session['started'] = True
-
-    s = Student.objects.get(student_no=request.session.get("student_id"))
-    if s.refresh_flag == 2:
-        s.refresh_flag = 2
-    else:
-        s.refresh_flag = 1
-    s.save()
+    # try:
+    #     s = Student.objects.get(student_no=request.session.get("student_id"))
+    # except:
+    #     pass
+    # if s.refresh_flag == 2:
+    #     s.refresh_flag = 2
+    # else:
+    #     s.refresh_flag = 1
+    # s.save()
 
     return render(request, "Exam_portal/instruction.html", context={})
 
@@ -788,3 +790,32 @@ def graph(request,id):
         'category':category_marks,
     }
     return render(request,'Exam_portal/graph.html',context_variable)
+
+
+def python_class(request):
+
+
+    if(len(Question.objects.all())==0):
+        messages.warning(request,"Exam not created")
+        return HttpResponseRedirect(reverse(''))
+    form = PythonRegisterForm()
+    context_variable = {
+        'title':"Python Class Test",
+        'form':form
+    }
+
+    if request.method == "POST":
+        form = PythonRegisterForm(request.POST)
+        print(request.POST)
+        if form.is_valid():
+            print('jbjktrtbtrbg')
+            form.save(commit=False)
+            request.session['name'] = form.cleaned_data.get('name')
+            request.session['student_id'] = form.cleaned_data.get('email')
+            request.session['post_data'] = request.POST
+            form.save()
+            return HttpResponseRedirect(reverse('Exam_portal:instruction'))
+
+
+
+    return render(request,"Exam_portal/python_register.html",context_variable)
