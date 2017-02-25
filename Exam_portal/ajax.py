@@ -4,7 +4,7 @@ from django.shortcuts import render
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponse
 from .excel_creator import create_excel
-from .models import Student, QuestionChoice, Question, StudentAnswer, CorrectChoice, MarksOfStudent, Category
+from .models import Student, QuestionChoice, Question, StudentAnswer, CorrectChoice, MarksOfStudent, StudentInfo
 
 
 def excel(request):
@@ -26,7 +26,7 @@ def excel(request):
 def check_grid(request):
     std_no = request.session.get('student_id')
 
-    std = Student.objects.get(student_no=std_no)
+    std = StudentInfo.objects.get(student_no=std_no)
     submitted = None
 
     try:
@@ -146,7 +146,7 @@ def grid(request):
 def markCalculate(request):
     student = request.session.get('student_id')
 
-    student_instance = Student.objects.get(pk=student)
+    student_instance = StudentInfo.objects.get(pk=student)
 
     student_answer_all = student_instance.studentanswer_set.all()
 
@@ -168,7 +168,7 @@ def markCalculate(request):
             if question.marks is not None:
                 marks = marks - question.negative_marks
 
-    marks_of_student, flag = MarksOfStudent.objects.get_or_create(student=Student.objects.get(pk=student),
+    marks_of_student, flag = MarksOfStudent.objects.get_or_create(student=StudentInfo.objects.get(pk=student),
                                                                   defaults={'marks': 0})
     marks_of_student.marks = marks
     marks_of_student.save()
@@ -180,7 +180,7 @@ def submitAnswer(request):
     answer = request.POST.get('answer')
     student_id = request.session.get('student_id')
 
-    student = Student.objects.get(pk=student_id)
+    student = StudentInfo.objects.get(pk=student_id)
     question = Question.objects.get(pk=current)
     choice = QuestionChoice.objects.get(pk=answer)
 
@@ -213,7 +213,7 @@ def getData(pk, request):
     choice_data = []
     color_key = request.session.get('current')
 
-    student = Student.objects.get(pk=request.session.get('student_id'))
+    student = StudentInfo.objects.get(pk=request.session.get('student_id'))
 
     try:
         radio_checked = StudentAnswer.objects.get(student=student, question=question)

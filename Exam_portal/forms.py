@@ -1,7 +1,7 @@
 from django import forms
 import re
 from material import Layout, Row, Column
-from .models import Student, Category, PythonRegister
+from .models import Student, Category, StudentInfo
 from pagedown.widgets import PagedownWidget
 # form django.utils.translation import ugettext_lazy as _
 
@@ -229,7 +229,7 @@ class RegistrationForm(forms.Form):
         prog = re.compile(pattern)
         result = prog.match(std)
 
-        if Student.objects.all().filter(student_no=std).exists():
+        if StudentInfo.objects.all().filter(student_no=std).exists():
             raise forms.ValidationError("Student Number already exist in data base")
 
         if not bool(result):
@@ -245,12 +245,13 @@ class ReviewForm(RegistrationForm):
 
 class PythonRegisterForm(forms.ModelForm):
     class Meta:
-        model = PythonRegister
+        model = StudentInfo
         fields = '__all__'
+
 
     def clean_email(self):
         email = self.cleaned_data.get("email")
-
+        print(email)
         pattern = "^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$"
         prog = re.compile(pattern)
         result = prog.match(email)
@@ -266,26 +267,30 @@ class PythonRegisterForm(forms.ModelForm):
 
     def clean_name(self):
         name = self.cleaned_data.get('name')
+        print(name)
 
         pat = "^[A-Za-z\s]{1,}[\.]{0,1}[A-Za-z\s]{0,}$"
         pro = re.compile(pat)
         result = pro.match(name)
 
         if not bool(result):
-            raise forms.ValidationError("Invalid Name format")
+            raise forms.ValidationError("Invalid Nameformat")
+
 
         if len(str(name)) > 100:
             raise forms.ValidationError("Invalid length ")
 
         return name
 
-    def clean_student_number(self):
-        std = self.cleaned_data.get('student_number')
+    def clean_student_no(self):
+        std = self.cleaned_data.get('student_no')
+        print(std)
+
         pattern = '^\d{7}[D]{0,1}$'
         prog = re.compile(pattern)
         result = prog.match(str(std))
 
-        if Student.objects.all().filter(student_no=std).exists():
+        if StudentInfo.objects.all().filter(student_no=std).exists():
             raise forms.ValidationError("Student Number already exist in data base")
 
         if not bool(result):

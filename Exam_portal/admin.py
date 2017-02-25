@@ -39,12 +39,17 @@ class QuestionAdmin(admin.ModelAdmin):
 
 
 class StudentAdmin(admin.ModelAdmin):
-    list_display = ('student_no', 'name', 'branch', 'updated')
-    search_fields = ['name']
-    ordering = ('student_no',)
+    list_display = ('branch', 'updated')
+    # search_fields = ['name']
+    # ordering = ('student_no',)
 
     class Meta:
         model = Student
+
+class StudentInfoAdmin(admin.ModelAdmin):
+    list_display = ('name','student_no')
+    search_fields = ['name']
+    ordering = ['student']
 
 
 class Marks(admin.ModelAdmin):
@@ -71,3 +76,4 @@ admin.site.register(CorrectChoice)
 admin.site.register(Student, StudentAdmin)
 admin.site.register(StudentAnswer)
 admin.site.register(MarksOfStudent, Marks)
+admin.site.register(StudentInfo,StudentInfoAdmin)

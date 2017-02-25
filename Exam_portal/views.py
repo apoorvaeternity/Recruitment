@@ -7,7 +7,7 @@ import json
 from .excel_creator import SectionWiseMarks, total_marks
 from django.core.exceptions import ObjectDoesNotExist
 from .forms import RegistrationForm, QuestionForm, AdminLoginForm, ReviewForm, LoginForm , AddCategory, PythonRegisterForm
-from .models import Student, Question, Category, Test, CorrectChoice, MarksOfStudent, ExamStarter
+from .models import Student, Question, Category, Test, CorrectChoice, MarksOfStudent, ExamStarter, StudentInfo
 from .ajax import markCalculate
 from datetime import datetime
 from django.views.generic import ListView
@@ -73,7 +73,7 @@ def end(request):
 
     del request.session['student_id']
     del request.session['post_data']
-    del request.session['end']
+    # del request.session['end']
     del request.session['name']
     del request.session['started']
 
@@ -87,6 +87,9 @@ def review(request):
 
     #Review for with the inheritate class of register form with different def clean_StudentNo method
     test_obj = Question.objects.all();
+
+    if request.session['python']:
+        return HttpResponseRedirect(reverse("Exam_portal:end"))
 
     if len(test_obj) == 0:
         messages.success(request, " Exam is not Created")
@@ -113,25 +116,27 @@ def review(request):
             print("form is valid")
             print(request.POST)
 
-            student = Student.objects.get(pk=request.session['student_id'])
-
+            student = StudentInfo.objects.get(pk=request.session['student_id'])
             student.name = request.POST.get('Name')
-            student.skills = request.POST.get('Skills')
-            student.designer = request.POST.get('Designer')
             student.email = request.POST.get('Email')
-            student.contact = request.POST.get('Contact')
-            student.branch = form.cleaned_data['Branch']
+            studentinfo = student.student_set
+            studentinfo.skills = request.POST.get('Skills')
+            studentinfo.designer = request.POST.get('Designer')
+            studentinfo.contact = request.POST.get('Contact')
+            studentinfo.branch = form.cleaned_data['Branch']
             if request.POST.get('Hosteler') == 'y':
                 hosteler = True
             else:
                 hosteler = False
 
-            student.hosteler = hosteler
+            studentinfo.hosteler = hosteler
+            # studentinfo.save()
             student.save()
 
             return HttpResponseRedirect(reverse("Exam_portal:end"))
 
-    request.session['end'] = True
+    if not request.session['python']:
+        request.session['end'] = True
 
     context = {
         "title": "Review Exam",
@@ -200,17 +205,6 @@ def show(request):
         return redirect(reverse('Exam_portal:register'))
 
     category1 = Category.objects.all().order_by('order')
-
-    # s = Student.objects.get(student_no=request.session.get('student_id'))
-    #
-    # if s.refresh_flag == 1:
-    #     s.refresh_flag = 2
-    #     s.update = datetime.now()
-    #     s.save()
-    # elif s.refresh_flag == 2:
-    #     s.refresh_flag = 0
-    #     s.update = datetime.now()
-    #     s.save()
 
     print (category1)
     if len(category1) == 0:
@@ -402,9 +396,9 @@ def register(request):
             skills = form.cleaned_data['Skills']
             designer = form.cleaned_data['Designer']
 
-            data = Student.objects.create(name=name, student_no=studentno,
-                                          branch=branch, contact=contact,
-                                          skills=skills, email=email,
+            data = StudentInfo.objects.create(name=name,student_no=studentno,email=email)
+            info = data.student_set.create(branch=branch, contact=contact,
+                                          skills=skills,
                                           hosteler=hosteler, designer=designer, password=password,
                                           cnf_password=cnf_password)
             if data:
@@ -504,7 +498,7 @@ def admin(request):
 
             if create_question(request.POST):
                 messages.success(request, "Question have been Added into the data base")
-            return HttpResponse("Question added")
+            return HttpResponseRedirect(reverse("Exam_portal:admin"))
 
     else:
         form = QuestionForm()
@@ -797,25 +791,26 @@ def python_class(request):
 
     if(len(Question.objects.all())==0):
         messages.warning(request,"Exam not created")
-        return HttpResponseRedirect(reverse(''))
+        return HttpResponseRedirect(reverse('Exam_portal:notstarted'))
     form = PythonRegisterForm()
     context_variable = {
         'title':"Python Class Test",
         'form':form
     }
 
+    request.session['python'] = True
+
     if request.method == "POST":
-        form = PythonRegisterForm(request.POST)
+        form = PythonRegisterForm(request.POST or None)
         print(request.POST)
+        print("ercercer")
         if form.is_valid():
             print('jbjktrtbtrbg')
-            form.save(commit=False)
-            request.session['name'] = form.cleaned_data.get('name')
-            request.session['student_id'] = form.cleaned_data.get('email')
-            request.session['post_data'] = request.POST
             form.save()
+            request.session['name'] = form.cleaned_data.get('name')
+            request.session['student_id'] = form.cleaned_data.get('student_no')
+            request.session['post_data'] = request.POST
             return HttpResponseRedirect(reverse('Exam_portal:instruction'))
-
 
 
     return render(request,"Exam_portal/python_register.html",context_variable)

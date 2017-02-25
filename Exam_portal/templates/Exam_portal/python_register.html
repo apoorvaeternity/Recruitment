@@ -21,7 +21,7 @@
         <form method="POST" id="register_class">
             {% csrf_token %}
             {% form %}
-                {% part form.student_number prefix %}<i class="mdi-action-exit-to-app prefix glyphicons"></i>{% endpart %}
+                {% part form.student_no prefix %}<i class="mdi-action-exit-to-app prefix glyphicons"></i>{% endpart %}
                 {% part form.name prefix %}<i class="mdi-action-account-box prefix glyphicons"></i>{% endpart %}
                 {% part form.email prefix %}<i class="mdi-communication-email prefix glyphicons"></i>{% endpart %}
 

@@ -18,14 +18,16 @@ class StudentInfo(models.Model):
 class Student(models.Model):
     # create a model with student id and instantiate it with the help of this class constructor
 
-    name = models.CharField(max_length=100)  # Stage1 of registration
-    student_no = models.CharField(primary_key=True, max_length=225)  # Stage2 of registration
+    student = models.ForeignKey(StudentInfo, on_delete=models.CASCADE)
+
+    # name = models.CharField(max_length=100)  # Stage1 of registration
+    # student_no = models.CharField(primary_key=True, max_length=225)  # Stage2 of registration
     branch = models.CharField(max_length=5)  # Stage2 of registration
     contact = models.BigIntegerField()  # Stage1 of registration
     password = models.CharField(max_length=35, default="rupanshu")
     cnf_password = models.CharField(max_length=35 ,default="rupanshu")
     skills = models.CharField(max_length=2255)  # Stage3 of registration
-    email = models.EmailField()  # Stage1 of registration
+    # email = models.EmailField()  # Stage1 of registration
     hosteler = models.BooleanField()  # Stage2 of
     refresh_flag = models.IntegerField(default=0)
     updated = models.DateTimeField(auto_now=True, auto_now_add=False)
@@ -90,7 +92,7 @@ class StudentAnswer(models.Model):
     # answer = models.CharField(max_length=225)
     answer = models.ForeignKey(QuestionChoice, on_delete=models.CASCADE, null=True)
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
-    student = models.ForeignKey(Student, on_delete=models.CASCADE)
+    student = models.ForeignKey(StudentInfo, on_delete=models.CASCADE)
     marked = models.BooleanField(default=False)
 
     def __str__(self):
@@ -99,13 +101,14 @@ class StudentAnswer(models.Model):
 
 @python_2_unicode_compatible
 class MarksOfStudent(models.Model):
-    student = models.ForeignKey(Student, on_delete=models.CASCADE)
+    student = models.ForeignKey(StudentInfo, on_delete=models.CASCADE)
     marks = models.IntegerField()
 
     def __str__(self):
         return "<Option= %s>" % self.marks
 
 @python_2_unicode_compatible
+
 class Test(models.Model):
     # question = models.ForeignKey(Question, on_delete=models.CASCADE)
     name = models.CharField(max_length=225)
@@ -123,10 +126,10 @@ class ExamStarter(models.Model):
     def __str__(self):
         return "Exam starter object"
 
-class PythonRegister(models.Model):
-    name = models.CharField(max_length=1000)
-    student_number = models.IntegerField()
-    email = models.EmailField()
-
-    def __str__(self):
-        return "{} - {}".format(self.name,self.student_number)
+# class PythonRegister(models.Model):
+#     name = models.CharField(max_length=1000)
+#     student_number = models.IntegerField()
+#     email = models.EmailField()
+#
+#     def __str__(self):
+#         return "{} - {}".format(self.name,self.student_number)
