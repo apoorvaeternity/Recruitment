@@ -120,8 +120,11 @@ class StudentInformation:
             print (info)
         return info
 
-def python_excel():
-    workbook = xlsxwriter.Workbook("../Student_Info_python.xlsx")
+def python_excel(output=None):
+    if not output:
+        workbook = xlsxwriter.Workbook("../Student_Info_python.xlsx")
+    else:
+        workbook = xlsxwriter.Workbook(output)
     worksheet_exam = workbook.add_worksheet('Exam Info')
     bold = workbook.add_format({"bold": True, 'align': 'center'})
     row = 0

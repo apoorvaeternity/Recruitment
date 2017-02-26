@@ -1,5 +1,6 @@
 import json, os
 import StringIO
+from io import BytesIO
 from django.shortcuts import render
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponse
@@ -8,17 +9,20 @@ from .models import Student, QuestionChoice, Question, StudentAnswer, CorrectCho
 
 
 def excel(request):
-    base = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    # base = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     # create_excel()
-    python_excel()
+    # python_excel()
 
-    excel_path = os.path.dirname(base)
+    # excel_path = os.path.dirname(base)
+    output = BytesIO()
+    python_excel(output=output)
+    output.seek(0)
 
-    excel = open("%s/Student_Info_python.xlsx" % excel_path, "r")
-    output = StringIO.StringIO(excel.read())
-    out_content = output.getvalue()
-    output.close()
-    response = HttpResponse(out_content,
+    # excel = open("%s/Student_Info_python.xlsx" % excel_path, "r")
+    # output = StringIO.StringIO(excel.read())
+    # out_content = output.getvalue()
+    # output.close()
+    response = HttpResponse(output.read(),
                             content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
     response['Content-Disposition'] = 'attachment; filename=Students_Info_python.xlsx'
     return response
