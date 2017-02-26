@@ -4,7 +4,7 @@ clone the project to your directory
 
 * set up virtual environment for python3
 
-virtualenv venv --python=python3  --no-site-packages
+virtualenv venv --no-site-packages
 
 * install the corresponding dependencies from requirement.txt
 

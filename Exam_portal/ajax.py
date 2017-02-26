@@ -3,23 +3,24 @@ import StringIO
 from django.shortcuts import render
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponse
-from .excel_creator import create_excel
+from .excel_creator import create_excel,python_excel
 from .models import Student, QuestionChoice, Question, StudentAnswer, CorrectChoice, MarksOfStudent, StudentInfo
 
 
 def excel(request):
     base = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    create_excel()
+    # create_excel()
+    python_excel()
 
     excel_path = os.path.dirname(base)
 
-    excel = open("%s/Student_Info.xlsx" % excel_path, "r")
+    excel = open("%s/Student_Info_python.xlsx" % excel_path, "r")
     output = StringIO.StringIO(excel.read())
     out_content = output.getvalue()
     output.close()
     response = HttpResponse(out_content,
                             content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
-    response['Content-Disposition'] = 'attachment; filename=Students_Info.xlsx'
+    response['Content-Disposition'] = 'attachment; filename=Students_Info_python.xlsx'
     return response
 
 

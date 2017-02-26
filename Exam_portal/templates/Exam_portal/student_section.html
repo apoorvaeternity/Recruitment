@@ -14,7 +14,7 @@
         {% for student in students %}
             <div class="panel panel-default">
                 <div class="panel-body">Name:<a href="/exam/graph/{{ student.student.student_no }}/">{{ student.student.name }} </a> <span class="text-right">Marks: {{ student.marks }}</span>
-
+                </div>
 
             </div>
         {% endfor %}
