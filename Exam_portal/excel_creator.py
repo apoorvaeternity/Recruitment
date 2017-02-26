@@ -73,7 +73,7 @@ class StudentInformation:
         print("Instantiating the Constructor of StudentInformation class")
 
     def category_marks(self):
-        students = Student.objects.all()
+        students = StudentInfo.objects.all()
         info = []
         for student in students:
             marks = SectionWiseMarks(student.student_no)
@@ -87,7 +87,7 @@ class StudentInformation:
 
     def student_data(self):
 
-        students = Student.objects.all()
+        students = StudentInfo.objects.all()
         info = []
         for student in students:
             data = (
@@ -99,7 +99,7 @@ class StudentInformation:
     def skill_set(self):
 
         info = []
-        students = Student.objects.all()
+        students = StudentInfo.objects.all()
         for student in students:
             data = (int(list(students).index(student) + 1), student.student_no, student.name, student.skills,
             student.hosteler,
@@ -119,6 +119,38 @@ class StudentInformation:
             info.append(data)
             print (info)
         return info
+
+def python_excel():
+    workbook = xlsxwriter.Workbook("../Student_Info_python.xlsx")
+    worksheet_exam = workbook.add_worksheet('Exam Info')
+    bold = workbook.add_format({"bold": True, 'align': 'center'})
+    row = 0
+    col = 0
+    worksheet_exam.write(row,col,"Serial N0,",bold)
+    worksheet_exam.write(row,col+1,"Student Name,",bold)
+    worksheet_exam.write(row,col+2,"Student Number,",bold)
+    worksheet_exam.write(row,col+3,"Marks (Total = "+str(total_marks())+")",bold)
+    row +=1
+
+    studentsmarks = MarksOfStudent.objects.all()
+    # info = []
+
+    for student in studentsmarks:
+        # data = (int(list(studentsmarks).index(student) + 1),student.student.name,student.student.student_no,student.marks,)
+        # info.append(data)
+        worksheet_exam.write(row,col,int(list(studentsmarks).index(student) + 1))
+        worksheet_exam.write(row,col+1,student.student.name)
+        worksheet_exam.write(row,col+2,student.student.student_no)
+        worksheet_exam.write(row,col+3,student.marks)
+        row +=1
+
+
+    workbook.close()
+
+
+
+
+
 
 
 def create_excel():

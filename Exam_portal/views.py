@@ -276,7 +276,7 @@ def show(request):
     }
 
     if request.session['python']:
-        context_variable['title'] = "Python Class Test"
+        context_variable['title'] = "Python Quiz"
 
     return render(request, 'Exam_portal/ajax.html', context_variable)
 
@@ -450,7 +450,7 @@ def instruction(request):
     if not request.session['python']:
         return render(request, "Exam_portal/instruction.html", context={})
     else:
-        return render(request, "Exam_portal/python_instruction.html", context={"title":"Python Class Test"})
+        return render(request, "Exam_portal/python_instruction.html", context={"title":"Python Quiz"})
 
 
 #detect the refresh on show page
@@ -812,7 +812,7 @@ def python_class(request):
         return HttpResponseRedirect(reverse('Exam_portal:notstarted'))
     form = PythonRegisterForm(request.POST or None)
     context_variable = {
-        'title':"Python Class Test",
+        'title':"Python Quiz",
         'form':form
     }
 
