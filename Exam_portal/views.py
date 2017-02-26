@@ -64,6 +64,8 @@ def end(request):
 
     print(request.session.get('student_id'))
     if not request.session.get('student_id'):
+        if request.session['python']:
+            return redirect(reverse('Exam_portal:python'))
         messages.error(request, "First, Register for the examination here..")
         return redirect(reverse('Exam_portal:register'))
     markCalculate(request)
@@ -273,6 +275,9 @@ def show(request):
         "warn": time.warn_time,
     }
 
+    if request.session['python']:
+        context_variable['title'] = "Python Class Test"
+
     return render(request, 'Exam_portal/ajax.html', context_variable)
 
 
@@ -370,16 +375,14 @@ def register(request):
         messages.success(request, "Opps, Looks like the exam is not started yet. Come back later")
         return redirect(reverse("Exam_portal:notstarted"))
 
-    form = RegistrationForm()
-
     if request.session.get('student_id'):
         return redirect(reverse('Exam_portal:instruction'))
 
+    form = RegistrationForm()
+
+
     if request.method == "POST":
         form = RegistrationForm(request.POST or None)
-
-        if request.method != "POST":
-            raise Http404("Only POST methods are allowed")
 
         if form.is_valid():
             password = form.cleaned_data.get("Password")
@@ -444,17 +447,11 @@ def instruction(request):
         return redirect(reverse('Exam_portal:register'))
 
     request.session['started'] = True
-    # try:
-    #     s = Student.objects.get(student_no=request.session.get("student_id"))
-    # except:
-    #     pass
-    # if s.refresh_flag == 2:
-    #     s.refresh_flag = 2
-    # else:
-    #     s.refresh_flag = 1
-    # s.save()
+    if not request.session['python']:
+        return render(request, "Exam_portal/instruction.html", context={})
+    else:
+        return render(request, "Exam_portal/python_instruction.html", context={"title":"Python Class Test"})
 
-    return render(request, "Exam_portal/instruction.html", context={})
 
 #detect the refresh on show page
 def refresh(request):
@@ -788,11 +785,32 @@ def graph(request,id):
 
 def python_class(request):
 
+    test_obj = Question.objects.all()
+
+    if len(test_obj) == 0:
+        messages.success(request, " Exam is not Created")
+        return redirect(reverse("Exam_portal:notstarted"))
+    try:
+        obj = ExamStarter.objects.get(pk=1)
+    except ObjectDoesNotExist:
+        obj = ExamStarter.objects.create(flag=False)
+
+    if obj.flag is True:
+        print("exam is started")
+
+    else:
+        messages.success(request, "Opps, Looks like the exam is not started yet. Come back later")
+        return redirect(reverse("Exam_portal:notstarted"))
+
+    if request.session.get('student_id'):
+        return redirect(reverse('Exam_portal:instruction'))
+
+
 
     if(len(Question.objects.all())==0):
         messages.warning(request,"Exam not created")
         return HttpResponseRedirect(reverse('Exam_portal:notstarted'))
-    form = PythonRegisterForm()
+    form = PythonRegisterForm(request.POST or None)
     context_variable = {
         'title':"Python Class Test",
         'form':form

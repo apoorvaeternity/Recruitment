@@ -16,24 +16,19 @@ class StudentInfo(models.Model):
 
 @python_2_unicode_compatible
 class Student(models.Model):
-    # create a model with student id and instantiate it with the help of this class constructor
 
     student = models.ForeignKey(StudentInfo, on_delete=models.CASCADE)
-
-    # name = models.CharField(max_length=100)  # Stage1 of registration
-    # student_no = models.CharField(primary_key=True, max_length=225)  # Stage2 of registration
-    branch = models.CharField(max_length=5)  # Stage2 of registration
-    contact = models.BigIntegerField()  # Stage1 of registration
+    branch = models.CharField(max_length=5)
+    contact = models.BigIntegerField()
     password = models.CharField(max_length=35, default="rupanshu")
     cnf_password = models.CharField(max_length=35 ,default="rupanshu")
-    skills = models.CharField(max_length=2255)  # Stage3 of registration
-    # email = models.EmailField()  # Stage1 of registration
+    skills = models.CharField(max_length=2255)
     hosteler = models.BooleanField()  # Stage2 of
     refresh_flag = models.IntegerField(default=0)
     updated = models.DateTimeField(auto_now=True, auto_now_add=False)
     designer = models.CharField(
         "Mention any software you worked on(photoshop etc)",
-        max_length=225)  # Stage3 of registration
+        max_length=225)
 
     def __str__(self):
         return "<Name = %s>" % self.name
