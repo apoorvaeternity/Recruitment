@@ -47,7 +47,7 @@ class Category(models.Model):
 
 @python_2_unicode_compatible
 class Question(models.Model):
-    question_text = models.CharField(max_length=1000)
+    question_text = models.CharField(max_length=5000)
     negative = models.BooleanField()
     negative_marks = models.IntegerField(null=True)
     marks = models.IntegerField()

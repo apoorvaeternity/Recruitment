@@ -45,7 +45,7 @@ class AddCategory(forms.ModelForm):
 
 class QuestionForm(forms.Form):
     category = forms.ChoiceField(choices=category_name_list,label="Question Category")
-    question = forms.CharField(label='Question Text', max_length=500, required=True,
+    question = forms.CharField(label='Question Text', max_length=1000, required=True,
                                widget=PagedownWidget())
 
 
