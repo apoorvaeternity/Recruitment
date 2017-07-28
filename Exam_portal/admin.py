@@ -67,6 +67,11 @@ class TestDisplay(admin.ModelAdmin):
         model = Test
 
 
+class Algorithms(admin.ModelAdmin):
+    list_display = ('short_name', 'active')
+    class Meta:
+        model = Algorithm
+
 # Register your models here.
 admin.site.register(QuestionChoice)
 admin.site.register(Question, QuestionAdmin)
@@ -76,4 +81,5 @@ admin.site.register(CorrectChoice)
 admin.site.register(Student, StudentAdmin)
 admin.site.register(StudentAnswer)
 admin.site.register(MarksOfStudent, Marks)
-admin.site.register(StudentInfo,StudentInfoAdmin)
+admin.site.register(StudentInfo, StudentInfoAdmin)
+admin.site.register(Algorithm, Algorithms)

@@ -24,7 +24,7 @@ urlpatterns = [
 
     url(r'^exam/', include('Exam_portal.urls', namespace="Exam_portal")),
     url(r'', include(frontend_urls)),
-    url(r'^$', python_class, name="python"),
+    # url(r'^$', python_class, name="python"),
     url(r'^$', register, name="register"),
     url(r'^godadmin/', admin.site.urls),
 

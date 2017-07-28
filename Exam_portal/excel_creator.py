@@ -10,7 +10,7 @@ def SectionWiseMarks(student):
         category_question = category.question_set.all()
         marks = 0
         for question in category_question:
-            print question.question_text
+            print (question.question_text)
             answers = StudentAnswer.objects.all().filter(student=student,question=question)
             for answer in answers:
                 if answer.answer.choice == question.correctchoice_set.all()[0].correct_choice.choice:
@@ -81,7 +81,7 @@ class StudentInformation:
             for mark,category in marks:
                 data.append(mark)
             info.append(data)
-        print info
+        print (info)
         return info
 
 

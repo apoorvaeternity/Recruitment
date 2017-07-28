@@ -1,5 +1,4 @@
 import json, os
-import StringIO
 from io import BytesIO
 from django.shortcuts import render
 from django.core.exceptions import ObjectDoesNotExist
