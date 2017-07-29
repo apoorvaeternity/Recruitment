@@ -251,7 +251,7 @@ class PythonRegisterForm(forms.ModelForm):
 
     def clean_email(self):
         email = self.cleaned_data.get("email")
-        print(email)
+        # print(email)
         pattern = "^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$"
         prog = re.compile(pattern)
         result = prog.match(email)
@@ -267,7 +267,7 @@ class PythonRegisterForm(forms.ModelForm):
 
     def clean_name(self):
         name = self.cleaned_data.get('name')
-        print(name)
+        # print(name)
 
         pat = "^[A-Za-z\s]{1,}[\.]{0,1}[A-Za-z\s]{0,}$"
         pro = re.compile(pat)
@@ -284,7 +284,7 @@ class PythonRegisterForm(forms.ModelForm):
 
     def clean_student_no(self):
         std = self.cleaned_data.get('student_no')
-        print(std)
+        # print(std)
 
         pattern = '^\d{7}[D]{0,1}$'
         prog = re.compile(pattern)
