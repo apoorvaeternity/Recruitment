@@ -363,6 +363,9 @@ def register(request):
     #Registration view
     test_obj = Question.objects.all()
 
+    if request.session.get('started'):
+        return HttpResponseRedirect(reverse("Exam_portal:ajaxshow"))
+
     if len(test_obj) == 0:
         messages.success(request, " Exam is not Created")
         return redirect(reverse("Exam_portal:notstarted"))
@@ -411,6 +414,7 @@ def register(request):
                 request.session['name'] = name
                 request.session['student_id'] = data.student_no
                 request.session['post_data'] = request.POST
+                request.session['started'] = True
                 return HttpResponseRedirect(reverse('Exam_portal:instruction'))
 
     context = {
