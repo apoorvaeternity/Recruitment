@@ -7,7 +7,7 @@ from . import ajax
 
 urlpatterns = [
     url(r'^register/$', views.register, name="register"),
-    url(r'^pythonclass/$', views.python_class, name="python"),
+    #url(r'^pythonclass/$', views.python_class, name="python"),
     url(r'^list/$', views.ListQuestion.as_view(), name='list'),
     url(r'^instruction/$', views.instruction, name="instruction"),
     url(r'^show/$', views.show, name="ajaxshow"),

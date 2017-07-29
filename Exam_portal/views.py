@@ -7,7 +7,7 @@ import json
 from .excel_creator import SectionWiseMarks, total_marks
 from django.core.exceptions import ObjectDoesNotExist
 from .forms import RegistrationForm, QuestionForm, AdminLoginForm, ReviewForm, LoginForm , AddCategory, PythonRegisterForm
-from .models import Student, Question, Category, Test, CorrectChoice, MarksOfStudent, ExamStarter, StudentInfo
+from .models import Student, Question, Category, Test, CorrectChoice, MarksOfStudent, ExamStarter, StudentInfo, Algorithm
 from .ajax import markCalculate
 from datetime import datetime
 from django.views.generic import ListView
@@ -90,8 +90,8 @@ def review(request):
     #Review for with the inheritate class of register form with different def clean_StudentNo method
     test_obj = Question.objects.all();
 
-    if request.session['python']:
-        return HttpResponseRedirect(reverse("Exam_portal:end"))
+    # if request.session['python']:
+    #     return HttpResponseRedirect(reverse("Exam_portal:end"))
 
     if len(test_obj) == 0:
         messages.success(request, " Exam is not Created")
@@ -137,8 +137,8 @@ def review(request):
 
             return HttpResponseRedirect(reverse("Exam_portal:end"))
 
-    if not request.session['python']:
-        request.session['end'] = True
+    # if not request.session['python']:
+    #     request.session['end'] = True
 
     context = {
         "title": "Review Exam",
@@ -273,10 +273,13 @@ def show(request):
         "instance": query_set,
         "time": time_string,
         "warn": time.warn_time,
+        "title":"Software Incubator",
+        "algorithm1":Algorithm.objects.filter(active=True).first().question,
+        "algorithm2":Algorithm.objects.filter(active=True).last().question
     }
 
-    if request.session['python']:
-        context_variable['title'] = "Python Quiz"
+    # if request.session['python']:
+    #     context_variable['title'] = "Python Quiz"
 
     return render(request, 'Exam_portal/ajax.html', context_variable)
 
@@ -447,10 +450,11 @@ def instruction(request):
         return redirect(reverse('Exam_portal:register'))
 
     request.session['started'] = True
-    if not request.session['python']:
-        return render(request, "Exam_portal/instruction.html", context={})
-    else:
-        return render(request, "Exam_portal/python_instruction.html", context={"title":"Python Quiz"})
+    return render(request, "Exam_portal/instruction.html", context={})
+    # if not request.session['python']:
+    #     return render(request, "Exam_portal/instruction.html", context={})
+    # else:
+    #     return render(request, "Exam_portal/python_instruction.html", context={"title":"Python Quiz"})
 
 
 #detect the refresh on show page
@@ -588,7 +592,7 @@ def create_question(question_data):
         else:
             negative_marks = question_data['negative_marks']
             negative = True
-    except Exception,e:
+    except Exception as e:
         negative_marks = 0
         negative = False
 
@@ -628,7 +632,7 @@ def edit_again(pk,data):
         else:
             negative_marks = data['negative_marks']
             negative = True
-    except Exception,e:
+    except Exception as e:
         negative_marks = 0
         negative = False
 
@@ -816,7 +820,7 @@ def python_class(request):
         'form':form
     }
 
-    request.session['python'] = True
+    request.session['python'] = False
 
     if request.method == "POST":
         form = PythonRegisterForm(request.POST or None)

@@ -2,7 +2,7 @@ from django.db import models
 from django.utils.encoding import python_2_unicode_compatible
 from datetime import datetime
 from markdown_deux import markdown
-
+from django.core.exceptions import ValidationError
 
 class StudentInfo(models.Model):
     name = models.CharField(max_length=100)  # Stage1 of registration
@@ -31,7 +31,7 @@ class Student(models.Model):
         max_length=225)
 
     def __str__(self):
-        return "<Name = %s>" % self.name
+        return "<Name = %s>" % self.student.name
 
 
 @python_2_unicode_compatible
@@ -128,3 +128,18 @@ class ExamStarter(models.Model):
 #
 #     def __str__(self):
 #         return "{} - {}".format(self.name,self.student_number)
+
+
+def algorithm_validator(value):
+    if value is True and Algorithm.objects.filter(active=True).count() >= 2 :
+        raise ValidationError(
+            'More than two algorithms cannot be active at a given time'
+)
+
+class Algorithm(models.Model):
+    question = models.TextField()
+    active = models.BooleanField(default=False, validators=[algorithm_validator,])
+    short_name = models.CharField(max_length=100,default="Algorithm")
+
+    def __str__(self):
+        return self.short_name
