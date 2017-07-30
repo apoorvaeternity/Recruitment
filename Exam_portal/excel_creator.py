@@ -6,11 +6,12 @@ def SectionWiseMarks(student):
 
     categories = Category.objects.all()
     category_marks = []
+    marks_data = []
     for category in categories:
         category_question = category.question_set.all()
         marks = 0
         for question in category_question:
-            print (question.question_text)
+            # print (question.question_text)
             answers = StudentAnswer.objects.all().filter(student=student,question=question)
             for answer in answers:
                 if answer.answer.choice == question.correctchoice_set.all()[0].correct_choice.choice:
@@ -31,7 +32,8 @@ def total_marks():
         for q in question:
             marks += q.marks
     except Exception as e:
-        print(e)
+        # print(e)
+        pass
 
     return marks
 
@@ -70,7 +72,8 @@ label_skillset = [
 
 class StudentInformation:
     def __init__(self):
-        print("Instantiating the Constructor of StudentInformation class")
+        # print("Instantiating the Constructor of StudentInformation class")
+        pass
 
     def category_marks(self):
         students = StudentInfo.objects.all()
@@ -81,17 +84,17 @@ class StudentInformation:
             for mark,category in marks:
                 data.append(mark)
             info.append(data)
-        print (info)
+        # print (info)
         return info
 
 
     def student_data(self):
 
-        students = StudentInfo.objects.all()
+        students = Student.objects.all()
         info = []
         for student in students:
             data = (
-                int(list(students).index(student) + 1), student.student_no, student.name, student.branch, student.email,
+                int(list(students).index(student) + 1), student.student.student_no, student.student.name, student.branch, student.student.email,
                 student.contact)
             info.append(data)
         return info
@@ -99,13 +102,13 @@ class StudentInformation:
     def skill_set(self):
 
         info = []
-        students = StudentInfo.objects.all()
+        students = Student.objects.all()
         for student in students:
-            data = (int(list(students).index(student) + 1), student.student_no, student.name, student.skills,
+            data = (int(list(students).index(student) + 1), student.student.student_no, student.student.name, student.skills,
             student.hosteler,
             student.designer)
             info.append(data)
-            print(info)
+            # print(info)
         return info
 
     def exam_data(self):
@@ -117,7 +120,7 @@ class StudentInformation:
                 int(list(students).index(student) + 1), student.student.student_no, student.student.name, student.marks,
                 None, None)
             info.append(data)
-            print (info)
+            # print (info)
         return info
 
 def python_excel(output=None):
@@ -156,7 +159,11 @@ def python_excel(output=None):
 
 
 
-def create_excel():
+def create_excel(output=None):
+    if not output:
+        workbook = xlsxwriter.Workbook("../Student_Info.xlsx")
+    else:
+        workbook = xlsxwriter.Workbook(output)
     categories = Category.objects.all()
     for category in categories:
         label_category_marks.append(category.category)
@@ -167,7 +174,6 @@ def create_excel():
     skill_info = student.skill_set()
     category = student.category_marks()
 
-    workbook = xlsxwriter.Workbook("../Student_Info.xlsx")
     worksheet_info = workbook.add_worksheet('Students Info')
     worksheet_exam = workbook.add_worksheet('Exam Info')
     worksheet_skillset = workbook.add_worksheet('Student Skillset')

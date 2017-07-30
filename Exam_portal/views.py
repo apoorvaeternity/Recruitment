@@ -62,7 +62,7 @@ def end(request):
         messages.success(request, " Opps, Looks like the exam is not started yet. Come back later")
         return redirect(reverse("Exam_portal:notstarted"))
 
-    print(request.session.get('student_id'))
+    # print(request.session.get('student_id'))
     if not request.session.get('student_id'):
         if request.session['python']:
             return redirect(reverse('Exam_portal:python'))
@@ -101,7 +101,7 @@ def review(request):
         return redirect(reverse('Exam_portal:register'))
 
     form = ReviewForm(request.session.get('post_data') or None)
-    print(request.session.get('post_data'))
+    # print(request.session.get('post_data'))
 
     if request.method == "POST":
         psd = request.session['post_data'].get('Password')
@@ -115,8 +115,8 @@ def review(request):
         request.POST._mutable = mutable
 
         if form.is_valid():
-            print("form is valid")
-            print(request.POST)
+            # print("form is valid")
+            # print(request.POST)
 
             student = StudentInfo.objects.get(pk=request.session['student_id'])
             student.name = request.POST.get('Name')
@@ -196,7 +196,8 @@ def show(request):
         obj = ExamStarter.objects.create(flag=False)
 
     if obj.flag:
-        print("exam has started")
+        # print("exam has started")
+        pass
 
     else:
         messages.success(request, "Opps, Looks like the exam is not started yet. Come back later")
@@ -208,7 +209,7 @@ def show(request):
 
     category1 = Category.objects.all().order_by('order')
 
-    print (category1)
+    # print (category1)
     if len(category1) == 0:
         messages.error(request, "Oops look like the exam is not created yet. Try after some time")
         return redirect(reverse('Exam_portal:register'))
@@ -218,7 +219,7 @@ def show(request):
 
     category_first_data = []
     question_key = []
-    print(len(category1))
+    # print(len(category1))
 
     time = Test.objects.all()
 
@@ -227,15 +228,16 @@ def show(request):
         return redirect(reverse('Exam_portal:register'))
 
     for i in range(0, len(category1)):
-        print(i)
-        print(category1[i])
+        # print(i)
+        # print(category1[i])
 
         qs = category1[i].question_set.all().order_by('id')
         try:
             data = (qs[0].id, category1[i].category, category1[i].id)
             category_first_data.append(data)
         except IndexError:
-            print("skipping")
+            # print("skipping")
+            pass
         for j in range(0, len(qs)):
             question_key.append(qs[j].id)
 
@@ -301,8 +303,8 @@ def login(request):
         obj = ExamStarter.objects.create(flag=False)
 
     if obj.flag is True:
-        print("exam is started")
-
+        # print("exam is started")
+        pass
     else:
         messages.success(request, "Opps, Looks like the exam is not started yet. Come back later")
         return redirect(reverse("Exam_portal:notstarted"))
@@ -341,7 +343,7 @@ def login(request):
                 "Designer": student.designer,
                 "Skills": student.skills,
             }
-            print(review_data)
+            # print(review_data)
 
             if password == student.password:
                 request.session['name'] = review_data.get('Name')
@@ -375,7 +377,8 @@ def register(request):
         obj = ExamStarter.objects.create(flag=False)
 
     if obj.flag is True:
-        print("exam is started")
+        # print("exam is started")
+        pass
 
     else:
         messages.success(request, "Opps, Looks like the exam is not started yet. Come back later")
@@ -465,8 +468,8 @@ def instruction(request):
 def refresh(request):
     s = Student.objects.filter(refresh_flag=0)
 
-    for a in s:
-        print (a)
+    # for a in s:
+    #      print (a)
 
     context = {
         "title": "Students who refreshed ",
@@ -499,7 +502,7 @@ def admin(request):
         category_form = AddCategory()
 
         if form.is_valid():
-            print(request.POST)
+            # print(request.POST)
 
             if create_question(request.POST):
                 messages.success(request, "Question have been Added into the data base")
@@ -533,7 +536,7 @@ def question_edit(request,pk):
     correctchoice = question.correctchoice_set.all()
 
     correct = correctchoice[0].correct_choice.choice
-    print(correct)
+    # print(correct)
     choice = []
     for c in choices:
         choice.append(c.choice)
@@ -551,16 +554,16 @@ def question_edit(request,pk):
         'correct_choice':choice.index(correct) + 1,
     }
 
-    print(question_data.get('correct_choice'))
+    # print(question_data.get('correct_choice'))
 
     form = QuestionForm(question_data)
 
     if request.method == "POST":
         form = QuestionForm(request.POST)
-        if form.is_valid():
-            print(form.cleaned_data)
-            if edit_again(pk=pk,data = form.cleaned_data):
-                print("updated")
+        # if form.is_valid():
+        #     print(form.cleaned_data)
+        #     if edit_again(pk=pk,data = form.cleaned_data):
+        #         print("updated")
 
     context_varaible = {
         'form':form,
@@ -722,7 +725,7 @@ def admin_auth(request):
             password = form.cleaned_data.get('password', '')
             user = auth.authenticate(username=username, password=password)
 
-            print(user)
+            # print(user)
             if user is not None:
                 auth.login(request, user)
                 return HttpResponseRedirect("/exam/adminchoice")
@@ -743,13 +746,13 @@ def admin_auth(request):
 
 #admin
 def logout_admin(request):
-    print("logout")
+    # print("logout")
     auth.logout(request)
     return HttpResponseRedirect(reverse("Exam_portal:admin_auth"))
 
 #Admin
 def adminchoice(request):
-    print("adminchoice")
+    # print("adminchoice")
     try:
         obj = ExamStarter.objects.get(pk=1)
     except ObjectDoesNotExist:
@@ -804,7 +807,8 @@ def python_class(request):
         obj = ExamStarter.objects.create(flag=False)
 
     if obj.flag is True:
-        print("exam is started")
+        # print("exam is started")
+        pass
 
     else:
         messages.success(request, "Opps, Looks like the exam is not started yet. Come back later")
@@ -828,10 +832,10 @@ def python_class(request):
 
     if request.method == "POST":
         form = PythonRegisterForm(request.POST or None)
-        print(request.POST)
-        print("ercercer")
+        # print(request.POST)
+        # print("ercercer")
         if form.is_valid():
-            print('jbjktrtbtrbg')
+            # print('jbjktrtbtrbg')
             form.save()
             request.session['name'] = form.cleaned_data.get('name')
             request.session['student_id'] = form.cleaned_data.get('student_no')

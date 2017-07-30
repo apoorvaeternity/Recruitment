@@ -14,7 +14,7 @@ def excel(request):
 
     # excel_path = os.path.dirname(base)
     output = BytesIO()
-    python_excel(output=output)
+    create_excel(output=output)
     output.seek(0)
 
     # excel = open("%s/Student_Info_python.xlsx" % excel_path, "r")
@@ -23,7 +23,7 @@ def excel(request):
     # output.close()
     response = HttpResponse(output.read(),
                             content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
-    response['Content-Disposition'] = 'attachment; filename=Students_Info_python.xlsx'
+    response['Content-Disposition'] = 'attachment; filename=Students_Info.xlsx'
     return response
 
 
