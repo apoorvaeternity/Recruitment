@@ -321,31 +321,38 @@ def login(request):
             password = form.cleaned_data.get('password')
 
             try:
-                student = Student.objects.get(student_no=user)
+                student = StudentInfo.objects.get(student_no=user)
+
             except ObjectDoesNotExist:
                 messages.success(request, "Invalid Student Number")
+
+            student_info = student.student_set.first()
+
+            if student_info.password != password:
+                print(student_info.password)
+                messages.success(request, "Invalid password")
                 return HttpResponseRedirect(reverse("Exam_portal:login"))
 
-            if student.hosteler:
+            if student_info.hosteler:
                 hst = 'y'
             else:
                 hst = 'n'
 
             review_data = {
                 'Name': student.name,
-                "Contact": student.contact,
+                "Contact": student_info.contact,
                 "Email": student.email,
-                "Password": student.password,
-                "Cnf_Password": student.cnf_password,
+                "Password": student_info.password,
+                "Cnf_Password": student_info.cnf_password,
                 "StudentNo": student.student_no,
-                "Branch": student.branch,
+                "Branch": student_info.branch,
                 "Hosteler": hst,
-                "Designer": student.designer,
-                "Skills": student.skills,
+                "Designer": student_info.designer,
+                "Skills": student_info.skills,
             }
             # print(review_data)
 
-            if password == student.password:
+            if password == student_info.password:
                 request.session['name'] = review_data.get('Name')
                 request.session['student_id'] = user
                 request.session['post_data'] = review_data
@@ -417,7 +424,7 @@ def register(request):
                 request.session['name'] = name
                 request.session['student_id'] = data.student_no
                 request.session['post_data'] = request.POST
-                request.session['started'] = True
+
                 return HttpResponseRedirect(reverse('Exam_portal:instruction'))
 
     context = {

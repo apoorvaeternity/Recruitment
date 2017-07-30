@@ -9,6 +9,9 @@ class StudentInfo(models.Model):
     student_no = models.CharField(primary_key=True, max_length=225)  # Stage2 of registration
     email = models.EmailField()  # Stage1 of registration
 
+    class Meta:
+        verbose_name_plural = "Student Information"
+
     def __str__(self):
         return "{}|{}".format(self.name,self.student_no)
 
