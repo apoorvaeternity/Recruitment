@@ -255,5 +255,10 @@ def create_excel(output=None):
             worksheet_category_marks.write(row,col,item,center_align)
             col +=1
         row += 1
-
+    global label_category_marks
+    label_category_marks = [
+        'Sno.',
+        'Student Number',
+        'name',
+    ]
     workbook.close()
