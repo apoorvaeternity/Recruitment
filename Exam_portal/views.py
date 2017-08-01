@@ -64,8 +64,8 @@ def end(request):
 
     # print(request.session.get('student_id'))
     if not request.session.get('student_id'):
-        if request.session['python']:
-            return redirect(reverse('Exam_portal:python'))
+        # if request.session['python']:
+        #     return redirect(reverse('Exam_portal:python'))
         messages.error(request, "First, Register for the examination here..")
         return redirect(reverse('Exam_portal:register'))
     markCalculate(request)
@@ -86,11 +86,11 @@ def end(request):
 
 
 def review(request):
-
     #Review for with the inheritate class of register form with different def clean_StudentNo method
     test_obj = Question.objects.all();
 
     # if request.session['python']:
+
     #     return HttpResponseRedirect(reverse("Exam_portal:end"))
 
     if len(test_obj) == 0:
